@@ -7,9 +7,10 @@
   "dependencies": {
     "concurrently": "^3.1.0",
     "http-server": "^0.9.0",
-    "typescript": "^2.1.4"
+    "typescript": "^2.1.4",
+    "typescript-bundle": "^0.7.5"
   },
   "scripts": {
-    "start": "concurrently --kill-others \"http-server -p 1234 .\" \"tsc --watch\""
+    "start": "concurrently --kill-others \"http-server -p 1234 .\" \"tsc-bundle src/init.ts dist/ai.js --watch\""
   }
 }
