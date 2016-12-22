@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+        "module": "amd",
+        "target": "es6",
+        "noImplicitAny": false,
+        "sourceMap": true,
+        "outFile": "dist/ai.js",
+        "sourceRoot": "./src/",
+        "rootDir": "./src/",
+        "lib": [
+            "dom",
+            "es6"
+        ]
+    }
+}
