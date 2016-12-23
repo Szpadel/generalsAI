@@ -9,6 +9,7 @@ import {PriorityAgent} from "./priority-agent";
 import {EnemyTargetGenerator} from "./targets-generators/enemy-target-generator";
 import {GeneralTargetGenerator} from "./targets-generators/general-target-generator";
 import {ArmyTargetGenerator} from "./targets-generators/army-target-generator";
+import {CitiesTargetGenerator} from "./targets-generators/cities-target-generator";
 
 export interface GameWindow extends Window{
     ai: Board;
@@ -40,6 +41,7 @@ export class Board {
         this.targetGenerators.push(new EnemyTargetGenerator(this, this.priorityMap));
         this.targetGenerators.push(new GeneralTargetGenerator(this, this.priorityMap));
         this.targetGenerators.push(new ArmyTargetGenerator(this, this.priorityMap));
+        this.targetGenerators.push(new CitiesTargetGenerator(this, this.priorityMap));
         this.resetTileProperties();
         console.log('Board init');
     }

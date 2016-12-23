@@ -14,7 +14,7 @@ export class PriorityAgent {
         for (let pNum of this.board.myArmy.armyList) {
             let p = this.board.toPoint(pNum);
             let tp = this.board.getTileProperties(p);
-            const useHalf = tp.isCity || tp.isGeneral;
+            const useHalf = tp.isGeneral;
             const tileArmy = useHalf ? (tp.army)/2 : tp.army;
 
             if(tileArmy <= 1) {
@@ -39,7 +39,7 @@ export class PriorityAgent {
                 }
 
                 const tTp = this.board.getTileProperties(tPoint);
-                const half = tTp.isMine && (tTp.isCity || tTp.isGeneral);
+                const half = tTp.isMine && ( tTp.isGeneral);
                 const tArmy = half ? (tTp.army) / 2 : tTp.army;
 
                 const resultArmy = tTp.isMine ? tileArmy -1 + tArmy : -tTp.army + tileArmy -1;
