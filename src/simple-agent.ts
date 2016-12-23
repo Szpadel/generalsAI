@@ -3,7 +3,6 @@ import {Board} from "./board";
 import {getBestPoint} from "./decision-makers";
 import {Point, PointHelpers} from "./tile";
 import {Tile} from "./game-interfaces";
-import {TileProperties} from "./tile-properties";
 
 export class SimpleAgent {
 
@@ -23,7 +22,7 @@ export class SimpleAgent {
                     continue;
                 }
 
-                let ourTile = new TileProperties(this.board, p);
+                let ourTile = this.board.getTileProperties(p);
 
                 let bestPoint = getBestPoint(p, (point: Point) => {
 
@@ -31,7 +30,7 @@ export class SimpleAgent {
                         return -100;
                     }
 
-                    let tile = new TileProperties(this.board, point);
+                    let tile = this.board.getTileProperties(point);
 
                     let score = 0;
 
@@ -63,8 +62,8 @@ export class SimpleAgent {
                     }else if (tile.isCity) {
                         let c = (ourTile.army - tile.army);
                         score +=  c < 0
-                            ? c * 3
-                            : c / 3;
+                            ? c * 10
+                            : c / 10;
                     }
 
                     // if(!tile.isGeneral && tile.isEnemy) {

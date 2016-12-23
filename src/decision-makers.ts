@@ -23,11 +23,18 @@ export function getBestNextPoint(a: AnaliseTarget, p: Point, cond: (p: Point) =>
     }
 }
 
+function validateScore(score) {
+    if(!isFinite(score)) {
+        return -8888;
+    }
+    return score;
+}
+
 export function getBestPoint(p: Point, cond: (p: Point) => number): {p: Point, score: number} {
-    let up = cond(PointHelpers.up(p));
-    let down = cond(PointHelpers.down(p));
-    let left = cond(PointHelpers.left(p));
-    let right = cond(PointHelpers.right(p));
+    let up = validateScore(cond(PointHelpers.up(p)));
+    let down = validateScore(cond(PointHelpers.down(p)));
+    let left = validateScore(cond(PointHelpers.left(p)));
+    let right = validateScore(cond(PointHelpers.right(p)));
 
     let max = Math.max(up, down, left, right);
 

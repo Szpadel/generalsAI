@@ -1,6 +1,6 @@
-
 import {Board} from "./board";
 import {Point, PointHelpers} from "./tile";
+import {Tile} from "./game-interfaces";
 
 export class TileProperties {
     constructor(private board: Board, private point: Point) {
@@ -52,5 +52,13 @@ export class TileProperties {
             this._isGeneral = this.board.isGeneral(this.point);
         }
         return this._isGeneral;
+    }
+
+    private _isWalkable: boolean = null;
+    get isWalkable() {
+        if(this._isWalkable === null)  {
+            this._isWalkable = this.tileType > 0 || this.tileType === Tile.TILE_EMPTY || this.tileType === Tile.TILE_FOG || (this.isMine && this.isCity) || this.isGeneral;
+        }
+        return this._isWalkable;
     }
 }
