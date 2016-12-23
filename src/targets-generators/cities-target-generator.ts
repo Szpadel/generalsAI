@@ -29,7 +29,7 @@ export class CitiesTargetGenerator extends AbstractTargetGenerator {
     private addTarget(pNum: number) {
 
         if(!this.targets.has(pNum)) {
-            let target = new Target(this.board.toPoint(pNum), 10, 0.7);
+            let target = new Target(this.board.toPoint(pNum), 5, 0.7);
             this.targets.set(pNum, target);
             this.priorityMap.addTarget(target);
         }

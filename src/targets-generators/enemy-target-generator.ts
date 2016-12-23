@@ -34,8 +34,8 @@ export class EnemyTargetGenerator extends AbstractTargetGenerator {
 
         if(!this.targets.has(pNum)) {
             let prio = army === 0 ? 20 : 20/army;
-            if(prio < 10) {
-                prio = 10;
+            if(prio < 13) {
+                prio = 13;
             }
             let target = new Target(this.board.toPoint(pNum), prio, 0.7);
             this.targets.set(pNum, target);

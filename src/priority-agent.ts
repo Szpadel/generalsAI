@@ -70,7 +70,7 @@ export class PriorityAgent {
         if(bestMove && bestScore > -1) {
             console.log(bestMove, bestScore);
             let tp = this.board.getTileProperties(bestMove.start);
-            this.board.attack(bestMove.start, bestMove.end, tp.isCity || tp.isGeneral);
+            this.board.attack(bestMove.start, bestMove.end, tp.isGeneral);
         }else {
             console.warn('couldn\'t find best move' , bestMove, bestScore)
         }
