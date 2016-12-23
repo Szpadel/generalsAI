@@ -29,7 +29,7 @@ export class GeneralTargetGenerator extends AbstractTargetGenerator {
         const myGeneralTp = this.board.getTileProperties(this.board.toPoint(this.myGeneral));
         this.removeTarget(this.myGeneral);
         const prio = (targetArmy - myGeneralTp.army);
-        this.generalPrio = (prio + this.generalPrio*59)/60;
+        this.generalPrio = (prio + this.generalPrio*79)/80;
         if(this.generalPrio > 0) {
             this.addTarget(this.myGeneral, this.generalPrio);
         }
@@ -45,7 +45,7 @@ export class GeneralTargetGenerator extends AbstractTargetGenerator {
     private addTarget(pNum: number, prio: number) {
 
         if(!this.targets.has(pNum)) {
-            let target = new Target(this.board.toPoint(pNum), prio);
+            let target = new Target(this.board.toPoint(pNum), prio, 0.9);
             this.targets.set(pNum, target);
             this.priorityMap.addTarget(target);
         }

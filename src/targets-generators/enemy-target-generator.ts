@@ -1,6 +1,7 @@
 import {AbstractTargetGenerator} from "./abstract-target-generator";
 import {BoardChanges} from "../board";
 import {Target} from "../priority-map";
+import {Tile} from "../game-interfaces";
 
 export class EnemyTargetGenerator extends AbstractTargetGenerator {
     private targets:Map<number, Target> = new Map<number, Target>();
@@ -8,7 +9,7 @@ export class EnemyTargetGenerator extends AbstractTargetGenerator {
     onNextTurn(boardChanges: BoardChanges) {
         boardChanges.mapChanges.forEach((change: number[], pNum: number) => {
             const tp = this.board.getTileProperties(this.board.toPoint(pNum));
-            if(!tp.isEnemy) {
+            if(!tp.isEnemy && tp.tileType !== Tile.TILE_FOG) {
                 this.removeTarget(pNum);
             }
         });
@@ -32,8 +33,11 @@ export class EnemyTargetGenerator extends AbstractTargetGenerator {
     private addTarget(pNum: number, army:number) {
 
         if(!this.targets.has(pNum)) {
-            let prio = army === 0 ? 5 : 5/army;
-            let target = new Target(this.board.toPoint(pNum), prio);
+            let prio = army === 0 ? 20 : 20/army;
+            if(prio < 10) {
+                prio = 10;
+            }
+            let target = new Target(this.board.toPoint(pNum), prio, 0.7);
             this.targets.set(pNum, target);
             this.priorityMap.addTarget(target);
         }

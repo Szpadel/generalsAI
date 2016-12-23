@@ -15,7 +15,7 @@ export class PriorityAgent {
             let p = this.board.toPoint(pNum);
             let tp = this.board.getTileProperties(p);
             const useHalf = tp.isCity || tp.isGeneral;
-            const tileArmy = useHalf ? tp.army/3 : tp.army;
+            const tileArmy = useHalf ? (tp.army)/2 : tp.army;
 
             if(tileArmy <= 1) {
                 continue;
@@ -40,7 +40,7 @@ export class PriorityAgent {
 
                 const tTp = this.board.getTileProperties(tPoint);
                 const half = tTp.isMine && (tTp.isCity || tTp.isGeneral);
-                const tArmy = half ? tTp.army / 5 : tTp.army;
+                const tArmy = half ? (tTp.army) / 2 : tTp.army;
 
                 const resultArmy = tTp.isMine ? tileArmy -1 + tArmy : -tTp.army + tileArmy -1;
                 let tPrio = this.board.priorityMap.getPriorityIn(tPoint);
@@ -67,7 +67,7 @@ export class PriorityAgent {
             }
         }
 
-        if(bestMove && bestScore > 0) {
+        if(bestMove && bestScore > -1) {
             console.log(bestMove, bestScore);
             let tp = this.board.getTileProperties(bestMove.start);
             this.board.attack(bestMove.start, bestMove.end, tp.isCity || tp.isGeneral);

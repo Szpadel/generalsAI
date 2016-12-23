@@ -31,7 +31,7 @@ export class EmptyTileTargetGenerator extends AbstractTargetGenerator {
 
     private addTarget(pNum: number) {
         if(!this.targets.has(pNum)) {
-            let target = new Target(this.board.toPoint(pNum), 8);
+            let target = new Target(this.board.toPoint(pNum), 8, 0.3);
             this.targets.set(pNum, target);
             this.priorityMap.addTarget(target);
         }
