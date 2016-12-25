@@ -1,15 +1,12 @@
 import {StateObject, ScoreObject} from "./game-interfaces";
 import {Point} from "./tile";
-import {MyArmyKnowledgeSource} from "./knowledge-sources/my-army";
+import {ArmyKnowledgeSource} from "./knowledge-sources/army";
 import {TileProperties} from "./tile-properties";
-import {AbstractTargetGenerator} from "./targets-generators/abstract-target-generator";
-import {EmptyTileTargetGenerator} from "./targets-generators/empty-tile-target-generator";
-import {PriorityMap} from "./priority-map";
-import {PriorityAgent} from "./priority-agent";
-import {EnemyTargetGenerator} from "./targets-generators/enemy-target-generator";
-import {GeneralTargetGenerator} from "./targets-generators/general-target-generator";
-import {ArmyTargetGenerator} from "./targets-generators/army-target-generator";
-import {CitiesTargetGenerator} from "./targets-generators/cities-target-generator";
+import {AbstractTask} from "./tasks/abstract-task";
+import {SpreadTask} from "./tasks/spread-task";
+import {AttackTask} from "./tasks/attack-task";
+import {GeneralDistanceKnowledgeSource} from "./knowledge-sources/general-distance";
+import {ProtectGeneral} from "./tasks/protect-general-task";
 
 export interface GameWindow extends Window{
     ai: Board;
@@ -20,28 +17,24 @@ declare const window: GameWindow;
 
 export class Board {
     public data: StateObject;
-    private bot: PriorityAgent;
-    public myArmy: MyArmyKnowledgeSource;
+    public playersArmy: ArmyKnowledgeSource;
     private lastAttack: number = 0;
     public cityLocations: Set<number> = new Set<number>();
     public generalLocations: Set<number> = new Set<number>();
     private tilePropertiesCache: WeakMap<Point, TileProperties>;
     private generalOwner: Map<number, number> = new Map<number, number>();
+    public generalDistance: GeneralDistanceKnowledgeSource;
 
-    private targetGenerators: AbstractTargetGenerator[] = [];
-    public readonly priorityMap: PriorityMap;
+    private tasks: AbstractTask[] = [];
 
     constructor() {
-        this.bot = new PriorityAgent(this);
-        this.myArmy = new MyArmyKnowledgeSource(this);
+        this.playersArmy = new ArmyKnowledgeSource(this);
+        this.generalDistance = new GeneralDistanceKnowledgeSource(this);
 
-        this.priorityMap = new PriorityMap(this);
+        this.tasks.push(new SpreadTask(this));
+        this.tasks.push(new AttackTask(this));
+        this.tasks.push(new ProtectGeneral(this));
 
-        this.targetGenerators.push(new EmptyTileTargetGenerator(this, this.priorityMap));
-        this.targetGenerators.push(new EnemyTargetGenerator(this, this.priorityMap));
-        this.targetGenerators.push(new GeneralTargetGenerator(this, this.priorityMap));
-        this.targetGenerators.push(new ArmyTargetGenerator(this, this.priorityMap));
-        this.targetGenerators.push(new CitiesTargetGenerator(this, this.priorityMap));
         this.resetTileProperties();
         console.log('Board init');
     }
@@ -67,8 +60,8 @@ export class Board {
         let newData: StateObject = JSON.parse(JSON.stringify(updateEvent));
         let nextTurn = false;
 
+        this.resetTileProperties();
         if (this.data) {
-            this.resetTileProperties();
             if (newData.attackIndex >= this.lastAttack) {
                 nextTurn = true;
             }
@@ -114,13 +107,15 @@ export class Board {
 
         const boardChanges = new BoardChanges(mapChanges, armyChanges, generalChanges);
 
-        this.myArmy.onNextTurn(boardChanges);
-        this.targetGenerators.forEach((generator) => {
-            generator.onNextTurn(boardChanges);
+        this.playersArmy.onNextTurn(boardChanges);
+        this.generalDistance.onNextTurn(boardChanges);
+
+        this.tasks.forEach((task) => {
+            task.onNextTurn(boardChanges);
         });
 
         if (nextTurn) {
-            this.bot.doMove();
+            this.doMove();
         }
     }
 
@@ -183,6 +178,21 @@ export class Board {
             this.tilePropertiesCache.set(p, new TileProperties(this, p));
         }
         return this.tilePropertiesCache.get(p);
+    }
+
+    doMove() {
+        this.tasks = this.tasks.sort((a, b) => {
+            return b.getTaskPriority() - a.getTaskPriority();
+        });
+
+        for (let task of this.tasks) {
+            console.log('move', task.getTaskPriority());
+            if (task.doMove()) {
+                return;
+            }
+        }
+
+        console.warn('Didn\'t found move');
     }
 }
 

@@ -3,7 +3,7 @@ import {BoardChanges} from "../board";
 import {Target} from "../priority-map";
 import {Tile} from "../game-interfaces";
 
-export class EmptyTileTargetGenerator extends AbstractTargetGenerator {
+export class DiscoveryTargetGenerator extends AbstractTargetGenerator {
     private targets:Map<number, Target> = new Map<number, Target>();
 
     onNextTurn(boardChanges: BoardChanges) {
@@ -31,7 +31,7 @@ export class EmptyTileTargetGenerator extends AbstractTargetGenerator {
 
     private addTarget(pNum: number) {
         if(!this.targets.has(pNum)) {
-            let target = new Target(this.board.toPoint(pNum), 1, 0.5, 0.7);
+            let target = new Target(this.board.toPoint(pNum), 8, 0.3);
             this.targets.set(pNum, target);
             this.priorityMap.addTarget(target);
         }

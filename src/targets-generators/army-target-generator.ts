@@ -45,10 +45,10 @@ export class ArmyTargetGenerator extends AbstractTargetGenerator {
         if(!this.targets.has(pNum)) {
             let prio = army/targetArmy*0.01;
             prio *= prio * 0.5;
-            if(prio > 10) {
-                prio = 10;
+            if(prio > 5) {
+                prio = 5;
             }
-            let target = new Target(this.board.toPoint(pNum), prio, 0.1);
+            let target = new Target(this.board.toPoint(pNum), prio, 0.1, 0.1);
             this.targets.set(pNum, target);
             this.priorityMap.addTarget(target);
         }

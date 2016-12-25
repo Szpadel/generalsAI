@@ -14,7 +14,7 @@ export class GeneralTargetGenerator extends AbstractTargetGenerator {
         boardChanges.generalChanges.forEach((generalNum) => {
             const tp = this.board.getTileProperties(this.board.toPoint(generalNum));
             if(tp.isGeneral && !tp.isMine) {
-                this.addTarget(generalNum, 200);
+                this.addTarget(generalNum, 1000);
                 console.warn('Found general!!!');
             }else {
                 this.removeTarget(generalNum);
@@ -45,7 +45,7 @@ export class GeneralTargetGenerator extends AbstractTargetGenerator {
     private addTarget(pNum: number, prio: number) {
 
         if(!this.targets.has(pNum)) {
-            let target = new Target(this.board.toPoint(pNum), prio, 0.9);
+            let target = new Target(this.board.toPoint(pNum), prio, 0.9, 0.9);
             this.targets.set(pNum, target);
             this.priorityMap.addTarget(target);
         }
