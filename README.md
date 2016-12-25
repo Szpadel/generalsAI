@@ -1,6 +1,6 @@
 # generalsAI
 This is work in progress on AI implementation for generals.io
-Compatible with generals.ai 8.0.1
+Compatible with generals.ai 8.1.1
 
 Currently AI is able to beat only beginner players and needs little human help in many situations.
 There are bugs and code is messy and will be refactored in the future.
