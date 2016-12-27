@@ -69,4 +69,8 @@ export class TileProperties {
     get isEmptyOrFog() {
         return this.isEmpty || this.tileType === Tile.TILE_FOG;
     }
+
+    get isFog() {
+        return this.tileType === Tile.TILE_FOG || this.tileType === Tile.TILE_FOG_OBSTACLE;
+    }
 }

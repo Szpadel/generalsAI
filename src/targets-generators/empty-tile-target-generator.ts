@@ -8,11 +8,13 @@ export class EmptyTileTargetGenerator extends AbstractTargetGenerator {
 
     onNextTurn(boardChanges: BoardChanges) {
         boardChanges.mapChanges.forEach((change: number[], pNum: number) => {
-            if(this.isEmpty(change[0]) && !this.isEmpty(change[1])) {
+            if(change[0] !== change[1]) {
                 this.removeTarget(pNum);
-            }else if(!this.isEmpty(change[0]) && this.isEmpty(change[1])) {
-                if(!this.board.getTileProperties(this.board.toPoint(pNum)).isCity) {
-                    this.addTarget(pNum);
+            }
+            if(this.isEmpty(change[1])) {
+                const tp = this.board.getTileProperties(this.board.toPoint(pNum));
+                if(!tp.isCity) {
+                    this.addTarget(pNum, tp.isEmpty ? 3 : 1);
                 }
             }
         });
@@ -29,9 +31,9 @@ export class EmptyTileTargetGenerator extends AbstractTargetGenerator {
         }
     }
 
-    private addTarget(pNum: number) {
+    private addTarget(pNum: number, prio) {
         if(!this.targets.has(pNum)) {
-            let target = new Target(this.board.toPoint(pNum), 1, 0.5, 0.7);
+            let target = new Target(this.board.toPoint(pNum), prio, 0.5, 0.7);
             this.targets.set(pNum, target);
             this.priorityMap.addTarget(target);
         }

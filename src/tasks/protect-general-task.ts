@@ -3,10 +3,12 @@ import {BoardChanges, Board} from "../board";
 import {DeepTreeSearch} from "../deep-tree-search";
 import {Point} from "../tile";
 
-export class ProtectGeneral extends AbstractTask{
+export class ProtectGeneralTask extends AbstractTask{
+    name = 'Protect General';
     private deepTreeSearch: DeepTreeSearch;
     private dangerArmy: Point;
     private maxScore = 0;
+    private distance = 0;
 
     constructor(board: Board) {
         super(board);
@@ -24,10 +26,12 @@ export class ProtectGeneral extends AbstractTask{
                     continue;
                 }
                 const tp = this.board.getTileProperties(p);
-                let score = ((10 - dist) * tp.army);
+                let score = ((10 - dist)*(10 - dist) * tp.army);
+
                 if(this.maxScore < score) {
                     this.maxScore = score;
                     this.dangerArmy = p;
+                    this.distance = dist;
                 }
             }
         }
@@ -50,7 +54,7 @@ export class ProtectGeneral extends AbstractTask{
         let bestScore = -Infinity;
 
         this.deepTreeSearch.process(this.dangerArmy, startDepth,
-            (p, depth, acc, stop) => {
+            (p, depthLeft, acc, stop) => {
                 const tp = this.board.getTileProperties(p);
                 let armyLeft = acc.armyLeft;
                 let path = acc.path.slice();
@@ -59,7 +63,7 @@ export class ProtectGeneral extends AbstractTask{
                 if (armyLeft === null) {
                     armyLeft = tp.army;
                 } else {
-                    if (!tp.isMine) {
+                    if (!tp.isMine || tp.isGeneral) {
                         stop();
                         return;
                     }
@@ -67,7 +71,7 @@ export class ProtectGeneral extends AbstractTask{
                 }
 
                 if (path.length >= 2) {
-                    let score = -armyLeft*depth;
+                    let score = -armyLeft*depthLeft;
                     if(bestScore < score) {
                         bestScore = score;
                         bestPath = path;
@@ -78,12 +82,22 @@ export class ProtectGeneral extends AbstractTask{
             }, {armyLeft: null, path: []});
 
 
-        if(bestPath) {
-            console.log(JSON.stringify(bestPath));
-            const l = bestPath.length;
-            this.board.attack(bestPath[l-1], bestPath[l-2], false);
-            console.log('Protect General!');
-            return true;
+        if (bestPath) {
+            if (bestPath.length < 2) {
+                return false;
+            }
+
+            let moved = false;
+            let l = bestPath.length;
+            do {
+
+                console.log(JSON.stringify(bestPath));
+                console.log('Protect General!');
+                moved = this.board.attack(bestPath[l - 1], bestPath[l - 2], false);
+                l--;
+            }while(!moved && l >= 2);
+            return moved;
+
         }
         return false;
     }

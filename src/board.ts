@@ -6,7 +6,9 @@ import {AbstractTask} from "./tasks/abstract-task";
 import {SpreadTask} from "./tasks/spread-task";
 import {AttackTask} from "./tasks/attack-task";
 import {GeneralDistanceKnowledgeSource} from "./knowledge-sources/general-distance";
-import {ProtectGeneral} from "./tasks/protect-general-task";
+import {ProtectGeneralTask} from "./tasks/protect-general-task";
+import {CityCaptureTask} from "./tasks/city-capture-task";
+import {DebugLayout} from "./debug-layout";
 
 export interface GameWindow extends Window{
     ai: Board;
@@ -26,6 +28,8 @@ export class Board {
     public generalDistance: GeneralDistanceKnowledgeSource;
 
     private tasks: AbstractTask[] = [];
+    private lastAttackTime = 0;
+    public debug: DebugLayout = new DebugLayout();
 
     constructor() {
         this.playersArmy = new ArmyKnowledgeSource(this);
@@ -33,7 +37,8 @@ export class Board {
 
         this.tasks.push(new SpreadTask(this));
         this.tasks.push(new AttackTask(this));
-        this.tasks.push(new ProtectGeneral(this));
+        this.tasks.push(new ProtectGeneralTask(this));
+        this.tasks.push(new CityCaptureTask(this));
 
         this.resetTileProperties();
         console.log('Board init');
@@ -57,6 +62,7 @@ export class Board {
     }
 
     applyUpdate(updateEvent: StateObject) {
+        const startTime = performance.now();
         let newData: StateObject = JSON.parse(JSON.stringify(updateEvent));
         let nextTurn = false;
 
@@ -116,7 +122,13 @@ export class Board {
 
         if (nextTurn) {
             this.doMove();
+        }else {
+            if(Date.now() - this.lastAttackTime > 3 * 1000) {
+                console.warn('Hang detected, resetting attack counter!');
+                this.lastAttack = 0;
+            }
         }
+        this.debug.time = performance.now() - startTime;
     }
 
     getMyGeneralLocation(): Point {
@@ -167,10 +179,24 @@ export class Board {
             && p[1] >= 0 && p[1] < this.data.map.width;
     }
 
-    attack(start: Point, end: Point, half: boolean) {
+    attack(start: Point, end: Point, half: boolean): boolean {
+        const sTp = this.getTileProperties(start);
+        if(sTp.army <= 1 || !sTp.isMine) {
+            console.error('Invalid starting point!', sTp.army, sTp.isMine);
+            return false;
+        }
+        const tTp = this.getTileProperties(end);
+        if(!tTp.isWalkable) {
+            console.error('Target isn\'t walkable!');
+            return false;
+        }
         console.log('attack', start, end);
+        this.debug.setAttack(start, end);
+
+        this.lastAttackTime = Date.now();
         this.lastAttack = this.data.attackIndex + 1;
         window.gameCtrl.attack(this.toNum(start), this.toNum(end), half, this.lastAttack);
+        return true;
     }
 
     getTileProperties(p: Point) {
@@ -187,7 +213,9 @@ export class Board {
 
         for (let task of this.tasks) {
             console.log('move', task.getTaskPriority());
+            this.debug.tasks = this.tasks;
             if (task.doMove()) {
+                this.debug.currentTask = `${task.name} (${task.getTaskPriority()})`;
                 return;
             }
         }

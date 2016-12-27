@@ -3,6 +3,7 @@ import {BoardChanges, Board} from "../board";
 import {DeepTreeSearch} from "../deep-tree-search";
 
 export class AttackTask extends AbstractTask {
+    name = 'Attack';
     private deepTreeSearch: DeepTreeSearch;
 
 
@@ -22,11 +23,14 @@ export class AttackTask extends AbstractTask {
 
 
     doMove(): boolean {
-        const maxDepth = 8;
+        const maxDepth = 5;
         let possibleMoves = [];
         let x = 0;
 
-        for (let playerArmy of this.board.playersArmy.enemyPlayers) {
+        let list = this.board.playersArmy.enemyPlayers.slice();
+        list.push(this.board.playersArmy.empty);
+
+        for (let playerArmy of list) {
             for (let pNum of playerArmy) {
                 this.deepTreeSearch.process(this.board.toPoint(pNum), maxDepth,
                     (p, depth, acc, stop) => {
@@ -44,7 +48,14 @@ export class AttackTask extends AbstractTask {
                                 stop();
                                 return;
                             }
-                            armyLeft -= tp.army -1;
+
+                            if(tp.isMine) {
+                                armyLeft -= (tp.isCity ? tp.army /2 : tp.army) -1;
+                            }else {
+                                armyLeft +=  tp.army - 1;
+                            }
+
+
                         }
 
                         if(armyLeft < 0 && path.length >= 2) {
@@ -59,25 +70,34 @@ export class AttackTask extends AbstractTask {
 
         let bestMove;
         let depth = Infinity;
-        let enemyArmy = -Infinity;
+        let armyLeft = -Infinity;
         possibleMoves.forEach((move) => {
             if(move.path.length < depth
-            || move.path.length === depth && move.enemyArmy > enemyArmy) {
+            || move.path.length === depth && move.armyLeft < armyLeft) {
                 bestMove = move;
-                enemyArmy = move.enemyArmy;
+                armyLeft = move.armyLeft;
                 depth = move.path.length;
             }
         });
 
-        if(bestMove) {
-            if(bestMove.path.length < 2) {
+        if (bestMove) {
+            if (bestMove.path.length < 2) {
                 return false;
             }
-            console.log(JSON.stringify(bestMove));
-            const l = bestMove.path.length;
-            this.board.attack(bestMove.path[l-1], bestMove.path[l-2], false);
-            console.log('Attack');
-            return true;
+
+            let moved = false;
+            let l = bestMove.path.length;
+            do {
+
+                console.log(JSON.stringify(bestMove));
+
+                const tp = this.board.getTileProperties(bestMove.path[l - 1]);
+                console.log('Attack');
+                moved = this.board.attack(bestMove.path[l - 1], bestMove.path[l - 2], tp.isCity);
+                l--;
+            }while(!moved && l >= 2);
+            return moved;
+
         }
         return false;
     }
