@@ -15,16 +15,24 @@ export class CityCaptureTask extends AbstractTask {
     }
 
     getTaskPriority(): number {
-        return this.board.data.turn < 50 ? 0 : 20;
+        return this.board.data.turn < 1 ? 0 : 20;
     }
 
 
     doMove(): boolean {
         const maxDepth = 10;
-        let possibleMoves = [];
-        let x = 0;
 
-        let list = [].concat(this.board.cityLocations, this.board.generalLocations);
+        let bestPath;
+        let bestArmyLeft = Infinity;
+
+        let list = [];
+        this.board.cityLocations.forEach((x) => {
+            list.push(x);
+        });
+
+        this.board.generalLocations.forEach((x) => {
+            list.push(x);
+        });
 
         for (let cityLoc of list) {
             const cityTp = this.board.getTileProperties(this.board.toPoint(cityLoc));
@@ -32,62 +40,39 @@ export class CityCaptureTask extends AbstractTask {
                 continue;
             }
             this.deepTreeSearch.process(this.board.toPoint(cityLoc), maxDepth,
-                (p, depth, acc, stop) => {
+                (p, depthLeft, acc, stop) => {
                     const tp = this.board.getTileProperties(p);
                     let armyLeft = acc.armyLeft;
                     let path = acc.path.slice();
-                    let enemyArmy = acc.enemyArmy;
                     path.push(p);
 
                     if (armyLeft === null) {
                         armyLeft = tp.army;
-                        enemyArmy = armyLeft;
                     } else {
-                        if (!tp.isMine) {
+                        if (!tp.isMine || (bestPath && path.length > bestPath.length)) {
                             stop();
                             return;
                         }
-                        armyLeft -= (tp.isCity ? tp.army / 2 : tp.army) - 1;
+                        armyLeft -= tp.army - 1;
                     }
 
                     if (armyLeft < 0 && path.length >= 2) {
-                        possibleMoves.push({armyLeft, path, enemyArmy});
+                        if (bestArmyLeft > armyLeft) {
+                            bestArmyLeft = armyLeft;
+                            bestPath = path;
+                        }
                     }
-                    x++;
 
-                    return {armyLeft, path, enemyArmy};
-                }, {armyLeft: null, path: [], enemyArmy: 0})
+                    return {armyLeft, path};
+                }, {armyLeft: null, path: []})
         }
 
-        let bestMove;
-        let depth = Infinity;
-        let enemyArmy = -Infinity;
-        possibleMoves.forEach((move) => {
-            if (move.path.length < depth
-                || move.path.length === depth && move.enemyArmy > enemyArmy) {
-                bestMove = move;
-                enemyArmy = move.enemyArmy;
-                depth = move.path.length;
-            }
-        });
 
-        if (bestMove) {
-            if (bestMove.path.length < 2) {
-                return false;
-            }
-
-            let moved = false;
-            let l = bestMove.path.length;
-            do {
-
-                console.log(JSON.stringify(bestMove));
-
-                const tp = this.board.getTileProperties(bestMove.path[l - 1]);
-                console.log('City Capture');
-                moved = this.board.attack(bestMove.path[l - 1], bestMove.path[l - 2], tp.isCity);
-                l--;
-            }while(!moved && l >= 2);
-            return moved;
+        if (bestPath) {
+            let l = bestPath.length;
+            this.board.debug.showPath(bestPath);
+            console.log('City Capture');
+            return this.board.attack(bestPath[l - 1], bestPath[l - 2], false);
 
         }
         return false;

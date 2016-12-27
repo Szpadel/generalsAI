@@ -37,6 +37,7 @@ export class SpreadTask extends AbstractTask {
         let move = this.moveChoicer.findMove((p)=> this.priorityMap.getPriorityIn(p), ()=> true);
         if(move) {
             console.log('Spread');
+            this.board.debug.showPath([move.end, move.start]);
             return this.board.attack(move.start, move.end, false);
         }
         console.log('no moves');

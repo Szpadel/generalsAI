@@ -23,12 +23,12 @@ export class AttackTask extends AbstractTask {
 
 
     doMove(): boolean {
-        const maxDepth = 5;
+        const maxDepth = 8;
         let possibleMoves = [];
         let x = 0;
 
         let list = this.board.playersArmy.enemyPlayers.slice();
-        list.push(this.board.playersArmy.empty);
+        //list.push(this.board.playersArmy.empty);
 
         for (let playerArmy of list) {
             for (let pNum of playerArmy) {
@@ -50,9 +50,9 @@ export class AttackTask extends AbstractTask {
                             }
 
                             if(tp.isMine) {
-                                armyLeft -= (tp.isCity ? tp.army /2 : tp.army) -1;
+                                armyLeft -= tp.army -1;
                             }else {
-                                armyLeft +=  tp.army - 1;
+                                armyLeft += tp.army + 1;
                             }
 
 
@@ -85,18 +85,10 @@ export class AttackTask extends AbstractTask {
                 return false;
             }
 
-            let moved = false;
             let l = bestMove.path.length;
-            do {
+            this.board.debug.showPath(bestMove.path);
 
-                console.log(JSON.stringify(bestMove));
-
-                const tp = this.board.getTileProperties(bestMove.path[l - 1]);
-                console.log('Attack');
-                moved = this.board.attack(bestMove.path[l - 1], bestMove.path[l - 2], tp.isCity);
-                l--;
-            }while(!moved && l >= 2);
-            return moved;
+            return this.board.attack(bestMove.path[l - 1], bestMove.path[l - 2], false);
 
         }
         return false;

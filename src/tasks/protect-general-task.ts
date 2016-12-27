@@ -49,37 +49,52 @@ export class ProtectGeneralTask extends AbstractTask{
             return false;
         }
 
-        const startDepth = 10;
+        const startDepth = 20;
         let bestPath: Point[];
-        let bestScore = -Infinity;
+        let minMoves = Infinity;
+        let bestArmyLeft = -Infinity;
 
         this.deepTreeSearch.process(this.dangerArmy, startDepth,
             (p, depthLeft, acc, stop) => {
                 const tp = this.board.getTileProperties(p);
                 let armyLeft = acc.armyLeft;
                 let path = acc.path.slice();
+                let moves = acc.moves;
                 path.push(p);
 
                 if (armyLeft === null) {
                     armyLeft = tp.army;
                 } else {
-                    if (!tp.isMine || tp.isGeneral) {
+                    if(tp.isMine) {
+                        moves += 1;
+                        armyLeft -= tp.army -1;
+                    }else {
+                        moves += 2;
+                        armyLeft += tp.army + 1;
+                    }
+
+                    const canUse = tp.isMine || tp.isEmpty || (tp.isEnemy && tp.army <= 3);
+                    if (!canUse || (minMoves < moves)) {
                         stop();
                         return;
                     }
-                    armyLeft -= tp.army - 1;
                 }
 
                 if (path.length >= 2) {
-                    let score = -armyLeft*depthLeft;
-                    if(bestScore < score) {
-                        bestScore = score;
+                    const weCanKillIt = bestArmyLeft < 0;
+                    const itCanKillIt = armyLeft < 0;
+                    const shorterPath = weCanKillIt && itCanKillIt && moves < minMoves;
+                    const betterPath = !weCanKillIt && armyLeft < bestArmyLeft;
+
+                    if(shorterPath || betterPath) {
                         bestPath = path;
+                        minMoves = moves;
+                        bestArmyLeft = armyLeft;
                     }
                 }
 
-                return {armyLeft, path};
-            }, {armyLeft: null, path: []});
+                return {armyLeft, path, moves};
+            }, {armyLeft: null, path: [], moves: 0});
 
 
         if (bestPath) {
@@ -87,16 +102,11 @@ export class ProtectGeneralTask extends AbstractTask{
                 return false;
             }
 
-            let moved = false;
             let l = bestPath.length;
-            do {
 
-                console.log(JSON.stringify(bestPath));
-                console.log('Protect General!');
-                moved = this.board.attack(bestPath[l - 1], bestPath[l - 2], false);
-                l--;
-            }while(!moved && l >= 2);
-            return moved;
+            console.log('Protect General!');
+            this.board.debug.showPath(bestPath);
+            return this.board.attack(bestPath[l - 1], bestPath[l - 2], false);
 
         }
         return false;

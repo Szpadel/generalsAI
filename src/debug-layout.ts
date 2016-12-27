@@ -92,6 +92,14 @@ ${arrowCss}
         this.tasksListElement.innerHTML = `<ul>${html}</ul>`;
     }
 
+    showPath(path: Point[]) {
+        let css = '';
+        for (let a = path.length - 1; a > 0; a--) {
+            css += this.getArrowCss(path[a], path[a-1]);
+        }
+        this.pathStylesElement.innerHTML = css;
+    }
+
     getArrowCss(start: Point, end:Point) {
         let arrow;
         let offset = [0,0];

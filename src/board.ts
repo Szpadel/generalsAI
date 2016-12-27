@@ -191,7 +191,7 @@ export class Board {
             return false;
         }
         console.log('attack', start, end);
-        this.debug.setAttack(start, end);
+        //this.debug.setAttack(start, end);
 
         this.lastAttackTime = Date.now();
         this.lastAttack = this.data.attackIndex + 1;
