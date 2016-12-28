@@ -8,7 +8,7 @@ It currently plays very defensive slowly taking over the map.
 AI scores around 70-80 stars in 1v1 mode without human interaction
 
 
-# Next iteration
+# Current iteration
 Current implementation is task based. It measure multiple metrics like enemy threat and then based on those information
   it try to select best task that should be completed (like aggregating army or capturing tiles).
   It simulate multiple moves ahead to determine best moves combination to achieve the best score.
