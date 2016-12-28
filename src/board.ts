@@ -1,15 +1,16 @@
 import {StateObject, ScoreObject} from "./game-interfaces";
 import {Point} from "./tile";
-import {MyArmyKnowledgeSource} from "./knowledge-sources/my-army";
+import {ArmyKnowledgeSource} from "./knowledge-sources/army";
 import {TileProperties} from "./tile-properties";
-import {AbstractTargetGenerator} from "./targets-generators/abstract-target-generator";
-import {EmptyTileTargetGenerator} from "./targets-generators/empty-tile-target-generator";
-import {PriorityMap} from "./priority-map";
-import {PriorityAgent} from "./priority-agent";
-import {EnemyTargetGenerator} from "./targets-generators/enemy-target-generator";
-import {GeneralTargetGenerator} from "./targets-generators/general-target-generator";
-import {ArmyTargetGenerator} from "./targets-generators/army-target-generator";
-import {CitiesTargetGenerator} from "./targets-generators/cities-target-generator";
+import {AbstractTask} from "./tasks/abstract-task";
+import {SpreadTask} from "./tasks/spread-task";
+import {AttackTask} from "./tasks/attack-task";
+import {GeneralDistanceKnowledgeSource} from "./knowledge-sources/general-distance";
+import {ProtectGeneralTask} from "./tasks/protect-general-task";
+import {CityCaptureTask} from "./tasks/city-capture-task";
+import {DebugLayout} from "./debug-layout";
+import {FastSpreadTask} from "./tasks/fast-spread-task";
+import {CollectTask} from "./tasks/collect-task";
 
 export interface GameWindow extends Window{
     ai: Board;
@@ -20,28 +21,31 @@ declare const window: GameWindow;
 
 export class Board {
     public data: StateObject;
-    private bot: PriorityAgent;
-    public myArmy: MyArmyKnowledgeSource;
+    public playersArmy: ArmyKnowledgeSource;
     private lastAttack: number = 0;
     public cityLocations: Set<number> = new Set<number>();
     public generalLocations: Set<number> = new Set<number>();
     private tilePropertiesCache: WeakMap<Point, TileProperties>;
     private generalOwner: Map<number, number> = new Map<number, number>();
+    public generalDistance: GeneralDistanceKnowledgeSource;
 
-    private targetGenerators: AbstractTargetGenerator[] = [];
-    public readonly priorityMap: PriorityMap;
+    private tasks: AbstractTask[] = [];
+    private lastAttackTime = 0;
+    public debug: DebugLayout = new DebugLayout();
+
+    public stop = false;
 
     constructor() {
-        this.bot = new PriorityAgent(this);
-        this.myArmy = new MyArmyKnowledgeSource(this);
+        this.playersArmy = new ArmyKnowledgeSource(this);
+        this.generalDistance = new GeneralDistanceKnowledgeSource(this);
 
-        this.priorityMap = new PriorityMap(this);
+        this.tasks.push(new SpreadTask(this));
+        this.tasks.push(new AttackTask(this));
+        this.tasks.push(new ProtectGeneralTask(this));
+        this.tasks.push(new CityCaptureTask(this));
+        this.tasks.push(new FastSpreadTask(this));
+        this.tasks.push(new CollectTask(this));
 
-        this.targetGenerators.push(new EmptyTileTargetGenerator(this, this.priorityMap));
-        this.targetGenerators.push(new EnemyTargetGenerator(this, this.priorityMap));
-        this.targetGenerators.push(new GeneralTargetGenerator(this, this.priorityMap));
-        this.targetGenerators.push(new ArmyTargetGenerator(this, this.priorityMap));
-        this.targetGenerators.push(new CitiesTargetGenerator(this, this.priorityMap));
         this.resetTileProperties();
         console.log('Board init');
     }
@@ -64,13 +68,18 @@ export class Board {
     }
 
     applyUpdate(updateEvent: StateObject) {
+        if(this.stop) {
+            return;
+        }
+        const startTime = performance.now();
         let newData: StateObject = JSON.parse(JSON.stringify(updateEvent));
         let nextTurn = false;
 
+        this.resetTileProperties();
         if (this.data) {
-            this.resetTileProperties();
             if (newData.attackIndex >= this.lastAttack) {
                 nextTurn = true;
+                this.debug.clearMarks();
             }
         }
 
@@ -114,14 +123,23 @@ export class Board {
 
         const boardChanges = new BoardChanges(mapChanges, armyChanges, generalChanges);
 
-        this.myArmy.onNextTurn(boardChanges);
-        this.targetGenerators.forEach((generator) => {
-            generator.onNextTurn(boardChanges);
+        this.playersArmy.onNextTurn(boardChanges);
+        this.generalDistance.onNextTurn(boardChanges);
+
+        this.tasks.forEach((task) => {
+            task.onNextTurn(boardChanges);
         });
 
         if (nextTurn) {
-            this.bot.doMove();
+            this.doMove();
+            this.debug.time = performance.now() - startTime;
+        }else {
+            if(Date.now() - this.lastAttackTime > 3 * 1000) {
+                console.warn('Hang detected, resetting attack counter!');
+                this.lastAttack = 0;
+            }
         }
+
     }
 
     getMyGeneralLocation(): Point {
@@ -172,10 +190,25 @@ export class Board {
             && p[1] >= 0 && p[1] < this.data.map.width;
     }
 
-    attack(start: Point, end: Point, half: boolean) {
+    attack(start: Point, end: Point, half: boolean): boolean {
+        const sTp = this.getTileProperties(start);
+        if(sTp.army <= 1 || !sTp.isMine) {
+            console.error('Invalid starting point!', sTp.army, sTp.isMine);
+            this.stop = true;
+            return true;
+        }
+        const tTp = this.getTileProperties(end);
+        if(!tTp.isWalkable) {
+            console.error('Target isn\'t walkable!');
+            return false;
+        }
         console.log('attack', start, end);
+        //this.debug.setAttack(start, end);
+
+        this.lastAttackTime = Date.now();
         this.lastAttack = this.data.attackIndex + 1;
         window.gameCtrl.attack(this.toNum(start), this.toNum(end), half, this.lastAttack);
+        return true;
     }
 
     getTileProperties(p: Point) {
@@ -183,6 +216,23 @@ export class Board {
             this.tilePropertiesCache.set(p, new TileProperties(this, p));
         }
         return this.tilePropertiesCache.get(p);
+    }
+
+    doMove() {
+        this.tasks = this.tasks.sort((a, b) => {
+            return b.getTaskPriority() - a.getTaskPriority();
+        });
+
+        for (let task of this.tasks) {
+            console.log('move', task.getTaskPriority());
+            this.debug.tasks = this.tasks;
+            if (task.doMove()) {
+                this.debug.currentTask = `${task.name} (${task.getTaskPriority()})`;
+                return;
+            }
+        }
+
+        console.warn('Didn\'t found move');
     }
 }
 

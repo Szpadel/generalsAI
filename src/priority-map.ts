@@ -30,7 +30,7 @@ export class PriorityMap {
     }
 
     getPriorityIn(point: Point): number {
-        if(this.needRefresh || Math.random() < 0.02) {
+        if(this.needRefresh) {
             this.computeMap();
         }
 
@@ -39,28 +39,21 @@ export class PriorityMap {
 
     computeTargets() {
         for(let target of this.targets) {
-            if(target.priorityMap.size > 0 && Math.random() < 0.99) {
+            if(target.priorityMap.size > 0) {
                 continue;
             }else {
                 target.priorityMap.clear();
             }
 
-            let priorityDecrease = [
-                target.priority // in distance 0 it is target priority
-            ];
-
             this.floodMap.process(target.point, (p, tp, depth) => {
-                while(priorityDecrease.length -1 < depth) {
-                    let l = priorityDecrease.length;
-                    priorityDecrease[l] = priorityDecrease[l-1] * target.decrease1 * target.decrease2 * target.decrease2;
-                }
+                let priority = target.getPriorityForDepth(depth);
 
-                if(priorityDecrease[depth] < MIN_PRIORITY_PROCESS) {
+                if(target.isMaximumDepth(depth)) {
                     // stop processing
                     return false;
                 }
 
-                target.priorityMap.set(this.board.toNum(p), priorityDecrease[depth]);
+                target.priorityMap.set(this.board.toNum(p), priority);
             });
         }
     }
@@ -85,11 +78,25 @@ export class PriorityMap {
 
 export class Target {
     public priorityMap: Map<number, number> = new Map<number, number>();
+    protected priorityDecrease: number[];
 
     constructor(public readonly point: Point,
                 public readonly priority: number,
                 public readonly decrease1: number = 0.7,
                 public readonly decrease2: number = 1) {
+        this.priorityDecrease = [priority];
+    }
 
+    getPriorityForDepth(depth: number): number {
+        while(this.priorityDecrease.length -1 < depth) {
+            let l = this.priorityDecrease.length;
+            this.priorityDecrease[l] = this.priorityDecrease[l-1] * this.decrease1 * this.decrease2;
+        }
+
+        return this.priorityDecrease[depth];
+    }
+
+    isMaximumDepth(depth: number): boolean {
+        return this.getPriorityForDepth(depth) < MIN_PRIORITY_PROCESS;
     }
 }

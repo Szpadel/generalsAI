@@ -1,5 +1,12 @@
 export type Point = number[];
 
+export enum Direction {
+    UP,
+    Down,
+    Left,
+    Right,
+    Unknown
+}
 
 export class PointHelpers {
     static up(p: Point) {
@@ -28,6 +35,19 @@ export class PointHelpers {
 
     static equals(p1: Point, p2: Point) {
         return p1[0] === p2[0] && p1[1] === p2[1];
+    }
+
+    static getDirection(a: Point, b: Point) {
+        if(a[0] > b[0]) {
+            return Direction.UP;
+        }else if(a[0] < b[0]) {
+            return Direction.Down;
+        }else if(a[1] > b[1]) {
+            return Direction.Left;
+        }else if(a[1] < b[1]) {
+            return Direction.Right;
+        }
+        return Direction.Unknown;
     }
 }
 

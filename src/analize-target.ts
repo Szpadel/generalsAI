@@ -14,11 +14,8 @@ export class AnaliseTarget {
             ;
     }
 
-    analisePoint(p: Point, condition: (p: Point) => number): number {
+    private analisePoint(p: Point, condition: (p: Point) => number): number {
         if (!this.board.validatePoint(p)) {
-            return 0;
-        }
-        if (this.board.getTile(p) < 0) {
             return 0;
         }
 

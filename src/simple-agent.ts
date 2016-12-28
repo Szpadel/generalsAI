@@ -16,7 +16,7 @@ export class SimpleAgent {
     doMove() {
         for (let a = 0; a < 5; a++) {
 
-            for (let num of this.board.myArmy.armyList) {
+            for (let num of this.board.playersArmy.myArmyList) {
                 let p = this.board.toPoint(num);
                 if (this.board.getArmy(p) <= 1) {
                     continue;
