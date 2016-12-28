@@ -10,6 +10,7 @@ import {ProtectGeneralTask} from "./tasks/protect-general-task";
 import {CityCaptureTask} from "./tasks/city-capture-task";
 import {DebugLayout} from "./debug-layout";
 import {FastSpreadTask} from "./tasks/fast-spread-task";
+import {CollectTask} from "./tasks/collect-task";
 
 export interface GameWindow extends Window{
     ai: Board;
@@ -32,6 +33,8 @@ export class Board {
     private lastAttackTime = 0;
     public debug: DebugLayout = new DebugLayout();
 
+    public stop = false;
+
     constructor() {
         this.playersArmy = new ArmyKnowledgeSource(this);
         this.generalDistance = new GeneralDistanceKnowledgeSource(this);
@@ -41,6 +44,7 @@ export class Board {
         this.tasks.push(new ProtectGeneralTask(this));
         this.tasks.push(new CityCaptureTask(this));
         this.tasks.push(new FastSpreadTask(this));
+        this.tasks.push(new CollectTask(this));
 
         this.resetTileProperties();
         console.log('Board init');
@@ -64,6 +68,9 @@ export class Board {
     }
 
     applyUpdate(updateEvent: StateObject) {
+        if(this.stop) {
+            return;
+        }
         const startTime = performance.now();
         let newData: StateObject = JSON.parse(JSON.stringify(updateEvent));
         let nextTurn = false;
@@ -72,6 +79,7 @@ export class Board {
         if (this.data) {
             if (newData.attackIndex >= this.lastAttack) {
                 nextTurn = true;
+                this.debug.clearMarks();
             }
         }
 
@@ -186,7 +194,8 @@ export class Board {
         const sTp = this.getTileProperties(start);
         if(sTp.army <= 1 || !sTp.isMine) {
             console.error('Invalid starting point!', sTp.army, sTp.isMine);
-            return false;
+            this.stop = true;
+            return true;
         }
         const tTp = this.getTileProperties(end);
         if(!tTp.isWalkable) {

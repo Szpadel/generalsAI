@@ -22,7 +22,7 @@ export class FastSpreadTask extends AbstractTask {
     }
 
     onNextTurn(boardChanges: BoardChanges) {
-        this.priority++;
+        this.priority += 0.5;
     }
 
     getTaskPriority(): number {

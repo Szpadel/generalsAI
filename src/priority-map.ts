@@ -78,7 +78,7 @@ export class PriorityMap {
 
 export class Target {
     public priorityMap: Map<number, number> = new Map<number, number>();
-    private priorityDecrease: number[];
+    protected priorityDecrease: number[];
 
     constructor(public readonly point: Point,
                 public readonly priority: number,

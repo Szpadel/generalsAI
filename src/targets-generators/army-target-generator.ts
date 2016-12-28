@@ -8,7 +8,6 @@ export class ArmyTargetGenerator extends AbstractTargetGenerator {
     onNextTurn(boardChanges: BoardChanges) {
         const score = this.board.getMyScore();
         const targetArmy = (score.total - score.tiles)/10;
-        console.log(targetArmy);
 
         boardChanges.mapChanges.forEach((change: number[], pNum: number) => {
             if(!this.isMine(change[1])) {
@@ -20,10 +19,7 @@ export class ArmyTargetGenerator extends AbstractTargetGenerator {
             const tp = this.board.getTileProperties(this.board.toPoint(pNum));
             if(tp.isMine) {
                 this.removeTarget(pNum);
-                if(army[1] > 1 && army[1] < targetArmy) {
-                    console.log('new target!', army[1], targetArmy);
-                    this.addTarget(pNum, army[1], targetArmy);
-                }
+                this.addTarget(pNum, army[1], targetArmy);
             }
         });
     }
@@ -34,7 +30,6 @@ export class ArmyTargetGenerator extends AbstractTargetGenerator {
 
     private removeTarget(pNum: number) {
         if(this.targets.has(pNum)) {
-            console.log('remove', pNum);
             this.priorityMap.removeTarget(this.targets.get(pNum));
             this.targets.delete(pNum);
         }
@@ -43,14 +38,28 @@ export class ArmyTargetGenerator extends AbstractTargetGenerator {
     private addTarget(pNum: number, army:number, targetArmy:number) {
 
         if(!this.targets.has(pNum)) {
-            let prio = army/targetArmy*0.01;
-            prio *= prio * 0.5;
-            if(prio > 5) {
-                prio = 5;
+            let prio = targetArmy - army;
+            if(prio < 0) {
+                prio = 0;
             }
-            let target = new Target(this.board.toPoint(pNum), prio, 0.1, 0.1);
+            let target = new Target(this.board.toPoint(pNum), army, 0.5);
             this.targets.set(pNum, target);
             this.priorityMap.addTarget(target);
         }
+    }
+}
+
+class ArmyTarget extends Target {
+
+    getPriorityForDepth(depth: number): number {
+        while(this.priorityDecrease.length -1 < depth) {
+            let l = this.priorityDecrease.length;
+            if(depth > 10) {
+                return 0;
+            }
+            this.priorityDecrease[l] = Math.log(this.priority * (10 - depth));
+        }
+
+        return this.priorityDecrease[depth];
     }
 }

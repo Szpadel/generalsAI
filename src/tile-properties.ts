@@ -33,7 +33,7 @@ export class TileProperties {
     private _isEnemy: boolean = null;
     get isEnemy() {
         if (this._isEnemy === null) {
-            this._isEnemy = this.tileType > 0 && this.tileType !== this.board.data.playerIndex;
+            this._isEnemy = this.tileType >= 0 && this.tileType !== this.board.data.playerIndex;
         }
         return this._isEnemy;
     }

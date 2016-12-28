@@ -36,7 +36,8 @@ export class ProtectGeneralTask extends AbstractTask{
             }
         }
 
-        if(this.maxScore > 0) {
+        if(this.dangerArmy && this.maxScore > 0) {
+            this.board.debug.markTile(this.dangerArmy, 'X');
         }
     }
 
@@ -73,7 +74,7 @@ export class ProtectGeneralTask extends AbstractTask{
                         armyLeft += tp.army + 1;
                     }
 
-                    const canUse = tp.isMine || tp.isEmpty || (tp.isEnemy && tp.army <= 3);
+                    const canUse = tp.isMine || tp.isEmpty || (tp.isEnemy && tp.army <= 10);
                     if (!canUse || (minMoves < moves)) {
                         stop();
                         return;

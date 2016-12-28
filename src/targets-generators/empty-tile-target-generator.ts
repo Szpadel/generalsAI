@@ -14,14 +14,14 @@ export class EmptyTileTargetGenerator extends AbstractTargetGenerator {
             if(this.isEmpty(change[1])) {
                 const tp = this.board.getTileProperties(this.board.toPoint(pNum));
                 if(!tp.isCity) {
-                    this.addTarget(pNum, tp.isEmpty ? 1 : 1);
+                    this.addTarget(pNum, 100);
                 }
             }
         });
     }
 
     private isEmpty(t: number): boolean {
-        return t === Tile.TILE_EMPTY || t === Tile.TILE_FOG;
+        return t === Tile.TILE_FOG;
     }
 
     private removeTarget(pNum: number) {

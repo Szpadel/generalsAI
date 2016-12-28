@@ -34,7 +34,10 @@ export class SpreadTask extends AbstractTask {
     }
 
     doMove(): boolean {
-        let move = this.moveChoicer.findMove((p)=> this.priorityMap.getPriorityIn(p), ()=> true);
+        let move = this.moveChoicer.findMove((p)=> this.priorityMap.getPriorityIn(p), (start)=> {
+            const tp = this.board.getTileProperties(start);
+            return this.board.data.turn < 75*2 || !tp.isGeneral;
+        });
         if(move) {
             console.log('Spread');
             this.board.debug.showPath([move.end, move.start]);

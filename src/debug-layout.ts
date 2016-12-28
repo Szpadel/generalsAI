@@ -32,6 +32,7 @@ export class DebugLayout {
     private timeElement: HTMLSpanElement;
     private tasksListElement: HTMLSpanElement;
     private pathStylesElement: HTMLStyleElement;
+    private markStylesElement: HTMLStyleElement;
 
     private smoothTime = 0;
 
@@ -45,12 +46,14 @@ export class DebugLayout {
         this.timeElement = <HTMLSpanElement>this.debugWindow.querySelector('#ai-time');
         this.tasksListElement = <HTMLDivElement>this.debugWindow.querySelector('#ai-tasks-list');
         this.pathStylesElement = <HTMLStyleElement>this.debugWindow.querySelector('#ai-path-styles');
+        this.markStylesElement = <HTMLStyleElement>this.debugWindow.querySelector('#ai-mark-tile');
     }
 
     getDebugWindowHtml() {
         return `
 <style>${this.css}</style>
 <style id="ai-path-styles"></style>
+<style id="ai-mark-tile"></style>
 <h1>Ai Debug</h1>
 <div><b>Current Task: </b><span id="ai-task"></span></div>
 <div><b>Last Attack: </b><span id="ai-attack"></span></div>
@@ -87,7 +90,7 @@ ${arrowCss}
     set tasks(tasks: AbstractTask[]) {
         let html = '';
         for(let task of tasks) {
-            html += `<li>${task.name}: ${task.getTaskPriority()}</li>`;
+            html += `<li>${task.name}: ${Math.round(task.getTaskPriority())}</li>`;
         }
         this.tasksListElement.innerHTML = `<ul>${html}</ul>`;
     }
@@ -95,12 +98,30 @@ ${arrowCss}
     showPath(path: Point[]) {
         let css = '';
         for (let a = path.length - 1; a > 0; a--) {
-            css += this.getArrowCss(path[a], path[a-1]);
+            css += this.getArrowCss(path[a], path[a-1], 0.3 + (0.3*a/(path.length - 1)) );
         }
         this.pathStylesElement.innerHTML = css;
     }
 
-    getArrowCss(start: Point, end:Point) {
+    markTile(tile: Point, mark: string) {
+        this.markStylesElement.innerHTML += `
+#map tr:nth-child(${tile[0] + 1}) td:nth-child(${tile[1] + 1}):before {
+       content: "${mark}";
+       position: absolute;
+       text-align: center;
+       opacity: 0.5;
+       font-size: 35px;
+       top: 5px;
+       color: black;
+}
+`;
+    }
+
+    clearMarks() {
+        this.markStylesElement.innerHTML = '';
+    }
+
+    getArrowCss(start: Point, end:Point, opacity: number = 0.5) {
         let arrow;
         let offset = [0,0];
         switch (PointHelpers.getDirection(start, end)) {
@@ -131,7 +152,7 @@ ${arrowCss}
             text-align: center;
             top: ${offset[0]}px;
             left: ${offset[1]}px;
-            opacity: 0.5;
+            opacity: ${opacity};
             font-size: 100px;
         }
 `;
