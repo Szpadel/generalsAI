@@ -25,7 +25,7 @@ export function getBestNextPoint(a: AnaliseTarget, p: Point, cond: (p: Point) =>
 
 function validateScore(score) {
     if(!isFinite(score)) {
-        return -8888;
+        return -Infinity;
     }
     return score;
 }

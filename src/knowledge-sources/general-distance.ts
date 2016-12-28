@@ -8,6 +8,7 @@ export class GeneralDistanceKnowledgeSource extends AbstractKnowledgeSource {
 
     private generalLocation: Point;
     private priorityMap: PriorityMap;
+    private target: DistanceTarget;
 
 
     constructor(board: Board) {
@@ -18,8 +19,18 @@ export class GeneralDistanceKnowledgeSource extends AbstractKnowledgeSource {
     onNextTurn(boardChanges: BoardChanges) {
         if(!this.generalLocation) {
             this.generalLocation = this.board.getMyGeneralLocation();
-            this.priorityMap.addTarget(new DistanceTarget(this.generalLocation));
+            this.target = new DistanceTarget(this.generalLocation);
+            this.priorityMap.addTarget(this.target);
             console.log('addGeneral', this.generalLocation);
+        }
+
+        for(let pNum in boardChanges.mapChanges) {
+            let p = this.board.toPoint(+pNum);
+            let tp = this.board.getTileProperties(p);
+            if(tp.isCity) {
+                this.target.priorityMap.clear();
+                this.priorityMap.computeMap();
+            }
         }
     }
 

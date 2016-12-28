@@ -9,6 +9,7 @@ import {GeneralDistanceKnowledgeSource} from "./knowledge-sources/general-distan
 import {ProtectGeneralTask} from "./tasks/protect-general-task";
 import {CityCaptureTask} from "./tasks/city-capture-task";
 import {DebugLayout} from "./debug-layout";
+import {FastSpreadTask} from "./tasks/fast-spread-task";
 
 export interface GameWindow extends Window{
     ai: Board;
@@ -39,6 +40,7 @@ export class Board {
         this.tasks.push(new AttackTask(this));
         this.tasks.push(new ProtectGeneralTask(this));
         this.tasks.push(new CityCaptureTask(this));
+        this.tasks.push(new FastSpreadTask(this));
 
         this.resetTileProperties();
         console.log('Board init');
@@ -122,13 +124,14 @@ export class Board {
 
         if (nextTurn) {
             this.doMove();
+            this.debug.time = performance.now() - startTime;
         }else {
             if(Date.now() - this.lastAttackTime > 3 * 1000) {
                 console.warn('Hang detected, resetting attack counter!');
                 this.lastAttack = 0;
             }
         }
-        this.debug.time = performance.now() - startTime;
+
     }
 
     getMyGeneralLocation(): Point {

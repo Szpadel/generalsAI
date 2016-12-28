@@ -22,11 +22,11 @@ export class ProtectGeneralTask extends AbstractTask{
             for (let pNum of playerArmy) {
                 let p = this.board.toPoint(pNum);
                 let dist = this.board.generalDistance.getGeneralDistance(p);
-                if(dist > 10) {
+                if(dist > 13) {
                     continue;
                 }
                 const tp = this.board.getTileProperties(p);
-                let score = ((10 - dist)*(10 - dist) * tp.army);
+                let score = ((13 - dist)*(13 - dist) * (tp.army -dist));
 
                 if(this.maxScore < score) {
                     this.maxScore = score;
@@ -49,7 +49,7 @@ export class ProtectGeneralTask extends AbstractTask{
             return false;
         }
 
-        const startDepth = 20;
+        const startDepth = 13;
         let bestPath: Point[];
         let minMoves = Infinity;
         let bestArmyLeft = -Infinity;

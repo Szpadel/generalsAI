@@ -15,7 +15,9 @@ export class CityCaptureTask extends AbstractTask {
     }
 
     getTaskPriority(): number {
-        return this.board.data.turn < 1 ? 0 : 20;
+        const score = this.board.getMyScore();
+        const freeArmy = (score.total - score.tiles*2);
+        return freeArmy > 50 ? 20 : 0;
     }
 
 
@@ -57,7 +59,9 @@ export class CityCaptureTask extends AbstractTask {
                     }
 
                     if (armyLeft < 0 && path.length >= 2) {
-                        if (bestArmyLeft > armyLeft) {
+                        const isShorter = !bestPath || path.length < bestPath.length;
+
+                        if (isShorter || bestArmyLeft > armyLeft) {
                             bestArmyLeft = armyLeft;
                             bestPath = path;
                         }

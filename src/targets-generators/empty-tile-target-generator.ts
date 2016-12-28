@@ -14,7 +14,7 @@ export class EmptyTileTargetGenerator extends AbstractTargetGenerator {
             if(this.isEmpty(change[1])) {
                 const tp = this.board.getTileProperties(this.board.toPoint(pNum));
                 if(!tp.isCity) {
-                    this.addTarget(pNum, tp.isEmpty ? 3 : 1);
+                    this.addTarget(pNum, tp.isEmpty ? 1 : 1);
                 }
             }
         });
