@@ -37,7 +37,7 @@ export class CollectTask extends AbstractTask {
 
     doMove(): boolean {
         if (this.toursGap > 60) {
-            this.priority += 30;
+            this.priority += 15;
         }
         this.toursGap = 0;
         const maxDepth = 8;

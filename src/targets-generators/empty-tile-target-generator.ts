@@ -11,11 +11,16 @@ export class EmptyTileTargetGenerator extends AbstractTargetGenerator {
             if(change[0] !== change[1]) {
                 this.removeTarget(pNum);
             }
+            const tp = this.board.getTileProperties(this.board.toPoint(pNum));
+
             if(this.isEmpty(change[1])) {
                 const tp = this.board.getTileProperties(this.board.toPoint(pNum));
                 if(!tp.isCity) {
                     this.addTarget(pNum, 100);
                 }
+            }
+            if(tp.isEnemy) {
+                this.addTarget(pNum, -tp.army*200);
             }
         });
     }
@@ -33,9 +38,16 @@ export class EmptyTileTargetGenerator extends AbstractTargetGenerator {
 
     private addTarget(pNum: number, prio) {
         if(!this.targets.has(pNum)) {
-            let target = new Target(this.board.toPoint(pNum), prio, 0.5, 0.7);
+            let target = new FullMapTarget(this.board.toPoint(pNum), prio, 0.5, 0.9);
             this.targets.set(pNum, target);
             this.priorityMap.addTarget(target);
         }
     }
+}
+
+class FullMapTarget extends Target {
+    isMaximumDepth(depth: number): boolean {
+        return false;
+    }
+
 }

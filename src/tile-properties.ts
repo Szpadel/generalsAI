@@ -57,7 +57,7 @@ export class TileProperties {
     private _isWalkable: boolean = null;
     get isWalkable() {
         if(this._isWalkable === null)  {
-            this._isWalkable = this.tileType >= 0 || this.tileType === Tile.TILE_EMPTY || this.tileType === Tile.TILE_FOG || (this.isMine && this.isCity) || this.isGeneral;
+            this._isWalkable = this.tileType >= 0 || this.tileType === Tile.TILE_EMPTY || this.tileType === Tile.TILE_FOG || this.isCity || this.isGeneral;
         }
         return this._isWalkable;
     }

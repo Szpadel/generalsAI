@@ -8,7 +8,7 @@ import {AttackTask} from "./tasks/attack-task";
 import {GeneralDistanceKnowledgeSource} from "./knowledge-sources/general-distance";
 import {ProtectGeneralTask} from "./tasks/protect-general-task";
 import {CityCaptureTask} from "./tasks/city-capture-task";
-import {DebugLayout} from "./debug-layout";
+import {DebugLayout, DebugParameters} from "./debug-layout";
 import {FastSpreadTask} from "./tasks/fast-spread-task";
 import {CollectTask} from "./tasks/collect-task";
 
@@ -28,6 +28,7 @@ export class Board {
     private tilePropertiesCache: WeakMap<Point, TileProperties>;
     private generalOwner: Map<number, number> = new Map<number, number>();
     public generalDistance: GeneralDistanceKnowledgeSource;
+    public debugParameters: DebugParameters[] = [];
 
     private tasks: AbstractTask[] = [];
     private lastAttackTime = 0;
@@ -39,11 +40,16 @@ export class Board {
         this.playersArmy = new ArmyKnowledgeSource(this);
         this.generalDistance = new GeneralDistanceKnowledgeSource(this);
 
-        this.tasks.push(new SpreadTask(this));
+
+        let protectGeneral = new ProtectGeneralTask(this);
+        this.tasks.push(protectGeneral);
+        this.debugParameters.push(protectGeneral);
+
         this.tasks.push(new AttackTask(this));
-        this.tasks.push(new ProtectGeneralTask(this));
+        this.tasks.push(new SpreadTask(this));
         this.tasks.push(new CityCaptureTask(this));
         this.tasks.push(new FastSpreadTask(this));
+
         this.tasks.push(new CollectTask(this));
 
         this.resetTileProperties();
@@ -133,6 +139,7 @@ export class Board {
         if (nextTurn) {
             this.doMove();
             this.debug.time = performance.now() - startTime;
+            this.debug.updateDebugParameters(this.debugParameters);
         }else {
             if(Date.now() - this.lastAttackTime > 3 * 1000) {
                 console.warn('Hang detected, resetting attack counter!');

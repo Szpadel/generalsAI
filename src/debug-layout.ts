@@ -33,6 +33,7 @@ export class DebugLayout {
     private tasksListElement: HTMLSpanElement;
     private pathStylesElement: HTMLStyleElement;
     private markStylesElement: HTMLStyleElement;
+    private parametersElement: HTMLDivElement;
 
     private smoothTime = 0;
 
@@ -47,6 +48,7 @@ export class DebugLayout {
         this.tasksListElement = <HTMLDivElement>this.debugWindow.querySelector('#ai-tasks-list');
         this.pathStylesElement = <HTMLStyleElement>this.debugWindow.querySelector('#ai-path-styles');
         this.markStylesElement = <HTMLStyleElement>this.debugWindow.querySelector('#ai-mark-tile');
+        this.parametersElement = <HTMLDivElement>this.debugWindow.querySelector('#ai-debug-parameters');
     }
 
     getDebugWindowHtml() {
@@ -59,8 +61,9 @@ export class DebugLayout {
 <div><b>Last Attack: </b><span id="ai-attack"></span></div>
 <div><b>Thinking time: </b><span id="ai-time"></span></div>
 
-<div class="ai-center"><b>Tasks</b><div>
+<div class="ai-center"><b>Tasks</b></div>
 <div id="ai-tasks-list"></div>
+<div id="ai-debug-parameters"></div>
 `;
     }
 
@@ -157,4 +160,22 @@ ${arrowCss}
         }
 `;
     }
+
+    updateDebugParameters(parameters: DebugParameters[]) {
+        let html = '';
+        for(let section of parameters) {
+            let parametersHtml = '';
+            section.getDebugParameters().forEach((value, name) => {
+                parametersHtml += `<div><b>${name}: </b>${value}</div>`
+            });
+            html += `<div><b>${section.debugSectionName}</b><br/>${parametersHtml}</div>`;
+        }
+
+        this.parametersElement.innerHTML = html;
+    }
+}
+
+export interface DebugParameters {
+    debugSectionName: string;
+    getDebugParameters():Map<string, string>;
 }

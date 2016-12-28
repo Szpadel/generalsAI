@@ -2,13 +2,16 @@ import {AbstractTask} from "./abstract-task";
 import {BoardChanges, Board} from "../board";
 import {DeepTreeSearch} from "../deep-tree-search";
 import {Point} from "../tile";
+import {DebugParameters} from "../debug-layout";
 
-export class ProtectGeneralTask extends AbstractTask{
+export class ProtectGeneralTask extends AbstractTask implements DebugParameters{
+    debugSectionName: string = 'Protect General Task';
     name = 'Protect General';
     private deepTreeSearch: DeepTreeSearch;
     private dangerArmy: Point;
     private maxScore = 0;
     private distance = 0;
+    private previousBestPath = null;
 
     constructor(board: Board) {
         super(board);
@@ -26,7 +29,8 @@ export class ProtectGeneralTask extends AbstractTask{
                     continue;
                 }
                 const tp = this.board.getTileProperties(p);
-                let score = ((13 - dist)*(13 - dist) * (tp.army -dist));
+                const armyMultiplier = dist > 5 ?  (tp.army -dist) : tp.army*5;
+                let score = ((13 - dist)*(13 - dist) * armyMultiplier);
 
                 if(this.maxScore < score) {
                     this.maxScore = score;
@@ -41,6 +45,13 @@ export class ProtectGeneralTask extends AbstractTask{
         }
     }
 
+    getDebugParameters(): Map<string, string> {
+        let map = new Map();
+        map.set('enemy distance', this.distance);
+
+        return map;
+    }
+
     getTaskPriority(): number {
         return this.maxScore;
     }
@@ -50,10 +61,10 @@ export class ProtectGeneralTask extends AbstractTask{
             return false;
         }
 
-        const startDepth = 13;
+        const startDepth = 14;
         let bestPath: Point[];
         let minMoves = Infinity;
-        let bestArmyLeft = -Infinity;
+        let bestArmyLeft = Infinity;
 
         this.deepTreeSearch.process(this.dangerArmy, startDepth,
             (p, depthLeft, acc, stop) => {
@@ -61,6 +72,7 @@ export class ProtectGeneralTask extends AbstractTask{
                 let armyLeft = acc.armyLeft;
                 let path = acc.path.slice();
                 let moves = acc.moves;
+                let valid = acc.valid;
                 path.push(p);
 
                 if (armyLeft === null) {
@@ -69,19 +81,22 @@ export class ProtectGeneralTask extends AbstractTask{
                     if(tp.isMine) {
                         moves += 1;
                         armyLeft -= tp.army -1;
+                        if(tp.army > 1) {
+                            valid = true;
+                        }
                     }else {
                         moves += 2;
                         armyLeft += tp.army + 1;
                     }
 
                     const canUse = tp.isMine || tp.isEmpty || (tp.isEnemy && tp.army <= 10);
-                    if (!canUse || (minMoves < moves)) {
+                    if (!canUse || (minMoves < moves && bestArmyLeft < 0)) {
                         stop();
                         return;
                     }
                 }
 
-                if (path.length >= 2) {
+                if (path.length >= 2 && valid) {
                     const weCanKillIt = bestArmyLeft < 0;
                     const itCanKillIt = armyLeft < 0;
                     const shorterPath = weCanKillIt && itCanKillIt && moves < minMoves;
@@ -94,8 +109,8 @@ export class ProtectGeneralTask extends AbstractTask{
                     }
                 }
 
-                return {armyLeft, path, moves};
-            }, {armyLeft: null, path: [], moves: 0});
+                return {armyLeft, path, moves, valid};
+            }, {armyLeft: null, path: [], moves: 0, valid: false});
 
 
         if (bestPath) {

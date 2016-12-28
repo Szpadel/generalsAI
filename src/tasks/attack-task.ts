@@ -1,6 +1,7 @@
 import {AbstractTask} from "./abstract-task";
 import {BoardChanges, Board} from "../board";
 import {DeepTreeSearch} from "../deep-tree-search";
+import {Point} from "../tile";
 
 export class AttackTask extends AbstractTask {
     name = 'Attack';
@@ -18,33 +19,31 @@ export class AttackTask extends AbstractTask {
     getTaskPriority(): number {
         if(this.board.data.turn < 50) {
         }
-        return this.board.data.turn < 50 ? 5 : 15;
+        return this.board.data.turn < 50 ? 5 : 18;
     }
 
 
     doMove(): boolean {
-        const maxDepth = 8;
-        let possibleMoves = [];
-        let x = 0;
+        const maxDepth = 10;
+        let bestMove: Point[];
+        let bestScore = -Infinity;
 
         let list = this.board.playersArmy.enemyPlayers.slice();
-        //list.push(this.board.playersArmy.empty);
 
         for (let playerArmy of list) {
             for (let pNum of playerArmy) {
                 this.deepTreeSearch.process(this.board.toPoint(pNum), maxDepth,
-                    (p, depth, acc, stop) => {
+                    (p, depthLeft, acc, stop) => {
                         const tp = this.board.getTileProperties(p);
                         let armyLeft = acc.armyLeft;
                         let path = acc.path.slice();
-                        let enemyArmy = acc.enemyArmy;
+                        let score = acc.score;
                         path.push(p);
 
                         if(armyLeft === null) {
                             armyLeft = tp.army;
-                            enemyArmy = armyLeft;
                         }else {
-                            if(!tp.isMine && !tp.isEmpty) {
+                            if(!tp.isMine && !tp.isEmpty || tp.isGeneral) {
                                 stop();
                                 return;
                             }
@@ -59,36 +58,32 @@ export class AttackTask extends AbstractTask {
                         }
 
                         if(armyLeft < 0 && path.length >= 2) {
-                            possibleMoves.push({armyLeft, path, enemyArmy});
-                        }
-                        x++;
+                            let score = -armyLeft * depthLeft;
+                            const betterScore = score > bestScore;
+                            const sameScore = score === bestScore;
+                            const shorter = !bestMove || path.length < bestMove.length;
 
-                        return {armyLeft, path, enemyArmy};
-                    }, {armyLeft: null, path: [], enemyArmy: 0})
+                            if (betterScore ||
+                                sameScore && shorter) {
+                                bestMove = path;
+                                bestScore = score;
+                            }
+                        }
+
+                        return {armyLeft, path};
+                    }, {armyLeft: null, path: [], score: 0})
             }
         }
 
-        let bestMove;
-        let depth = Infinity;
-        let armyLeft = -Infinity;
-        possibleMoves.forEach((move) => {
-            if(move.path.length < depth
-            || move.path.length === depth && move.armyLeft < armyLeft) {
-                bestMove = move;
-                armyLeft = move.armyLeft;
-                depth = move.path.length;
-            }
-        });
-
         if (bestMove) {
-            if (bestMove.path.length < 2) {
+            if (bestMove.length < 2) {
                 return false;
             }
 
-            let l = bestMove.path.length;
-            this.board.debug.showPath(bestMove.path);
+            let l = bestMove.length;
+            this.board.debug.showPath(bestMove);
 
-            return this.board.attack(bestMove.path[l - 1], bestMove.path[l - 2], false);
+            return this.board.attack(bestMove[l - 1], bestMove[l - 2], false);
 
         }
         return false;

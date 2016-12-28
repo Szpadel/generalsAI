@@ -20,23 +20,25 @@ export class SpreadTask extends AbstractTask {
 
     onNextTurn(boardChanges: BoardChanges) {
         this.emptyTargetGenerator.onNextTurn(boardChanges);
-        let emptyTiles = 0;
-        this.board.data.map._map.forEach((tile) => {
-            if(tile === Tile.TILE_EMPTY) {
-                emptyTiles++;
-            }
-        });
-        return emptyTiles > 5 ? 5 : 0;
     }
 
     getTaskPriority(): number {
-        return 5;
+        let prio = 2*75 - this.board.data.turn;
+        if(prio < 5) {
+            prio = 5;
+        }
+        return prio;
     }
 
     doMove(): boolean {
-        let move = this.moveChoicer.findMove((p)=> this.priorityMap.getPriorityIn(p), (start)=> {
+        let move = this.moveChoicer.findMove((p)=> this.priorityMap.getPriorityIn(p), (start, end)=> {
             const tp = this.board.getTileProperties(start);
-            return this.board.data.turn < 75*2 || !tp.isGeneral;
+            const endTp = this.board.getTileProperties(end);
+
+            const notGeneral = this.board.data.turn < 75*2 || !tp.isGeneral;
+            const toCity = endTp.isCity;
+
+            return notGeneral && !toCity;
         });
         if(move) {
             console.log('Spread');
