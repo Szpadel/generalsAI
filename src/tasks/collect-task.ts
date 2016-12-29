@@ -5,8 +5,10 @@ import {PriorityMap} from "../priority-map";
 import {IncreaseScoreMoveChoicer} from "../move-choicer/increase-score";
 import {Point} from "../tile";
 import {DeepTreeSearch} from "../deep-tree-search";
+import {DebugParameters} from "../debug-layout";
 
-export class CollectTask extends AbstractTask {
+export class CollectTask extends AbstractTask implements DebugParameters{
+    debugSectionName: string = 'Collect Task';
     name = 'Collect Army';
     priorityMap: PriorityMap;
     armyTargetGenerator: ArmyTargetGenerator;
@@ -14,6 +16,7 @@ export class CollectTask extends AbstractTask {
     private deepTreeSearch: DeepTreeSearch;
     priority = 0;
     toursGap = 0;
+    debugMap = new Map();
 
     constructor(board: Board) {
         super(board);
@@ -35,9 +38,13 @@ export class CollectTask extends AbstractTask {
         return this.priority;
     }
 
+    getDebugParameters(): Map<string, string> {
+        return this.debugMap;
+    }
+
     doMove(): boolean {
         if (this.toursGap > 60) {
-            this.priority += 25;
+            this.priority += 10;
         }
         this.toursGap = 0;
         const maxDepth = 9;
@@ -72,7 +79,6 @@ export class CollectTask extends AbstractTask {
                         return;
                     }
 
-                    army *= 0.8;
                     army += tp.army - 1;
                     armies.push(tp.army - 1);
 
@@ -97,6 +103,8 @@ export class CollectTask extends AbstractTask {
                 }, {army: 0, path: [], armies: []})
 
         }
+
+        this.debugMap.set('Best Score', bestArmyScore);
 
 
         if (bestPath) {

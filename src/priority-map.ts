@@ -100,3 +100,19 @@ export class Target {
         return this.getPriorityForDepth(depth) < MIN_PRIORITY_PROCESS;
     }
 }
+
+export class DistanceTarget extends Target {
+
+    constructor(point: Point) {
+        super(point, 0,0,0);
+    }
+
+    getPriorityForDepth(depth: number): number {
+        return depth;
+    }
+
+
+    isMaximumDepth(depth: number): boolean {
+        return false;
+    }
+}

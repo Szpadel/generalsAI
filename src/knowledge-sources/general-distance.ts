@@ -1,6 +1,6 @@
 import {AbstractKnowledgeSource} from "./abstract-knowledge-source";
 import {BoardChanges, Board} from "../board";
-import {Target, PriorityMap} from "../priority-map";
+import {Target, PriorityMap, DistanceTarget} from "../priority-map";
 import {PointHelpers, Point} from "../tile";
 
 
@@ -32,6 +32,7 @@ export class GeneralDistanceKnowledgeSource extends AbstractKnowledgeSource {
                 this.priorityMap.computeMap();
             }
         }
+        this.board.debug.displayPriorityMap(this.board, this.priorityMap);
     }
 
     getGeneralDistance(point: Point): number {
@@ -41,18 +42,4 @@ export class GeneralDistanceKnowledgeSource extends AbstractKnowledgeSource {
     }
 }
 
-class DistanceTarget extends Target {
 
-    constructor(point: Point) {
-        super(point, 0,0,0);
-    }
-
-    getPriorityForDepth(depth: number): number {
-        return depth;
-    }
-
-
-    isMaximumDepth(depth: number): boolean {
-        return false;
-    }
-}

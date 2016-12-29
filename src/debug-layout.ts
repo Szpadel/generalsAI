@@ -1,5 +1,7 @@
 import {Point, PointHelpers, Direction} from "./tile";
 import {AbstractTask} from "./tasks/abstract-task";
+import {PriorityMap} from "./priority-map";
+import {Board} from "./board";
 export class DebugLayout {
     private debugWindow:HTMLDivElement;
     private css: string = `
@@ -33,6 +35,7 @@ export class DebugLayout {
     private tasksListElement: HTMLSpanElement;
     private pathStylesElement: HTMLStyleElement;
     private markStylesElement: HTMLStyleElement;
+    private priorityMapStylesElement: HTMLStyleElement;
     private parametersElement: HTMLDivElement;
 
     private smoothTime = 0;
@@ -48,6 +51,7 @@ export class DebugLayout {
         this.tasksListElement = <HTMLDivElement>this.debugWindow.querySelector('#ai-tasks-list');
         this.pathStylesElement = <HTMLStyleElement>this.debugWindow.querySelector('#ai-path-styles');
         this.markStylesElement = <HTMLStyleElement>this.debugWindow.querySelector('#ai-mark-tile');
+        this.priorityMapStylesElement = <HTMLStyleElement>this.debugWindow.querySelector('#ai-priority-map');
         this.parametersElement = <HTMLDivElement>this.debugWindow.querySelector('#ai-debug-parameters');
     }
 
@@ -56,6 +60,7 @@ export class DebugLayout {
 <style>${this.css}</style>
 <style id="ai-path-styles"></style>
 <style id="ai-mark-tile"></style>
+<style id="ai-priority-map"></style>
 <h1>Ai Debug</h1>
 <div><b>Current Task: </b><span id="ai-task"></span></div>
 <div><b>Last Attack: </b><span id="ai-attack"></span></div>
@@ -122,6 +127,7 @@ ${arrowCss}
 
     clearMarks() {
         this.markStylesElement.innerHTML = '';
+        this.priorityMapStylesElement.innerHTML = '';
     }
 
     getArrowCss(start: Point, end:Point, opacity: number = 0.5) {
@@ -158,6 +164,33 @@ ${arrowCss}
             opacity: ${opacity};
             font-size: 100px;
         }
+`;
+    }
+
+    displayPriorityMap(board:Board, priorityMap: PriorityMap) {
+        let styles = '';
+
+        for(let n = 0; n < board.data.map._map.length; n++) {
+            const p = board.toPoint(n);
+            const prio = priorityMap.getPriorityIn(p);
+            styles += this.annotateTile(p, ''+prio);
+        }
+
+        this.priorityMapStylesElement.innerHTML = styles;
+    }
+
+    annotateTile(tile: Point, str: string) {
+        return `
+#map tr:nth-child(${tile[0] + 1}) td:nth-child(${tile[1] + 1}):after {
+       content: "${str}";
+    position: absolute;
+    text-align: center;
+    opacity: 1;
+    font-size: 15px;
+    bottom: 0;
+    color: white;
+    right: 0;
+}
 `;
     }
 
