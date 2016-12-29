@@ -35,10 +35,11 @@ export class SpreadTask extends AbstractTask {
             const tp = this.board.getTileProperties(start);
             const endTp = this.board.getTileProperties(end);
 
-            const notGeneral = this.board.data.turn < 75*2 || !tp.isGeneral;
+            const notGeneral = this.board.data.turn < (75*2) || !tp.isGeneral;
             const toCity = endTp.isCity;
+            const isFreeOrMine = endTp.isMine || endTp.isEmpty;
 
-            return notGeneral && !toCity;
+            return notGeneral && !toCity && isFreeOrMine;
         });
         if(move) {
             console.log('Spread');

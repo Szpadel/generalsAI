@@ -115,7 +115,7 @@ ${arrowCss}
        opacity: 0.5;
        font-size: 35px;
        top: 5px;
-       color: black;
+       color: white;
 }
 `;
     }
@@ -168,7 +168,7 @@ ${arrowCss}
             section.getDebugParameters().forEach((value, name) => {
                 parametersHtml += `<div><b>${name}: </b>${value}</div>`
             });
-            html += `<div><b>${section.debugSectionName}</b><br/>${parametersHtml}</div>`;
+            html += `<div><b>${section.debugSectionName}</b><br/>${parametersHtml}</div><br/>`;
         }
 
         this.parametersElement.innerHTML = html;

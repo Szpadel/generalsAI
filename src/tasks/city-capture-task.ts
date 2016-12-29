@@ -16,7 +16,7 @@ export class CityCaptureTask extends AbstractTask {
 
     getTaskPriority(): number {
         const score = this.board.getMyScore();
-        const freeArmy = (score.total - score.tiles*2);
+        const freeArmy = (score.total - score.tiles*2) - 70;
         return freeArmy > 50 ? 20 : 0;
     }
 

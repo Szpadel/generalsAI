@@ -35,8 +35,9 @@ export class GeneralDistanceKnowledgeSource extends AbstractKnowledgeSource {
     }
 
     getGeneralDistance(point: Point): number {
+        let prio = this.priorityMap.getPriorityIn(point);
 
-        return this.priorityMap.getPriorityIn(point);
+        return prio === 0 ? Infinity : prio;
     }
 }
 

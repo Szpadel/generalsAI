@@ -33,6 +33,7 @@ export class Board {
     private tasks: AbstractTask[] = [];
     private lastAttackTime = 0;
     public debug: DebugLayout = new DebugLayout();
+    private playerScores: Map<number, ScoreObject> = new Map();
 
     public stop = false;
 
@@ -45,18 +46,22 @@ export class Board {
         this.tasks.push(protectGeneral);
         this.debugParameters.push(protectGeneral);
 
-        this.tasks.push(new AttackTask(this));
+        let attackTask = new AttackTask(this);
+        this.tasks.push(attackTask);
+        this.debugParameters.push(attackTask);
+
         this.tasks.push(new SpreadTask(this));
         this.tasks.push(new CityCaptureTask(this));
         this.tasks.push(new FastSpreadTask(this));
 
         this.tasks.push(new CollectTask(this));
 
-        this.resetTileProperties();
+        this.resetCaches();
         console.log('Board init');
     }
 
-    resetTileProperties() {
+    resetCaches() {
+        this.playerScores.clear();
         this.tilePropertiesCache = new WeakMap<Point, TileProperties>();
     }
 
@@ -81,7 +86,7 @@ export class Board {
         let newData: StateObject = JSON.parse(JSON.stringify(updateEvent));
         let nextTurn = false;
 
-        this.resetTileProperties();
+        this.resetCaches();
         if (this.data) {
             if (newData.attackIndex >= this.lastAttack) {
                 nextTurn = true;
@@ -171,8 +176,17 @@ export class Board {
         return this.data.map._map[this.toNum(p)];
     }
 
-    getMyScore() {
-        return this.data.scores.find((score) => score.i === this.data.playerIndex);
+    getPlayerScore(player: number): ScoreObject {
+        if(this.playerScores.size === 0) {
+            this.data.scores.forEach((score: ScoreObject) => {
+                this.playerScores.set(score.i, score);
+            });
+        }
+        return this.playerScores.get(player);
+    }
+
+    getMyScore(): ScoreObject {
+        return this.getPlayerScore(this.data.playerIndex);
     }
 
     getArmy(p: Point): number {

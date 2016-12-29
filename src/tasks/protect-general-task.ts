@@ -21,6 +21,7 @@ export class ProtectGeneralTask extends AbstractTask implements DebugParameters{
     onNextTurn(boardChanges: BoardChanges) {
         this.maxScore = 0;
         this.dangerArmy = null;
+        this.distance = Infinity;
         for (let playerArmy of this.board.playersArmy.enemyPlayers) {
             for (let pNum of playerArmy) {
                 let p = this.board.toPoint(pNum);
@@ -29,7 +30,7 @@ export class ProtectGeneralTask extends AbstractTask implements DebugParameters{
                     continue;
                 }
                 const tp = this.board.getTileProperties(p);
-                const armyMultiplier = dist > 5 ?  (tp.army -dist) : tp.army*5;
+                const armyMultiplier = dist > 3 ?  (tp.army -dist) : tp.army*5;
                 let score = ((13 - dist)*(13 - dist) * armyMultiplier);
 
                 if(this.maxScore < score) {

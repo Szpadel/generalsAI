@@ -37,10 +37,10 @@ export class CollectTask extends AbstractTask {
 
     doMove(): boolean {
         if (this.toursGap > 60) {
-            this.priority += 15;
+            this.priority += 25;
         }
         this.toursGap = 0;
-        const maxDepth = 8;
+        const maxDepth = 9;
         let maxPoints = 30;
 
         let bestArmyScore = 2;
@@ -67,7 +67,7 @@ export class CollectTask extends AbstractTask {
                     let armies = acc.armies.slice();
                     path.push(p);
 
-                    if (!tp.isMine || tp.isCity || tp.isGeneral) {
+                    if (!tp.isMine || tp.isGeneral) {
                         stop();
                         return;
                     }

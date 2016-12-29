@@ -28,3 +28,5 @@ export namespace Tile {
     export const TILE_FOG = -3;
     export const TILE_FOG_OBSTACLE = -4;
 }
+
+export const PlayerColors = ["red", "blue", "green", "purple", "teal", "darkgreen", "orange", "maroon"];
