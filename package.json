@@ -12,6 +12,7 @@
     "typescript-bundle": "^0.7.5"
   },
   "scripts": {
-    "start": "concurrently --kill-others \"http-server -p 1234 .\" \"tsc-bundle src/init.ts dist/ai.js --watch\""
+    "start": "concurrently --kill-others \"http-server -p 1234 .\" \"tsc-bundle src/init.ts dist/ai.js --watch\"",
+    "build": "tsc-bundle src/init.ts dist/ai.js && cat generals.js dist/ai.js > build/generalsAi.js"
   }
 }

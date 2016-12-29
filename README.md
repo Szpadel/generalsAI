@@ -7,6 +7,20 @@ It currently plays very defensive slowly taking over the map.
 
 AI scores around 70-80 stars in 1v1 mode without human interaction
 
+![GeneralsAi Gui](https://rawgit.com/Szpadel/generalsAI/master/img/generalsAi.png)
+
+# How to run it?
+Install browser extension that allow to replace resources like [Requestly](https://chrome.google.com/webstore/detail/requestly/mdnleldcmiljblolnjhpnblkcekpdkpa)
+
+Add redirect rule url matching with regexp
+```
+/http://(eu\.)?generals\.io/generals-bundle-prod-v8.2\.js/
+```
+With destination:
+```
+https://goo.gl/asCjxH
+```
+
 
 # Current iteration
 Current implementation is task based. It measure multiple metrics like enemy threat and then based on those information
