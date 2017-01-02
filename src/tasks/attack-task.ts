@@ -1,113 +1,163 @@
 import {AbstractTask} from "./abstract-task";
 import {BoardChanges, Board} from "../board";
-import {DeepTreeSearch} from "../deep-tree-search";
-import {Point} from "../tile";
 import {DebugParameters} from "../debug-layout";
-import {ScoreObject, PlayerColors} from "../game-interfaces";
+import {MapProcessor, Result} from "../map-processor";
 
 export class AttackTask extends AbstractTask implements DebugParameters{
     debugSectionName: string = 'Attack Task';
     name = 'Attack';
-    private deepTreeSearch: DeepTreeSearch;
-    private bestEnemyScore: ScoreObject;
-    private bestEnemyPlayerStrength = 0;
+    private mapProcessor: MapProcessor;
+    private movesLimit = 20;
+    private toursGap = 0;
+    private priority = 18;
+    private bigAttackTime = 100;
 
     constructor(board: Board) {
         super(board);
-        this.deepTreeSearch = new DeepTreeSearch(this.board);
+        this.mapProcessor = new MapProcessor(this.board, null, AttackTask.compareResults);
+
     }
 
     onNextTurn(boardChanges: BoardChanges) {
+        this.toursGap++;
     }
 
     getDebugParameters(): Map<string, string> {
         const map = new Map();
 
-        map.set('Victim color', this.bestEnemyScore ? PlayerColors[this.bestEnemyScore.i] : 'none');
-        map.set('Victim free army', this.bestEnemyPlayerStrength);
+        map.set('Moves limit', this.movesLimit);
 
         return map;
     }
 
-    getTaskPriority(): number {
-        if(this.board.data.turn < 50) {
+    static compareResults(a: Result, b: Result) {
+        const general = a.customData.isGeneral - b.customData.isGeneral;
+        if(general !== 0) {
+            return general;
         }
-        return this.board.data.turn < 50*2 ? 5 : 18;
+
+        const gain = a.customData.gained - b.customData.gained;
+
+        if(gain !== 0) {
+            return gain;
+        }
+
+        const enemy = a.customData.enemyScore - b.customData.enemyScore;
+        if (enemy !== 0) {
+            return enemy;
+        }
+
+
+        return a.score - b.score;
     }
 
+    getTaskPriority(): number {
+        if(this.board.data.turn < 100) {
+            return 5;
+        }
+        return this.priority;
+    }
 
     doMove(): boolean {
-        const maxDepth = 10;
-        let bestMove: Point[];
-        let bestScore = -Infinity;
-        this.bestEnemyPlayerStrength = Infinity;
+        if(this.priority < 20) {
+            this.bigAttackTime--;
+        }
+        if(this.toursGap > 20 || this.bigAttackTime <= 0) {
+            this.movesLimit += 15;
+        }
+        this.priority = 25;
+        this.toursGap = 0;
+
+        if(this.bigAttackTime < 0) {
+            this.bigAttackTime = 100;
+        }
+
+        let bestResult: Result;
 
         let list = this.board.playersArmy.enemyPlayers.slice();
+        let enemyList = [];
 
         for (let playerArmy of list) {
             for (let pNum of playerArmy) {
-                const enemyScore = this.board.getPlayerScore(this.board.getTileProperties(this.board.toPoint(pNum)).tileType);
-                const enemyArmy = enemyScore.total;
+                const p = this.board.toPoint(pNum);
 
-                if(this.bestEnemyPlayerStrength < enemyArmy) {
-                    continue;
-                }
-
-                this.deepTreeSearch.process(this.board.toPoint(pNum), maxDepth,
-                    (p, depthLeft, acc, stop) => {
-                        const tp = this.board.getTileProperties(p);
-                        let armyLeft = acc.armyLeft;
-                        let path = acc.path.slice();
-                        let score = acc.score;
-                        path.push(p);
-
-                        if(armyLeft === null) {
-                            armyLeft = tp.army;
-                        }else {
-                            if(!tp.isMine && !tp.isEmpty || tp.isGeneral) {
-                                stop();
-                                return;
-                            }
-
-                            if(tp.isMine) {
-                                armyLeft -= tp.army -1;
-                            }else {
-                                armyLeft += tp.army + 1;
-                            }
-
-
-                        }
-
-                        if(armyLeft < 0 && path.length >= 2) {
-                            let score = -armyLeft * depthLeft;
-                            const betterScore = score > bestScore;
-                            const sameScore = score === bestScore;
-                            const shorter = !bestMove || path.length < bestMove.length;
-
-                            if (betterScore ||
-                                sameScore && shorter) {
-                                bestMove = path;
-                                bestScore = score;
-                                this.bestEnemyPlayerStrength = enemyArmy;
-                                this.bestEnemyScore = enemyScore;
-                            }
-                        }
-
-                        return {armyLeft, path};
-                    }, {armyLeft: null, path: [], score: 0})
+                enemyList.push(p);
             }
         }
 
-        if (bestMove) {
-            if (bestMove.length < 2) {
+        this.mapProcessor.process(enemyList, (p, r) => {
+            const tp = this.board.getTileProperties(p);
+
+
+            if (r.customData.lastGap < 1) {
+                r.customData.lastGap = 1;
+                r.customData.gapLength = 0;
+            }
+            const availableArmy = tp.isMine ? tp.army - 1 : -(tp.army + 1);
+            r.customData.moves += tp.isEnemy ? 0 : 1;
+            if(tp.isEnemy) {
+                r.customData.gained++;
+            }
+            r.customData.lastGap -= availableArmy;
+            r.customData.army += availableArmy;
+
+            if (r.path.length === 1) {
+                const enemyScore = this.board.getPlayerScore(tp.tileType);
+                const enemyArmy = enemyScore.total;
+
+                r.customData.isGeneral = tp.isGeneral ? 1 : 0;
+                r.customData.lastGap = 1;
+                r.customData.gapLength = 0;
+                r.customData.enemyScore = -enemyArmy;
+            }
+
+            if (r.customData.lastGap > 0) {
+                r.customData.gapLength++;
+            }
+
+            if (r.customData.gapLength > 5 || r.customData.moves > this.movesLimit) {
+                r.terminate();
+            }
+
+            r.score = r.customData.army;
+            r.isValid = r.customData.lastGap <= 0 && r.customData.army > 0;
+
+        }, {army: 0, lastGap: 1, gapLength: 0, enemyScore: 0, gained: 0, isGeneral: 0, moves: 0});
+
+        this.mapProcessor.forEach((r) => {
+            if (r.path.length >= 2 && r.isValid) {
+                const betterPath = bestResult && AttackTask.compareResults(bestResult, r) < 0;
+
+                if (!bestResult || betterPath) {
+                    bestResult = r;
+                }
+            }
+        });
+
+        if (bestResult) {
+            if(this.movesLimit > 1) {
+                this.movesLimit -= 0.5;
+            }
+
+            if(bestResult.customData.moves > 1 && bestResult.customData.moves < this.movesLimit) {
+                this.movesLimit = bestResult.customData.moves;
+            }
+
+            if (bestResult.path.length < 2) {
                 return false;
             }
 
-            let l = bestMove.length;
-            this.board.debug.showPath(bestMove);
+            let l = bestResult.path.length;
+            this.board.debug.showPath(bestResult.path);
 
-            return this.board.attack(bestMove[l - 1], bestMove[l - 2], false);
+            return this.board.attack(bestResult.path[l - 1], bestResult.path[l - 2], false);
 
+        }else {
+            this.movesLimit += 5;
+            if(this.movesLimit > 25) {
+                this.movesLimit = 25;
+            }
+            this.priority = 18;
         }
         return false;
     }

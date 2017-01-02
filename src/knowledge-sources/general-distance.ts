@@ -32,7 +32,7 @@ export class GeneralDistanceKnowledgeSource extends AbstractKnowledgeSource {
                 this.priorityMap.computeMap();
             }
         }
-        this.board.debug.displayPriorityMap(this.board, this.priorityMap);
+        //this.board.debug.displayPriorityMap(this.board, this.priorityMap);
     }
 
     getGeneralDistance(point: Point): number {

@@ -111,6 +111,16 @@ ${arrowCss}
         this.pathStylesElement.innerHTML = css;
     }
 
+    showMultiPath(pathList: Point[][]) {
+        let css = '';
+        for(let path of pathList) {
+            for (let a = path.length - 1; a > 0; a--) {
+                css += this.getArrowCss(path[a], path[a-1], 0.3 + (0.3*a/(path.length - 1)) );
+            }
+        }
+        this.pathStylesElement.innerHTML = css;
+    }
+
     markTile(tile: Point, mark: string) {
         this.markStylesElement.innerHTML += `
 #map tr:nth-child(${tile[0] + 1}) td:nth-child(${tile[1] + 1}):before {
@@ -168,12 +178,15 @@ ${arrowCss}
     }
 
     displayPriorityMap(board:Board, priorityMap: PriorityMap) {
+        this.displayMapOverlay(board, (p) => ''+priorityMap.getPriorityIn(p));
+    }
+
+    displayMapOverlay(board:Board, getValueForPoint: (p: Point, pNum: number) => string) {
         let styles = '';
 
         for(let n = 0; n < board.data.map._map.length; n++) {
             const p = board.toPoint(n);
-            const prio = priorityMap.getPriorityIn(p);
-            styles += this.annotateTile(p, ''+prio);
+            styles += this.annotateTile(p, getValueForPoint(p, n));
         }
 
         this.priorityMapStylesElement.innerHTML = styles;

@@ -23,7 +23,7 @@ export class SpreadTask extends AbstractTask {
     }
 
     getTaskPriority(): number {
-        let prio = 2*25 - this.board.data.turn;
+        let prio = 2*75 - this.board.data.turn;
         if(prio < 1) {
             prio = 1;
         }
