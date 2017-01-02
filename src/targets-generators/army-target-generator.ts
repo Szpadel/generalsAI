@@ -1,6 +1,6 @@
 import {AbstractTargetGenerator} from "./abstract-target-generator";
 import {BoardChanges} from "../board";
-import {Target} from "../priority-map";
+import {Target, DistanceTarget} from "../priority-map";
 
 export class ArmyTargetGenerator extends AbstractTargetGenerator {
     private targets:Map<number, Target> = new Map<number, Target>();
@@ -42,7 +42,7 @@ export class ArmyTargetGenerator extends AbstractTargetGenerator {
             if(prio < 0) {
                 prio = 0;
             }
-            let target = new Target(this.board.toPoint(pNum), army, 0.5);
+            let target = new DistanceTarget(this.board.toPoint(pNum));
             this.targets.set(pNum, target);
             this.priorityMap.addTarget(target);
         }

@@ -11,6 +11,7 @@ import {CityCaptureTask} from "./tasks/city-capture-task";
 import {DebugLayout, DebugParameters} from "./debug-layout";
 import {FastSpreadTask} from "./tasks/fast-spread-task";
 import {CollectTask} from "./tasks/collect-task";
+import {GatherEverythingTask} from "./tasks/gather-everything-task";
 
 export interface GameWindow extends Window{
     ai: Board;
@@ -53,8 +54,11 @@ export class Board {
         this.tasks.push(new SpreadTask(this));
         this.tasks.push(new CityCaptureTask(this));
         this.tasks.push(new FastSpreadTask(this));
+        this.tasks.push(new GatherEverythingTask(this));
 
-        this.tasks.push(new CollectTask(this));
+        let collectTask = new CollectTask(this);
+        this.tasks.push(collectTask);
+        this.debugParameters.push(collectTask);
 
         this.resetCaches();
         console.log('Board init');

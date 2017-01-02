@@ -3,19 +3,38 @@ import {BoardChanges, Board} from "../board";
 import {DeepTreeSearch} from "../deep-tree-search";
 import {Point} from "../tile";
 import {DebugParameters} from "../debug-layout";
+import {MapProcessor, Result} from "../map-processor";
 
 export class ProtectGeneralTask extends AbstractTask implements DebugParameters{
     debugSectionName: string = 'Protect General Task';
     name = 'Protect General';
-    private deepTreeSearch: DeepTreeSearch;
+    private mapProcessor: MapProcessor;
     private dangerArmy: Point;
     private maxScore = 0;
     private distance = 0;
-    private previousBestPath = null;
 
     constructor(board: Board) {
         super(board);
-        this.deepTreeSearch = new DeepTreeSearch(this.board);
+        this.mapProcessor = new MapProcessor(this.board, null, ProtectGeneralTask.compareResults);
+    }
+
+    static compareResults(a: Result, b: Result) {
+        const aKillIt = a.score > 0;
+        const bKillIt = b.score > 0;
+
+        if(aKillIt && !bKillIt) {
+            return 1;
+        }else if(bKillIt && !aKillIt) {
+            return -1;
+        }
+
+        const moves = b.customData.moves - a.customData.moves;
+
+        if(moves !== 0) {
+            return moves;
+        }
+
+        return a.score - b.score;
     }
 
     onNextTurn(boardChanges: BoardChanges) {
@@ -62,57 +81,59 @@ export class ProtectGeneralTask extends AbstractTask implements DebugParameters{
             return false;
         }
 
-        const startDepth = 14;
         let bestPath: Point[];
         let minMoves = Infinity;
-        let bestArmyLeft = Infinity;
+        let bestArmy = -Infinity;
 
-        this.deepTreeSearch.process(this.dangerArmy, startDepth,
-            (p, depthLeft, acc, stop) => {
-                const tp = this.board.getTileProperties(p);
-                let armyLeft = acc.armyLeft;
-                let path = acc.path.slice();
-                let moves = acc.moves;
-                let valid = acc.valid;
-                path.push(p);
+        this.mapProcessor.process([this.dangerArmy], (p, r) => {
+            const tp = this.board.getTileProperties(p);
+            if(r.customData.lastGap < 1) {
+                r.customData.lastGap = 1;
+                r.customData.gapLength = 0;
+            }
 
-                if (armyLeft === null) {
-                    armyLeft = tp.army;
-                } else {
-                    if(tp.isMine) {
-                        moves += 1;
-                        armyLeft -= tp.army -1;
-                        if(tp.army > 1) {
-                            valid = true;
-                        }
-                    }else {
-                        moves += 2;
-                        armyLeft += tp.army + 1;
-                    }
+            if(r.path.length === 1) {
+                r.customData.lastGap = 1;
+                r.customData.gapLength = 0;
+            }
 
-                    const canUse = tp.isMine || tp.isEmpty || (tp.isEnemy && tp.army <= 10);
-                    if (!canUse || (minMoves < moves && bestArmyLeft < 0)) {
-                        stop();
-                        return;
-                    }
+            if(r.customData.army > 0) {
+                //r.terminate();
+                //return;
+            }
+
+            const availableArmy = tp.isMine ? tp.army-1 : -(tp.army+1);
+            r.customData.moves += tp.isMine ? 1 : 2;
+            r.customData.lastGap -= availableArmy;
+            r.customData.army += availableArmy;
+
+
+            if(r.customData.lastGap > 0 ) {
+                r.customData.gapLength++;
+            }
+
+            if(r.customData.gapLength > 5) {
+                //r.terminate();
+            }
+
+            r.score = r.customData.army;
+            r.isValid = r.customData.lastGap <= 0;
+        }, {army: 0, lastGap: 1, gapLength: 0, moves: 0});
+
+        this.mapProcessor.forEach((r) => {
+            if (r.path.length >= 2 && r.isValid) {
+                const weCanKillIt = bestArmy > 0;
+                const itCanKillIt = r.score > 0;
+                const shorterPath = weCanKillIt && itCanKillIt && r.path.length < minMoves;
+                const betterPath = !weCanKillIt && r.score > bestArmy;
+
+                if(shorterPath || betterPath) {
+                    bestPath = r.path;
+                    minMoves = r.path.length;
+                    bestArmy = r.score;
                 }
-
-                if (path.length >= 2 && valid) {
-                    const weCanKillIt = bestArmyLeft < 0;
-                    const itCanKillIt = armyLeft < 0;
-                    const shorterPath = weCanKillIt && itCanKillIt && moves < minMoves;
-                    const betterPath = !weCanKillIt && armyLeft < bestArmyLeft;
-
-                    if(shorterPath || betterPath) {
-                        bestPath = path;
-                        minMoves = moves;
-                        bestArmyLeft = armyLeft;
-                    }
-                }
-
-                return {armyLeft, path, moves, valid};
-            }, {armyLeft: null, path: [], moves: 0, valid: false});
-
+            }
+        });
 
         if (bestPath) {
             if (bestPath.length < 2) {

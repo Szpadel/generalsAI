@@ -5,8 +5,11 @@ import {PriorityMap} from "../priority-map";
 import {IncreaseScoreMoveChoicer} from "../move-choicer/increase-score";
 import {Point} from "../tile";
 import {DeepTreeSearch} from "../deep-tree-search";
+import {DebugParameters} from "../debug-layout";
+import {MapProcessor} from "../map-processor";
 
-export class CollectTask extends AbstractTask {
+export class CollectTask extends AbstractTask implements DebugParameters{
+    debugSectionName: string = 'Collect Task';
     name = 'Collect Army';
     priorityMap: PriorityMap;
     armyTargetGenerator: ArmyTargetGenerator;
@@ -14,6 +17,9 @@ export class CollectTask extends AbstractTask {
     private deepTreeSearch: DeepTreeSearch;
     priority = 0;
     toursGap = 0;
+    debugMap = new Map();
+    private mapProcessor: MapProcessor;
+
 
     constructor(board: Board) {
         super(board);
@@ -21,12 +27,13 @@ export class CollectTask extends AbstractTask {
         this.moveChoicer = new IncreaseScoreMoveChoicer(this.board);
         this.deepTreeSearch = new DeepTreeSearch(this.board);
         this.armyTargetGenerator = new ArmyTargetGenerator(this.board, this.priorityMap);
+        this.mapProcessor = new MapProcessor(this.board);
     }
 
     onNextTurn(boardChanges: BoardChanges) {
         this.armyTargetGenerator.onNextTurn(boardChanges);
         if (this.priority < 19) {
-            this.priority += 0.25;
+            //this.priority += 0.25;
         }
         this.toursGap++;
     }
@@ -35,72 +42,63 @@ export class CollectTask extends AbstractTask {
         return this.priority;
     }
 
+    getDebugParameters(): Map<string, string> {
+        return this.debugMap;
+    }
+
     doMove(): boolean {
         if (this.toursGap > 60) {
-            this.priority += 25;
+            this.priority += 10;
         }
         this.toursGap = 0;
-        const maxDepth = 9;
-        let maxPoints = 30;
+        const maxPath = 20;
 
-        let bestArmyScore = 2;
+        const armyPoints = [];
         let bestPath;
-        let bestArmySize = maxDepth * 2;
+        let bestArmy = -Infinity;
 
-        for (let startPoint of this.sortByPrio()) {
+        this.board.playersArmy.myArmyList.forEach((pNum) => {
+           const p = this.board.toPoint(pNum);
+           armyPoints.push(p);
+        });
 
-            const sTp = this.board.getTileProperties(startPoint.p);
-            if (sTp.army <= 1) {
-                continue;
+        this.mapProcessor.process(armyPoints, (p, r) => {
+            const tp = this.board.getTileProperties(p);
+
+            if(!tp.isMine || r.path.length > maxPath) {
+                r.terminate();
+                return;
             }
 
-            if (maxPoints <= 0) {
-                break;
+            if(r.customData.lastGap < 1) {
+                r.customData.lastGap = 1;
             }
-            maxPoints--;
 
-            this.deepTreeSearch.process(startPoint.p, maxDepth,
-                (p, depthLeft, acc, stop) => {
-                    const tp = this.board.getTileProperties(p);
-                    let army = acc.army;
-                    let path = acc.path.slice();
-                    let armies = acc.armies.slice();
-                    path.push(p);
+            const availableArmy = tp.army-1;
+            r.customData.lastGap -= availableArmy;
+            r.customData.army += availableArmy;
 
-                    if (!tp.isMine || tp.isGeneral) {
-                        stop();
-                        return;
-                    }
+            r.score = r.customData.army;
+            r.isValid = r.customData.lastGap <= 0;
 
-                    army *= 0.8;
-                    army += tp.army - 1;
-                    armies.push(tp.army - 1);
+        }, {army: 0, lastGap: 1});
 
-                    if (tp.army > 1 && path.length >= 2) {
-                        const isShorter = !bestPath || path.length < bestPath.length;
-                        const score = this.scoreIncrease(armies);
-                        const betterScore = score > bestArmyScore;
-                        const sameScore = score === bestArmyScore;
-                        const sameArmySize = bestArmySize === army;
 
-                        if (betterScore ||
-                            sameScore && army > bestArmySize ||
-                            sameScore && sameArmySize && isShorter
-                        ) {
-                            bestArmyScore = score;
-                            bestPath = path;
-                            bestArmySize = army;
-                        }
-                    }
+        this.mapProcessor.forEach((r) => {
+            if (r.path.length >= 2 && r.isValid) {
+                const betterPath = r.score > bestArmy;
 
-                    return {army, path, armies};
-                }, {army: 0, path: [], armies: []})
+                if(betterPath) {
+                    bestPath = r.path;
+                    bestArmy = r.score;
+                }
+            }
+        });
 
-        }
+        this.debugMap.set('Best Score', bestArmy);
 
 
         if (bestPath) {
-            console.log(bestPath, bestArmyScore);
             this.priority -= 1;
             let l = bestPath.length;
             this.board.debug.showPath(bestPath);
@@ -110,26 +108,6 @@ export class CollectTask extends AbstractTask {
         }
         this.priority = -10;
         return false;
-    }
-
-    protected scoreIncrease(armies: number[]) {
-        let score = 0;
-        for (let a of armies) {
-            score += a * a;
-        }
-        return score;
-    }
-
-    protected sortByPrio(): {p: Point, prio: number}[] {
-        let list = [];
-
-        this.board.playersArmy.myArmyList.forEach((pNum) => {
-            let p = this.board.toPoint(pNum);
-            let prio = this.priorityMap.getPriorityIn(p);
-            list.push({p, prio});
-        });
-
-        return list.sort((a, b) => b.prio - a.prio);
     }
 
 }

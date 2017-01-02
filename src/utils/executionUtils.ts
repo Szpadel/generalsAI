@@ -9,3 +9,15 @@ export function randomOrder(...fns) {
         }
     }
 }
+
+export function generateCopyFn (obj: any): Function {
+    let f = 'var cpy = {};';
+    for(let a in obj) {
+        if(obj.hasOwnProperty(a)) {
+            f += `cpy.${a} = obj.${a};`;
+        }
+    }
+    f += 'return cpy;';
+
+    return new Function('obj', f);
+}

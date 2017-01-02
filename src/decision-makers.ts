@@ -1,6 +1,7 @@
 import {PointHelpers, Point} from "./tile";
 import {randomOrder} from "./utils/executionUtils";
 import {AnaliseTarget} from "./analize-target";
+import {Board} from "./board";
 
 export function getBestNextPoint(a: AnaliseTarget, p: Point, cond: (p: Point) => number): {p: Point, score: number} {
     let up = a.analise(PointHelpers.up(p), cond);
