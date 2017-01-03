@@ -36,19 +36,23 @@ export class AttackTask extends AbstractTask implements DebugParameters{
             return general;
         }
 
+        const enemy = a.customData.enemyScore - b.customData.enemyScore;
+        if (enemy !== 0) {
+            return enemy;
+        }
+
         const gain = a.customData.gained - b.customData.gained;
 
         if(gain !== 0) {
             return gain;
         }
 
-        const enemy = a.customData.enemyScore - b.customData.enemyScore;
-        if (enemy !== 0) {
-            return enemy;
+        const score = a.score - b.score;
+        if(score !== 0) {
+            return score;
         }
 
-
-        return a.score - b.score;
+        return a.customData.scorePerMove - b.customData.scorePerMove;
     }
 
     getTaskPriority(): number {
@@ -69,7 +73,7 @@ export class AttackTask extends AbstractTask implements DebugParameters{
         this.toursGap = 0;
 
         if(this.bigAttackTime < 0) {
-            this.bigAttackTime = 100;
+            this.bigAttackTime = 50;
         }
 
         let bestResult: Result;
@@ -93,6 +97,11 @@ export class AttackTask extends AbstractTask implements DebugParameters{
                 r.customData.lastGap = 1;
                 r.customData.gapLength = 0;
             }
+
+            if(tp.isFog || (tp.isMine && tp.isGeneral)) {
+                r.terminate();
+            }
+
             const availableArmy = tp.isMine ? tp.army - 1 : -(tp.army + 1);
             r.customData.moves += tp.isEnemy ? 0 : 1;
             if(tp.isEnemy) {
@@ -120,9 +129,10 @@ export class AttackTask extends AbstractTask implements DebugParameters{
             }
 
             r.score = r.customData.army;
+            r.customData.scorePerMove = r.score / r.customData.army;
             r.isValid = r.customData.lastGap <= 0 && r.customData.army > 0;
 
-        }, {army: 0, lastGap: 1, gapLength: 0, enemyScore: 0, gained: 0, isGeneral: 0, moves: 0});
+        }, {army: 0, lastGap: 1, gapLength: 0, enemyScore: 0, gained: 0, isGeneral: 0, moves: 0, scorePerMove: 0});
 
         this.mapProcessor.forEach((r) => {
             if (r.path.length >= 2 && r.isValid) {
@@ -136,7 +146,7 @@ export class AttackTask extends AbstractTask implements DebugParameters{
 
         if (bestResult) {
             if(this.movesLimit > 1) {
-                this.movesLimit -= 0.5;
+                this.movesLimit -= 1;
             }
 
             if(bestResult.customData.moves > 1 && bestResult.customData.moves < this.movesLimit) {

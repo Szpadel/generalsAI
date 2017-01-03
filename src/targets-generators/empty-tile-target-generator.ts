@@ -38,7 +38,7 @@ export class EmptyTileTargetGenerator extends AbstractTargetGenerator {
 
     private addTarget(pNum: number, prio) {
         if(!this.targets.has(pNum)) {
-            let target = new FullMapTarget(this.board.toPoint(pNum), prio, 0.5, 0.9);
+            let target = new FullMapTarget(this.board.toPoint(pNum), prio, 0.5);
             this.targets.set(pNum, target);
             this.priorityMap.addTarget(target);
         }

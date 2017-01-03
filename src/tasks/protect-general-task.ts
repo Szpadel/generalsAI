@@ -19,22 +19,28 @@ export class ProtectGeneralTask extends AbstractTask implements DebugParameters{
     }
 
     static compareResults(a: Result, b: Result) {
-        const aKillIt = a.score > 0;
-        const bKillIt = b.score > 0;
+        const aKillIt = a.customData.army > 0;
+        const bKillIt = b.customData.army > 0;
 
         if(aKillIt && !bKillIt) {
             return 1;
-        }else if(bKillIt && !aKillIt) {
+        }else if(!aKillIt && bKillIt) {
             return -1;
         }
 
         const moves = b.customData.moves - a.customData.moves;
 
-        if(moves !== 0) {
+        if(moves !== 0 && aKillIt && bKillIt) {
             return moves;
         }
 
-        return a.score - b.score;
+        const army = a.customData.army - b.customData.army;
+
+        if(army !== 0) {
+            return army;
+        }
+
+        return b.customData.generalDistance - a.customData.generalDistance;
     }
 
     onNextTurn(boardChanges: BoardChanges) {
@@ -45,12 +51,12 @@ export class ProtectGeneralTask extends AbstractTask implements DebugParameters{
             for (let pNum of playerArmy) {
                 let p = this.board.toPoint(pNum);
                 let dist = this.board.generalDistance.getGeneralDistance(p);
-                if(dist > 13) {
+                if(dist > 25) {
                     continue;
                 }
                 const tp = this.board.getTileProperties(p);
-                const armyMultiplier = dist > 3 ?  (tp.army -dist) : tp.army*5;
-                let score = ((13 - dist)*(13 - dist) * armyMultiplier);
+                const armyMultiplier = dist > 5 ?  (tp.army -dist) : tp.army*5;
+                let score = ((25 - dist)*(25 - dist) * armyMultiplier);
 
                 if(this.maxScore < score) {
                     this.maxScore = score;
@@ -81,9 +87,7 @@ export class ProtectGeneralTask extends AbstractTask implements DebugParameters{
             return false;
         }
 
-        let bestPath: Point[];
-        let minMoves = Infinity;
-        let bestArmy = -Infinity;
+        let bestResult: Result;
 
         this.mapProcessor.process([this.dangerArmy], (p, r) => {
             const tp = this.board.getTileProperties(p);
@@ -92,59 +96,68 @@ export class ProtectGeneralTask extends AbstractTask implements DebugParameters{
                 r.customData.gapLength = 0;
             }
 
+            if(tp.isFog) {
+                r.terminate();
+            }
+
+            if(r.customData.army > 0) {
+                r.terminate();
+                //return;
+            }
+
+            const availableArmy = tp.isMine ? (tp.army-1) : -(tp.army+1);
+            r.customData.moves += tp.isEnemy ? 2 : 1;
+            r.customData.lastGap -= availableArmy;
+            r.customData.army += availableArmy;
+
             if(r.path.length === 1) {
                 r.customData.lastGap = 1;
                 r.customData.gapLength = 0;
             }
 
-            if(r.customData.army > 0) {
-                //r.terminate();
-                //return;
-            }
-
-            const availableArmy = tp.isMine ? tp.army-1 : -(tp.army+1);
-            r.customData.moves += tp.isMine ? 1 : 2;
-            r.customData.lastGap -= availableArmy;
-            r.customData.army += availableArmy;
-
-
             if(r.customData.lastGap > 0 ) {
                 r.customData.gapLength++;
             }
 
-            if(r.customData.gapLength > 5) {
-                //r.terminate();
+            r.customData.generalDistance += this.board.generalDistance.getGeneralDistance(p);
+
+            if(r.customData.moves > 25) {
+                r.terminate();
             }
 
-            r.score = r.customData.army;
+            r.score = r.customData.army / r.customData.moves;
             r.isValid = r.customData.lastGap <= 0;
-        }, {army: 0, lastGap: 1, gapLength: 0, moves: 0});
+        }, {army: 0, lastGap: 1, gapLength: 0, moves: 0, generalDistance: 0});
+
 
         this.mapProcessor.forEach((r) => {
             if (r.path.length >= 2 && r.isValid) {
-                const weCanKillIt = bestArmy > 0;
-                const itCanKillIt = r.score > 0;
-                const shorterPath = weCanKillIt && itCanKillIt && r.path.length < minMoves;
-                const betterPath = !weCanKillIt && r.score > bestArmy;
+                const betterPath = bestResult && ProtectGeneralTask.compareResults(bestResult, r) < 0;
 
-                if(shorterPath || betterPath) {
-                    bestPath = r.path;
-                    minMoves = r.path.length;
-                    bestArmy = r.score;
+                if (!bestResult || betterPath) {
+                    bestResult = r;
                 }
             }
         });
 
-        if (bestPath) {
-            if (bestPath.length < 2) {
+        if (bestResult) {
+            if (bestResult.path.length < 2) {
                 return false;
             }
 
-            let l = bestPath.length;
+            // this.board.debug.displayMapOverlay(this.board, (p) =>{
+            //     const r = this.mapProcessor.getResult(p);
+            //     if(r) {
+            //         return `${r.score}-${r.customData.moves}`;
+            //     }
+            //     return '';
+            // });
+
+            let l = bestResult.path.length;
 
             console.log('Protect General!');
-            this.board.debug.showPath(bestPath);
-            return this.board.attack(bestPath[l - 1], bestPath[l - 2], false);
+            this.board.debug.showPath(bestResult.path);
+            return this.board.attack(bestResult.path[l - 1], bestResult.path[l - 2], false);
 
         }
         return false;

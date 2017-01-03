@@ -19127,6 +19127,18 @@
           }
       }
       exports.Target = Target;
+      class DistanceTarget extends Target {
+          constructor(point) {
+              super(point, 0, 0, 0);
+          }
+          getPriorityForDepth(depth) {
+              return depth;
+          }
+          isMaximumDepth(depth) {
+              return false;
+          }
+      }
+      exports.DistanceTarget = DistanceTarget;
   });
   define("targets-generators/abstract-target-generator", ["require", "exports"], function (require, exports) {
       "use strict";
@@ -19173,7 +19185,7 @@
           }
           addTarget(pNum, prio) {
               if (!this.targets.has(pNum)) {
-                  let target = new FullMapTarget(this.board.toPoint(pNum), prio, 0.5, 0.9);
+                  let target = new FullMapTarget(this.board.toPoint(pNum), prio, 0.5);
                   this.targets.set(pNum, target);
                   this.priorityMap.addTarget(target);
               }
@@ -19211,6 +19223,17 @@
           }
       }
       exports.randomOrder = randomOrder;
+      function generateCopyFn(obj) {
+          let f = 'var cpy = {};';
+          for (let a in obj) {
+              if (obj.hasOwnProperty(a)) {
+                  f += `cpy.${a} = obj.${a};`;
+              }
+          }
+          f += 'return cpy;';
+          return new Function('obj', f);
+      }
+      exports.generateCopyFn = generateCopyFn;
   });
   define("analize-target", ["require", "exports", "tile"], function (require, exports, tile_3) {
       "use strict";
@@ -19356,8 +19379,8 @@
           }
           getTaskPriority() {
               let prio = 2 * 75 - this.board.data.turn;
-              if (prio < 5) {
-                  prio = 5;
+              if (prio < 1) {
+                  prio = 1;
               }
               return prio;
           }
@@ -19381,54 +19404,7 @@
       }
       exports.SpreadTask = SpreadTask;
   });
-  define("deep-tree-search", ["require", "exports", "tile"], function (require, exports, tile_5) {
-      "use strict";
-      class DeepTreeSearch {
-          constructor(board) {
-              this.board = board;
-          }
-          process(p, maxDepth, processCb, initialAcc) {
-              this.processPoint(p, processCb, [], maxDepth, initialAcc);
-          }
-          processPoint(p, processCb, ignorePoints, depth, acc) {
-              ignorePoints = ignorePoints.slice();
-              ignorePoints.push(p);
-              let stop = false;
-              acc = processCb(p, depth, acc, () => {
-                  stop = true;
-              });
-              depth--;
-              if (depth <= 0 || stop) {
-                  return;
-              }
-              for (let n of this.getTileNeighbors(p)) {
-                  let ignore = false;
-                  for (let i of ignorePoints) {
-                      if (tile_5.PointHelpers.equals(i, n)) {
-                          ignore = true;
-                      }
-                  }
-                  if (!ignore) {
-                      this.processPoint(n, processCb, ignorePoints, depth, acc);
-                  }
-              }
-          }
-          getTileNeighbors(point) {
-              let n = [];
-              n.push(tile_5.PointHelpers.up(point));
-              n.push(tile_5.PointHelpers.down(point));
-              n.push(tile_5.PointHelpers.left(point));
-              n.push(tile_5.PointHelpers.right(point));
-              n = n.filter((p) => {
-                  return this.board.validatePoint(p)
-                      && this.board.getTileProperties(p).isWalkable;
-              });
-              return n;
-          }
-      }
-      exports.DeepTreeSearch = DeepTreeSearch;
-  });
-  define("debug-layout", ["require", "exports", "tile"], function (require, exports, tile_6) {
+  define("debug-layout", ["require", "exports", "tile"], function (require, exports, tile_5) {
       "use strict";
       class DebugLayout {
           constructor() {
@@ -19467,6 +19443,7 @@
               this.tasksListElement = this.debugWindow.querySelector('#ai-tasks-list');
               this.pathStylesElement = this.debugWindow.querySelector('#ai-path-styles');
               this.markStylesElement = this.debugWindow.querySelector('#ai-mark-tile');
+              this.priorityMapStylesElement = this.debugWindow.querySelector('#ai-priority-map');
               this.parametersElement = this.debugWindow.querySelector('#ai-debug-parameters');
           }
           getDebugWindowHtml() {
@@ -19474,6 +19451,7 @@
   <style>${this.css}</style>
   <style id="ai-path-styles"></style>
   <style id="ai-mark-tile"></style>
+  <style id="ai-priority-map"></style>
   <h1>Ai Debug</h1>
   <div><b>Current Task: </b><span id="ai-task"></span></div>
   <div><b>Last Attack: </b><span id="ai-attack"></span></div>
@@ -19517,6 +19495,15 @@
               }
               this.pathStylesElement.innerHTML = css;
           }
+          showMultiPath(pathList) {
+              let css = '';
+              for (let path of pathList) {
+                  for (let a = path.length - 1; a > 0; a--) {
+                      css += this.getArrowCss(path[a], path[a - 1], 0.3 + (0.3 * a / (path.length - 1)));
+                  }
+              }
+              this.pathStylesElement.innerHTML = css;
+          }
           markTile(tile, mark) {
               this.markStylesElement.innerHTML += `
   #map tr:nth-child(${tile[0] + 1}) td:nth-child(${tile[1] + 1}):before {
@@ -19532,24 +19519,25 @@
           }
           clearMarks() {
               this.markStylesElement.innerHTML = '';
+              this.priorityMapStylesElement.innerHTML = '';
           }
           getArrowCss(start, end, opacity = 0.5) {
               let arrow;
               let offset = [0, 0];
-              switch (tile_6.PointHelpers.getDirection(start, end)) {
-                  case tile_6.Direction.UP:
+              switch (tile_5.PointHelpers.getDirection(start, end)) {
+                  case tile_5.Direction.UP:
                       arrow = '⇧';
                       offset = [-18, -17];
                       break;
-                  case tile_6.Direction.Down:
+                  case tile_5.Direction.Down:
                       arrow = '⇩';
                       offset = [-51, -17];
                       break;
-                  case tile_6.Direction.Left:
+                  case tile_5.Direction.Left:
                       arrow = '⇦';
                       offset = [-40, -2];
                       break;
-                  case tile_6.Direction.Right:
+                  case tile_5.Direction.Right:
                       arrow = '⇨';
                       offset = [-40, -30];
                       break;
@@ -19568,6 +19556,31 @@
           }
   `;
           }
+          displayPriorityMap(board, priorityMap) {
+              this.displayMapOverlay(board, (p) => '' + priorityMap.getPriorityIn(p));
+          }
+          displayMapOverlay(board, getValueForPoint) {
+              let styles = '';
+              for (let n = 0; n < board.data.map._map.length; n++) {
+                  const p = board.toPoint(n);
+                  styles += this.annotateTile(p, getValueForPoint(p, n));
+              }
+              this.priorityMapStylesElement.innerHTML = styles;
+          }
+          annotateTile(tile, str) {
+              return `
+  #map tr:nth-child(${tile[0] + 1}) td:nth-child(${tile[1] + 1}):after {
+         content: "${str}";
+      position: absolute;
+      text-align: center;
+      opacity: 1;
+      font-size: 15px;
+      bottom: 0;
+      color: white;
+      right: 0;
+  }
+  `;
+          }
           updateDebugParameters(parameters) {
               let html = '';
               for (let section of parameters) {
@@ -19582,87 +19595,263 @@
       }
       exports.DebugLayout = DebugLayout;
   });
-  define("tasks/attack-task", ["require", "exports", "tasks/abstract-task", "deep-tree-search", "game-interfaces"], function (require, exports, abstract_task_2, deep_tree_search_1, game_interfaces_4) {
+  define("map-processor", ["require", "exports", "tile", "utils/executionUtils"], function (require, exports, tile_6, executionUtils_2) {
+      "use strict";
+      class MapProcessor {
+          constructor(board, validatePoint = null, resultComparator = null) {
+              this.board = board;
+              this.validatePoint = validatePoint;
+              this.resultComparator = resultComparator;
+              this.results = new Map();
+              this.toProcess = new Map();
+              this.defaultPointValidation = (p) => {
+                  const tp = this.board.getTileProperties(p);
+                  return tp.isWalkable;
+              };
+              /**
+               * -1 => a < b
+               * 0 => a == b
+               * +1 a > b
+               */
+              this.defaultResultComparator = (a, b) => {
+                  return a.score - b.score;
+              };
+              if (this.validatePoint === null) {
+                  this.validatePoint = this.defaultPointValidation;
+              }
+              if (this.resultComparator === null) {
+                  this.resultComparator = this.defaultResultComparator;
+              }
+          }
+          process(points, processCb, initialData) {
+              this.reset();
+              const cpyFn = executionUtils_2.generateCopyFn(initialData);
+              const initialResult = new Result();
+              initialResult.customData = initialData;
+              for (const p of points) {
+                  this.processPoint(p, initialResult, cpyFn, processCb);
+              }
+              while (this.toProcess.size > 0) {
+                  const pNum = this.toProcess.keys().next().value;
+                  const p = this.board.toPoint(pNum);
+                  const r = this.toProcess.get(pNum);
+                  this.toProcess.delete(pNum);
+                  this.processPoint(p, r, cpyFn, processCb);
+              }
+          }
+          reset() {
+              this.results.clear();
+              this.toProcess.clear();
+          }
+          processPoint(p, prevResult, cpyFn, processCb) {
+              const r = prevResult.clone(cpyFn);
+              r.path.push(p);
+              processCb(p, r);
+              if (r.isTerminated) {
+                  return;
+              }
+              let oldResult = this.getResult(p);
+              if (!oldResult || r.score > oldResult.score) {
+                  if (r.isValid) {
+                      this.setResult(p, r);
+                  }
+                  this.queuePoints(this.getTileNeighbors(p, r.path), r);
+              }
+          }
+          queuePoints(points, r) {
+              for (const p of points) {
+                  const pNum = this.board.toNum(p);
+                  const oldRes = this.toProcess.get(pNum);
+                  const sameValidity = oldRes && oldRes.isValid === r.isValid;
+                  const betterValidity = oldRes && !oldRes.isValid && r.isValid;
+                  const better = oldRes && this.resultComparator(oldRes, r) < 0;
+                  if (!oldRes ||
+                      betterValidity ||
+                      (sameValidity && better)) {
+                      this.toProcess.set(pNum, r);
+                  }
+              }
+          }
+          forEach(cb) {
+              this.results.forEach((r, pNum) => {
+                  const p = this.board.toPoint(pNum);
+                  return cb(r, p);
+              });
+          }
+          getResult(p) {
+              return this.results.get(this.board.toNum(p));
+          }
+          setResult(p, r) {
+              this.results.set(this.board.toNum(p), r);
+          }
+          getTileNeighbors(point, ignoredPoints) {
+              let n = [];
+              n.push(tile_6.PointHelpers.up(point));
+              n.push(tile_6.PointHelpers.down(point));
+              n.push(tile_6.PointHelpers.left(point));
+              n.push(tile_6.PointHelpers.right(point));
+              n = n.filter((p) => {
+                  for (const i of ignoredPoints) {
+                      if (tile_6.PointHelpers.equals(p, i)) {
+                          return false;
+                      }
+                  }
+                  return this.board.validatePoint(p)
+                      && this.validatePoint(p);
+              });
+              return n;
+          }
+      }
+      exports.MapProcessor = MapProcessor;
+      class Result {
+          constructor() {
+              this.path = [];
+              this.isTerminated = false;
+              this.score = -Infinity;
+              this.isValid = false;
+          }
+          terminate() {
+              this.isTerminated = true;
+          }
+          clone(customDataCopyFn) {
+              const r = new Result();
+              r.path = this.path.slice();
+              r.customData = customDataCopyFn(this.customData);
+              r.isTerminated = this.isTerminated;
+              return r;
+          }
+      }
+      exports.Result = Result;
+  });
+  define("tasks/attack-task", ["require", "exports", "tasks/abstract-task", "map-processor"], function (require, exports, abstract_task_2, map_processor_1) {
       "use strict";
       class AttackTask extends abstract_task_2.AbstractTask {
           constructor(board) {
               super(board);
               this.debugSectionName = 'Attack Task';
               this.name = 'Attack';
-              this.bestEnemyPlayerStrength = 0;
-              this.deepTreeSearch = new deep_tree_search_1.DeepTreeSearch(this.board);
+              this.movesLimit = 20;
+              this.toursGap = 0;
+              this.priority = 18;
+              this.bigAttackTime = 100;
+              this.mapProcessor = new map_processor_1.MapProcessor(this.board, null, AttackTask.compareResults);
           }
           onNextTurn(boardChanges) {
+              this.toursGap++;
           }
           getDebugParameters() {
               const map = new Map();
-              map.set('Victim color', this.bestEnemyScore ? game_interfaces_4.PlayerColors[this.bestEnemyScore.i] : 'none');
-              map.set('Victim free army', this.bestEnemyPlayerStrength);
+              map.set('Moves limit', this.movesLimit);
               return map;
           }
-          getTaskPriority() {
-              if (this.board.data.turn < 50) {
+          static compareResults(a, b) {
+              const general = a.customData.isGeneral - b.customData.isGeneral;
+              if (general !== 0) {
+                  return general;
               }
-              return this.board.data.turn < 50 * 2 ? 5 : 18;
+              const enemy = a.customData.enemyScore - b.customData.enemyScore;
+              if (enemy !== 0) {
+                  return enemy;
+              }
+              const gain = a.customData.gained - b.customData.gained;
+              if (gain !== 0) {
+                  return gain;
+              }
+              const score = a.score - b.score;
+              if (score !== 0) {
+                  return score;
+              }
+              return a.customData.scorePerMove - b.customData.scorePerMove;
+          }
+          getTaskPriority() {
+              if (this.board.data.turn < 100) {
+                  return 5;
+              }
+              return this.priority;
           }
           doMove() {
-              const maxDepth = 10;
-              let bestMove;
-              let bestScore = -Infinity;
-              this.bestEnemyPlayerStrength = Infinity;
+              if (this.priority < 20) {
+                  this.bigAttackTime--;
+              }
+              if (this.toursGap > 20 || this.bigAttackTime <= 0) {
+                  this.movesLimit += 15;
+              }
+              this.priority = 25;
+              this.toursGap = 0;
+              if (this.bigAttackTime < 0) {
+                  this.bigAttackTime = 50;
+              }
+              let bestResult;
               let list = this.board.playersArmy.enemyPlayers.slice();
+              let enemyList = [];
               for (let playerArmy of list) {
                   for (let pNum of playerArmy) {
-                      const enemyScore = this.board.getPlayerScore(this.board.getTileProperties(this.board.toPoint(pNum)).tileType);
-                      const enemyArmy = enemyScore.total;
-                      if (this.bestEnemyPlayerStrength < enemyArmy) {
-                          continue;
-                      }
-                      this.deepTreeSearch.process(this.board.toPoint(pNum), maxDepth, (p, depthLeft, acc, stop) => {
-                          const tp = this.board.getTileProperties(p);
-                          let armyLeft = acc.armyLeft;
-                          let path = acc.path.slice();
-                          let score = acc.score;
-                          path.push(p);
-                          if (armyLeft === null) {
-                              armyLeft = tp.army;
-                          }
-                          else {
-                              if (!tp.isMine && !tp.isEmpty || tp.isGeneral) {
-                                  stop();
-                                  return;
-                              }
-                              if (tp.isMine) {
-                                  armyLeft -= tp.army - 1;
-                              }
-                              else {
-                                  armyLeft += tp.army + 1;
-                              }
-                          }
-                          if (armyLeft < 0 && path.length >= 2) {
-                              let score = -armyLeft * depthLeft;
-                              const betterScore = score > bestScore;
-                              const sameScore = score === bestScore;
-                              const shorter = !bestMove || path.length < bestMove.length;
-                              if (betterScore ||
-                                  sameScore && shorter) {
-                                  bestMove = path;
-                                  bestScore = score;
-                                  this.bestEnemyPlayerStrength = enemyArmy;
-                                  this.bestEnemyScore = enemyScore;
-                              }
-                          }
-                          return { armyLeft, path };
-                      }, { armyLeft: null, path: [], score: 0 });
+                      const p = this.board.toPoint(pNum);
+                      enemyList.push(p);
                   }
               }
-              if (bestMove) {
-                  if (bestMove.length < 2) {
+              this.mapProcessor.process(enemyList, (p, r) => {
+                  const tp = this.board.getTileProperties(p);
+                  if (r.customData.lastGap < 1) {
+                      r.customData.lastGap = 1;
+                      r.customData.gapLength = 0;
+                  }
+                  if (tp.isFog || (tp.isMine && tp.isGeneral)) {
+                      r.terminate();
+                  }
+                  const availableArmy = tp.isMine ? tp.army - 1 : -(tp.army + 1);
+                  r.customData.moves += tp.isEnemy ? 0 : 1;
+                  if (tp.isEnemy) {
+                      r.customData.gained++;
+                  }
+                  r.customData.lastGap -= availableArmy;
+                  r.customData.army += availableArmy;
+                  if (r.path.length === 1) {
+                      const enemyScore = this.board.getPlayerScore(tp.tileType);
+                      const enemyArmy = enemyScore.total;
+                      r.customData.isGeneral = tp.isGeneral ? 1 : 0;
+                      r.customData.lastGap = 1;
+                      r.customData.gapLength = 0;
+                      r.customData.enemyScore = -enemyArmy;
+                  }
+                  if (r.customData.lastGap > 0) {
+                      r.customData.gapLength++;
+                  }
+                  if (r.customData.gapLength > 5 || r.customData.moves > this.movesLimit) {
+                      r.terminate();
+                  }
+                  r.score = r.customData.army;
+                  r.customData.scorePerMove = r.score / r.customData.army;
+                  r.isValid = r.customData.lastGap <= 0 && r.customData.army > 0;
+              }, { army: 0, lastGap: 1, gapLength: 0, enemyScore: 0, gained: 0, isGeneral: 0, moves: 0, scorePerMove: 0 });
+              this.mapProcessor.forEach((r) => {
+                  if (r.path.length >= 2 && r.isValid) {
+                      const betterPath = bestResult && AttackTask.compareResults(bestResult, r) < 0;
+                      if (!bestResult || betterPath) {
+                          bestResult = r;
+                      }
+                  }
+              });
+              if (bestResult) {
+                  if (this.movesLimit > 1) {
+                      this.movesLimit -= 1;
+                  }
+                  if (bestResult.customData.moves > 1 && bestResult.customData.moves < this.movesLimit) {
+                      this.movesLimit = bestResult.customData.moves;
+                  }
+                  if (bestResult.path.length < 2) {
                       return false;
                   }
-                  let l = bestMove.length;
-                  this.board.debug.showPath(bestMove);
-                  return this.board.attack(bestMove[l - 1], bestMove[l - 2], false);
+                  let l = bestResult.path.length;
+                  this.board.debug.showPath(bestResult.path);
+                  return this.board.attack(bestResult.path[l - 1], bestResult.path[l - 2], false);
+              }
+              else {
+                  this.movesLimit += 5;
+                  if (this.movesLimit > 25) {
+                      this.movesLimit = 25;
+                  }
+                  this.priority = 18;
               }
               return false;
           }
@@ -19674,23 +19863,22 @@
       class GeneralDistanceKnowledgeSource extends abstract_knowledge_source_2.AbstractKnowledgeSource {
           constructor(board) {
               super(board);
+              this.cityNumber = 0;
               this.priorityMap = new priority_map_3.PriorityMap(this.board);
           }
           onNextTurn(boardChanges) {
               if (!this.generalLocation) {
                   this.generalLocation = this.board.getMyGeneralLocation();
-                  this.target = new DistanceTarget(this.generalLocation);
+                  this.target = new priority_map_3.DistanceTarget(this.generalLocation);
                   this.priorityMap.addTarget(this.target);
                   console.log('addGeneral', this.generalLocation);
               }
-              for (let pNum in boardChanges.mapChanges) {
-                  let p = this.board.toPoint(+pNum);
-                  let tp = this.board.getTileProperties(p);
-                  if (tp.isCity) {
-                      this.target.priorityMap.clear();
-                      this.priorityMap.computeMap();
-                  }
+              if (this.board.cityLocations.size !== this.cityNumber) {
+                  this.target.priorityMap.clear();
+                  this.priorityMap.computeMap();
+                  this.cityNumber = this.board.cityLocations.size;
               }
+              //this.board.debug.displayPriorityMap(this.board, this.priorityMap);
           }
           getGeneralDistance(point) {
               let prio = this.priorityMap.getPriorityIn(point);
@@ -19698,19 +19886,55 @@
           }
       }
       exports.GeneralDistanceKnowledgeSource = GeneralDistanceKnowledgeSource;
-      class DistanceTarget extends priority_map_3.Target {
-          constructor(point) {
-              super(point, 0, 0, 0);
+  });
+  define("deep-tree-search", ["require", "exports", "tile"], function (require, exports, tile_7) {
+      "use strict";
+      class DeepTreeSearch {
+          constructor(board) {
+              this.board = board;
           }
-          getPriorityForDepth(depth) {
-              return depth;
+          process(p, maxDepth, processCb, initialAcc) {
+              this.processPoint(p, processCb, [], maxDepth, initialAcc);
           }
-          isMaximumDepth(depth) {
-              return false;
+          processPoint(p, processCb, ignorePoints, depth, acc) {
+              ignorePoints = ignorePoints.slice();
+              ignorePoints.push(p);
+              let stop = false;
+              acc = processCb(p, depth, acc, () => {
+                  stop = true;
+              });
+              depth--;
+              if (depth <= 0 || stop) {
+                  return;
+              }
+              for (let n of this.getTileNeighbors(p)) {
+                  let ignore = false;
+                  for (let i of ignorePoints) {
+                      if (tile_7.PointHelpers.equals(i, n)) {
+                          ignore = true;
+                      }
+                  }
+                  if (!ignore) {
+                      this.processPoint(n, processCb, ignorePoints, depth, acc);
+                  }
+              }
+          }
+          getTileNeighbors(point) {
+              let n = [];
+              n.push(tile_7.PointHelpers.up(point));
+              n.push(tile_7.PointHelpers.down(point));
+              n.push(tile_7.PointHelpers.left(point));
+              n.push(tile_7.PointHelpers.right(point));
+              n = n.filter((p) => {
+                  return this.board.validatePoint(p)
+                      && this.board.getTileProperties(p).isWalkable;
+              });
+              return n;
           }
       }
+      exports.DeepTreeSearch = DeepTreeSearch;
   });
-  define("tasks/protect-general-task", ["require", "exports", "tasks/abstract-task", "deep-tree-search"], function (require, exports, abstract_task_3, deep_tree_search_2) {
+  define("tasks/protect-general-task", ["require", "exports", "tasks/abstract-task", "map-processor"], function (require, exports, abstract_task_3, map_processor_2) {
       "use strict";
       class ProtectGeneralTask extends abstract_task_3.AbstractTask {
           constructor(board) {
@@ -19719,8 +19943,26 @@
               this.name = 'Protect General';
               this.maxScore = 0;
               this.distance = 0;
-              this.previousBestPath = null;
-              this.deepTreeSearch = new deep_tree_search_2.DeepTreeSearch(this.board);
+              this.mapProcessor = new map_processor_2.MapProcessor(this.board, null, ProtectGeneralTask.compareResults);
+          }
+          static compareResults(a, b) {
+              const aKillIt = a.customData.army > 0;
+              const bKillIt = b.customData.army > 0;
+              if (aKillIt && !bKillIt) {
+                  return 1;
+              }
+              else if (!aKillIt && bKillIt) {
+                  return -1;
+              }
+              const moves = b.customData.moves - a.customData.moves;
+              if (moves !== 0 && aKillIt && bKillIt) {
+                  return moves;
+              }
+              const army = a.customData.army - b.customData.army;
+              if (army !== 0) {
+                  return army;
+              }
+              return b.customData.generalDistance - a.customData.generalDistance;
           }
           onNextTurn(boardChanges) {
               this.maxScore = 0;
@@ -19730,12 +19972,12 @@
                   for (let pNum of playerArmy) {
                       let p = this.board.toPoint(pNum);
                       let dist = this.board.generalDistance.getGeneralDistance(p);
-                      if (dist > 13) {
+                      if (dist > 25) {
                           continue;
                       }
                       const tp = this.board.getTileProperties(p);
-                      const armyMultiplier = dist > 3 ? (tp.army - dist) : tp.army * 5;
-                      let score = ((13 - dist) * (13 - dist) * armyMultiplier);
+                      const armyMultiplier = dist > 5 ? (tp.army - dist) : tp.army * 5;
+                      let score = ((25 - dist) * (25 - dist) * armyMultiplier);
                       if (this.maxScore < score) {
                           this.maxScore = score;
                           this.dangerArmy = p;
@@ -19759,78 +20001,79 @@
               if (!this.dangerArmy) {
                   return false;
               }
-              const startDepth = 14;
-              let bestPath;
-              let minMoves = Infinity;
-              let bestArmyLeft = Infinity;
-              this.deepTreeSearch.process(this.dangerArmy, startDepth, (p, depthLeft, acc, stop) => {
+              let bestResult;
+              this.mapProcessor.process([this.dangerArmy], (p, r) => {
                   const tp = this.board.getTileProperties(p);
-                  let armyLeft = acc.armyLeft;
-                  let path = acc.path.slice();
-                  let moves = acc.moves;
-                  let valid = acc.valid;
-                  path.push(p);
-                  if (armyLeft === null) {
-                      armyLeft = tp.army;
+                  if (r.customData.lastGap < 1) {
+                      r.customData.lastGap = 1;
+                      r.customData.gapLength = 0;
                   }
-                  else {
-                      if (tp.isMine) {
-                          moves += 1;
-                          armyLeft -= tp.army - 1;
-                          if (tp.army > 1) {
-                              valid = true;
-                          }
-                      }
-                      else {
-                          moves += 2;
-                          armyLeft += tp.army + 1;
-                      }
-                      const canUse = tp.isMine || tp.isEmpty || (tp.isEnemy && tp.army <= 10);
-                      if (!canUse || (minMoves < moves && bestArmyLeft < 0)) {
-                          stop();
-                          return;
-                      }
+                  if (tp.isFog) {
+                      r.terminate();
                   }
-                  if (path.length >= 2 && valid) {
-                      const weCanKillIt = bestArmyLeft < 0;
-                      const itCanKillIt = armyLeft < 0;
-                      const shorterPath = weCanKillIt && itCanKillIt && moves < minMoves;
-                      const betterPath = !weCanKillIt && armyLeft < bestArmyLeft;
-                      if (shorterPath || betterPath) {
-                          bestPath = path;
-                          minMoves = moves;
-                          bestArmyLeft = armyLeft;
+                  if (r.customData.army > 0) {
+                      r.terminate();
+                  }
+                  const availableArmy = tp.isMine ? (tp.army - 1) : -(tp.army + 1);
+                  r.customData.moves += tp.isEnemy ? 2 : 1;
+                  r.customData.lastGap -= availableArmy;
+                  r.customData.army += availableArmy;
+                  if (r.path.length === 1) {
+                      r.customData.lastGap = 1;
+                      r.customData.gapLength = 0;
+                  }
+                  if (r.customData.lastGap > 0) {
+                      r.customData.gapLength++;
+                  }
+                  r.customData.generalDistance += this.board.generalDistance.getGeneralDistance(p);
+                  if (r.customData.moves > 25) {
+                      r.terminate();
+                  }
+                  r.score = r.customData.army / r.customData.moves;
+                  r.isValid = r.customData.lastGap <= 0;
+              }, { army: 0, lastGap: 1, gapLength: 0, moves: 0, generalDistance: 0 });
+              this.mapProcessor.forEach((r) => {
+                  if (r.path.length >= 2 && r.isValid) {
+                      const betterPath = bestResult && ProtectGeneralTask.compareResults(bestResult, r) < 0;
+                      if (!bestResult || betterPath) {
+                          bestResult = r;
                       }
                   }
-                  return { armyLeft, path, moves, valid };
-              }, { armyLeft: null, path: [], moves: 0, valid: false });
-              if (bestPath) {
-                  if (bestPath.length < 2) {
+              });
+              if (bestResult) {
+                  if (bestResult.path.length < 2) {
                       return false;
                   }
-                  let l = bestPath.length;
+                  // this.board.debug.displayMapOverlay(this.board, (p) =>{
+                  //     const r = this.mapProcessor.getResult(p);
+                  //     if(r) {
+                  //         return `${r.score}-${r.customData.moves}`;
+                  //     }
+                  //     return '';
+                  // });
+                  let l = bestResult.path.length;
                   console.log('Protect General!');
-                  this.board.debug.showPath(bestPath);
-                  return this.board.attack(bestPath[l - 1], bestPath[l - 2], false);
+                  this.board.debug.showPath(bestResult.path);
+                  return this.board.attack(bestResult.path[l - 1], bestResult.path[l - 2], false);
               }
               return false;
           }
       }
       exports.ProtectGeneralTask = ProtectGeneralTask;
   });
-  define("tasks/city-capture-task", ["require", "exports", "tasks/abstract-task", "deep-tree-search"], function (require, exports, abstract_task_4, deep_tree_search_3) {
+  define("tasks/city-capture-task", ["require", "exports", "tasks/abstract-task", "deep-tree-search"], function (require, exports, abstract_task_4, deep_tree_search_1) {
       "use strict";
       class CityCaptureTask extends abstract_task_4.AbstractTask {
           constructor(board) {
               super(board);
               this.name = 'City Capture';
-              this.deepTreeSearch = new deep_tree_search_3.DeepTreeSearch(this.board);
+              this.deepTreeSearch = new deep_tree_search_1.DeepTreeSearch(this.board);
           }
           onNextTurn(boardChanges) {
           }
           getTaskPriority() {
               const score = this.board.getMyScore();
-              const freeArmy = (score.total - score.tiles * 2) - 70;
+              const freeArmy = (score.total - score.tiles * 2) - 50;
               return freeArmy > 50 ? 20 : 0;
           }
           doMove() {
@@ -19864,6 +20107,10 @@
                           }
                           armyLeft -= tp.army - 1;
                       }
+                      if (tp.isGeneral) {
+                          stop();
+                          return;
+                      }
                       if (armyLeft < 0 && path.length >= 2) {
                           const isShorter = !bestPath || path.length < bestPath.length;
                           if (isShorter || bestArmyLeft > armyLeft) {
@@ -19896,7 +20143,9 @@
               this.moveChoicer = new increase_army_score_2.IncreaseArmyScoreMoveChoicer(this.board);
           }
           onNextTurn(boardChanges) {
-              this.priority += 0.5;
+              if (this.board.data.turn % 50 == 0) {
+                  this.priority = 20;
+              }
           }
           getTaskPriority() {
               return this.priority;
@@ -19978,7 +20227,7 @@
                   if (prio < 0) {
                       prio = 0;
                   }
-                  let target = new priority_map_4.Target(this.board.toPoint(pNum), army, 0.5);
+                  let target = new priority_map_4.DistanceTarget(this.board.toPoint(pNum));
                   this.targets.set(pNum, target);
                   this.priorityMap.addTarget(target);
               }
@@ -20043,80 +20292,73 @@
       }
       exports.IncreaseScoreMoveChoicer = IncreaseScoreMoveChoicer;
   });
-  define("tasks/collect-task", ["require", "exports", "tasks/abstract-task", "targets-generators/army-target-generator", "priority-map", "move-choicer/increase-score", "deep-tree-search"], function (require, exports, abstract_task_6, army_target_generator_1, priority_map_5, increase_score_1, deep_tree_search_4) {
+  define("tasks/collect-task", ["require", "exports", "tasks/abstract-task", "targets-generators/army-target-generator", "priority-map", "move-choicer/increase-score", "deep-tree-search", "map-processor"], function (require, exports, abstract_task_6, army_target_generator_1, priority_map_5, increase_score_1, deep_tree_search_2, map_processor_3) {
       "use strict";
       class CollectTask extends abstract_task_6.AbstractTask {
           constructor(board) {
               super(board);
+              this.debugSectionName = 'Collect Task';
               this.name = 'Collect Army';
               this.priority = 0;
               this.toursGap = 0;
+              this.debugMap = new Map();
               this.priorityMap = new priority_map_5.PriorityMap(this.board);
               this.moveChoicer = new increase_score_1.IncreaseScoreMoveChoicer(this.board);
-              this.deepTreeSearch = new deep_tree_search_4.DeepTreeSearch(this.board);
+              this.deepTreeSearch = new deep_tree_search_2.DeepTreeSearch(this.board);
               this.armyTargetGenerator = new army_target_generator_1.ArmyTargetGenerator(this.board, this.priorityMap);
+              this.mapProcessor = new map_processor_3.MapProcessor(this.board);
           }
           onNextTurn(boardChanges) {
               this.armyTargetGenerator.onNextTurn(boardChanges);
               if (this.priority < 19) {
-                  this.priority += 0.25;
               }
               this.toursGap++;
           }
           getTaskPriority() {
               return this.priority;
           }
+          getDebugParameters() {
+              return this.debugMap;
+          }
           doMove() {
               if (this.toursGap > 60) {
-                  this.priority += 25;
+                  this.priority += 10;
               }
               this.toursGap = 0;
-              const maxDepth = 9;
-              let maxPoints = 30;
-              let bestArmyScore = 2;
+              const maxPath = 20;
+              const armyPoints = [];
               let bestPath;
-              let bestArmySize = maxDepth * 2;
-              for (let startPoint of this.sortByPrio()) {
-                  const sTp = this.board.getTileProperties(startPoint.p);
-                  if (sTp.army <= 1) {
-                      continue;
+              let bestArmy = -Infinity;
+              this.board.playersArmy.myArmyList.forEach((pNum) => {
+                  const p = this.board.toPoint(pNum);
+                  armyPoints.push(p);
+              });
+              this.mapProcessor.process(armyPoints, (p, r) => {
+                  const tp = this.board.getTileProperties(p);
+                  if (!tp.isMine || r.path.length > maxPath) {
+                      r.terminate();
+                      return;
                   }
-                  if (maxPoints <= 0) {
-                      break;
+                  if (r.customData.lastGap < 1) {
+                      r.customData.lastGap = 1;
                   }
-                  maxPoints--;
-                  this.deepTreeSearch.process(startPoint.p, maxDepth, (p, depthLeft, acc, stop) => {
-                      const tp = this.board.getTileProperties(p);
-                      let army = acc.army;
-                      let path = acc.path.slice();
-                      let armies = acc.armies.slice();
-                      path.push(p);
-                      if (!tp.isMine || tp.isGeneral) {
-                          stop();
-                          return;
+                  const availableArmy = tp.army - 1;
+                  r.customData.lastGap -= availableArmy;
+                  r.customData.army += availableArmy;
+                  r.score = r.customData.army;
+                  r.isValid = r.customData.lastGap <= 0;
+              }, { army: 0, lastGap: 1 });
+              this.mapProcessor.forEach((r) => {
+                  if (r.path.length >= 2 && r.isValid) {
+                      const betterPath = r.score > bestArmy;
+                      if (betterPath) {
+                          bestPath = r.path;
+                          bestArmy = r.score;
                       }
-                      army *= 0.8;
-                      army += tp.army - 1;
-                      armies.push(tp.army - 1);
-                      if (tp.army > 1 && path.length >= 2) {
-                          const isShorter = !bestPath || path.length < bestPath.length;
-                          const score = this.scoreIncrease(armies);
-                          const betterScore = score > bestArmyScore;
-                          const sameScore = score === bestArmyScore;
-                          const sameArmySize = bestArmySize === army;
-                          if (betterScore ||
-                              sameScore && army > bestArmySize ||
-                              sameScore && sameArmySize && isShorter) {
-                              bestArmyScore = score;
-                              bestPath = path;
-                              bestArmySize = army;
-                          }
-                      }
-                      return { army, path, armies };
-                  }, { army: 0, path: [], armies: [] });
-              }
+                  }
+              });
+              this.debugMap.set('Best Score', bestArmy);
               if (bestPath) {
-                  console.log(bestPath, bestArmyScore);
                   this.priority -= 1;
                   let l = bestPath.length;
                   this.board.debug.showPath(bestPath);
@@ -20126,26 +20368,104 @@
               this.priority = -10;
               return false;
           }
-          scoreIncrease(armies) {
-              let score = 0;
-              for (let a of armies) {
-                  score += a * a;
-              }
-              return score;
-          }
-          sortByPrio() {
-              let list = [];
-              this.board.playersArmy.myArmyList.forEach((pNum) => {
-                  let p = this.board.toPoint(pNum);
-                  let prio = this.priorityMap.getPriorityIn(p);
-                  list.push({ p, prio });
-              });
-              return list.sort((a, b) => b.prio - a.prio);
-          }
       }
       exports.CollectTask = CollectTask;
   });
-  define("board", ["require", "exports", "knowledge-sources/army", "tile-properties", "tasks/spread-task", "tasks/attack-task", "knowledge-sources/general-distance", "tasks/protect-general-task", "tasks/city-capture-task", "debug-layout", "tasks/fast-spread-task", "tasks/collect-task"], function (require, exports, army_1, tile_properties_1, spread_task_1, attack_task_1, general_distance_1, protect_general_task_1, city_capture_task_1, debug_layout_1, fast_spread_task_1, collect_task_1) {
+  define("tasks/gather-everything-task", ["require", "exports", "tasks/abstract-task", "decision-makers"], function (require, exports, abstract_task_7, decision_makers_4) {
+      "use strict";
+      class GatherEverythingTask extends abstract_task_7.AbstractTask {
+          constructor(board) {
+              super(board);
+              this.name = 'Gather Everything';
+              this.priority = 0;
+              this.valid = 0;
+              this.level = 0;
+              window['trigger'] = () => {
+                  this.priority = 1000;
+              };
+          }
+          onNextTurn(boardChanges) {
+              this.valid--;
+          }
+          getTaskPriority() {
+              return this.priority;
+          }
+          doMove() {
+              if (this.valid <= 0) {
+                  this.init();
+              }
+              this.valid = 10;
+              while (this.level > 0) {
+                  console.log('consider level', this.level, this.unitsInLevel);
+                  if (this.unitsInLevel.length == 0) {
+                      this.nextLevel();
+                      continue;
+                  }
+                  let moved = this.tryMove();
+                  if (moved) {
+                      return true;
+                  }
+              }
+              this.priority = 0;
+              return false;
+          }
+          tryMove() {
+              while (this.unitsInLevel.length > 0) {
+                  console.log('consider move', this.level, this.unitsInLevel);
+                  const p = this.unitsInLevel.shift();
+                  const tp = this.board.getTileProperties(p);
+                  if (tp.army <= 1 || !tp.isMine) {
+                      continue;
+                  }
+                  let move = decision_makers_4.getBestPoint(p, (n) => {
+                      if (!this.board.validatePoint(n)) {
+                          return -Infinity;
+                      }
+                      return 1000 - this.board.generalDistance.getGeneralDistance(n);
+                  });
+                  if (move.score > 0) {
+                      this.board.debug.showPath([move.p, p]);
+                      this.board.attack(p, move.p, false);
+                      return true;
+                  }
+              }
+              return false;
+          }
+          init() {
+              this.level = this.countMaxLevel();
+              this.unitsInLevel = this.getUnitsFromLevel(this.level);
+              console.log('init', this.level, this.unitsInLevel);
+          }
+          nextLevel() {
+              this.level--;
+              this.unitsInLevel = this.getUnitsFromLevel(this.level);
+          }
+          countMaxLevel() {
+              let maxLevel = 0;
+              this.board.playersArmy.myArmyList.forEach((pNum) => {
+                  const p = this.board.toPoint(pNum);
+                  const dist = this.board.generalDistance.getGeneralDistance(p);
+                  if (dist < 1000 && maxLevel < dist) {
+                      maxLevel = dist;
+                  }
+              });
+              return maxLevel;
+          }
+          getUnitsFromLevel(level) {
+              let units = [];
+              this.board.playersArmy.myArmyList.forEach((pNum) => {
+                  const p = this.board.toPoint(pNum);
+                  const dist = this.board.generalDistance.getGeneralDistance(p);
+                  if (dist === level) {
+                      units.push(p);
+                  }
+              });
+              return units;
+          }
+      }
+      exports.GatherEverythingTask = GatherEverythingTask;
+  });
+  define("board", ["require", "exports", "knowledge-sources/army", "tile-properties", "tasks/spread-task", "tasks/attack-task", "knowledge-sources/general-distance", "tasks/protect-general-task", "tasks/city-capture-task", "debug-layout", "tasks/fast-spread-task", "tasks/collect-task", "tasks/gather-everything-task"], function (require, exports, army_1, tile_properties_1, spread_task_1, attack_task_1, general_distance_1, protect_general_task_1, city_capture_task_1, debug_layout_1, fast_spread_task_1, collect_task_1, gather_everything_task_1) {
       "use strict";
       class Board {
           constructor() {
@@ -20170,7 +20490,10 @@
               this.tasks.push(new spread_task_1.SpreadTask(this));
               this.tasks.push(new city_capture_task_1.CityCaptureTask(this));
               this.tasks.push(new fast_spread_task_1.FastSpreadTask(this));
-              this.tasks.push(new collect_task_1.CollectTask(this));
+              this.tasks.push(new gather_everything_task_1.GatherEverythingTask(this));
+              let collectTask = new collect_task_1.CollectTask(this);
+              this.tasks.push(collectTask);
+              this.debugParameters.push(collectTask);
               this.resetCaches();
               console.log('Board init');
           }

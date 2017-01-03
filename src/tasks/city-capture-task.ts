@@ -58,6 +58,12 @@ export class CityCaptureTask extends AbstractTask {
                         armyLeft -= tp.army - 1;
                     }
 
+
+                    if(tp.isGeneral) {
+                        stop();
+                        return;
+                    }
+
                     if (armyLeft < 0 && path.length >= 2) {
                         const isShorter = !bestPath || path.length < bestPath.length;
 
