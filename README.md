@@ -1,6 +1,6 @@
 # generalsAI
 This is work in progress on AI implementation for generals.io
-Compatible with generals.ai 8.3
+Compatible with generals.ai 8.4
 
 Currently AI is able to beat most of the players in 1v1 mode.
 It currently plays very defensive slowly taking over the map.
@@ -14,7 +14,7 @@ Install browser extension that allow to replace resources like [Requestly](https
 
 Add redirect rule url matching with regexp
 ```
-/http://(eu\.)?generals\.io/generals-bundle-prod-v8.3\.js/
+/http://(eu\.)?generals\.io/generals-bundle-prod-v8.4\.js/
 ```
 With destination:
 ```

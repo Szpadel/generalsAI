@@ -47,20 +47,20 @@
     ;
     var r = (n(1),
         n(2));
-    n(316);
-    var o = n(264)
+    n(321);
+    var o = n(265)
         , i = n(176)
         , a = n(3)
-        , s = n(208)
-        , u = n(178);
-    n(210);
+        , s = n(209)
+        , u = n(179);
+    n(211);
     var c = u.connect(function(e) {
         return {
             state: e
         }
     })(r);
     s.render(a.createElement(u.Provider, {
-        store: n(264)
+        store: n(265)
     }, a.createElement(c, null)), document.getElementById("react-container")),
         window.onbeforeunload = function(e) {
             if (e = e || window.event,
@@ -74,7 +74,7 @@
     , function(e, t) {
         "use strict";
         e.exports = {
-            VERSION: "8.3",
+            VERSION: "8.4",
             PLAYER_CAP: 8,
             PLAYER_COLORS: ["red", "blue", "green", "purple", "teal", "darkgreen", "orange", "maroon"],
             MAX_USERNAME_LENGTH: 16,
@@ -97,21 +97,25 @@
             , o = n(30)
             , i = n(176)
             , a = n(177)
-            , s = n(307)
-            , u = n(308)
-            , c = n(315)
-            , l = r.createClass({
+            , s = n(178)
+            , u = n(309)
+            , c = n(311)
+            , l = n(315)
+            , p = n(320)
+            , h = r.createClass({
             displayName: "App",
             render: function() {
                 var e = this.props.state
                     , t = null;
-                return e.page === i.PAGE_MAIN_MENU ? t = r.createElement(a, {
+                return e.page === i.PAGE_MAIN_MENU ? t = r.createElement(s, {
                         key: "main-menu"
-                    }) : e.page === i.PAGE_QUEUE ? t = r.createElement(s, {
-                            key: "queue"
-                        }) : e.page === i.PAGE_GAME ? t = r.createElement(u, {
+                    }) : e.page === i.PAGE_QUEUE ? t = !e.queue.isTeamQueue && a.isCustomGame(e.queue.queue_id) ? r.createElement(c, {
+                                key: "custom-queue"
+                            }) : r.createElement(u, {
+                                key: "queue"
+                            }) : e.page === i.PAGE_GAME ? t = r.createElement(l, {
                                 key: "game-page"
-                            }) : e.page === i.PAGE_INVALID_REPLAY ? t = r.createElement(c, {
+                            }) : e.page === i.PAGE_INVALID_REPLAY ? t = r.createElement(p, {
                                     key: "invalid-replay-page"
                                 }) : console.error("Unrecognized page: " + e.page),
                     r.createElement(o, {
@@ -121,7 +125,7 @@
                     }, t)
             }
         });
-        e.exports = l
+        e.exports = h
     }
     , function(e, t, n) {
         "use strict";
@@ -311,7 +315,7 @@
         };
         e.exports = S
     }
-    , [317, 8], function(e, t) {
+    , [322, 8], function(e, t) {
         "use strict";
         function n(e) {
             for (var t = arguments.length - 1, n = "Minified React error #" + e + "; visit http://facebook.github.io/react/docs/error-decoder.html?invariant=" + e, r = 0; r < t; r++)
@@ -1207,7 +1211,7 @@
             , P = n(17)
             , _ = (n(12),
             "<<anonymous>>")
-            , M = {
+            , w = {
             array: a("array"),
             bool: a("boolean"),
             func: a("function"),
@@ -1226,7 +1230,7 @@
             shape: m
         };
         o.prototype = Error.prototype,
-            e.exports = M
+            e.exports = w
     }
     , function(e, t) {
         "use strict";
@@ -1864,10 +1868,10 @@
         }
         function c(e, t, n, r) {
             var o, c;
-            if (b ? o = i(e) : w ? s(e, n) && (o = _.compositionEnd) : a(e, n) && (o = _.compositionStart),
+            if (b ? o = i(e) : M ? s(e, n) && (o = _.compositionEnd) : a(e, n) && (o = _.compositionStart),
                     !o)
                 return null;
-            E && (w || o !== _.compositionStart ? o === _.compositionEnd && w && (c = w.getData()) : w = m.getPooled(r));
+            E && (M || o !== _.compositionStart ? o === _.compositionEnd && M && (c = M.getData()) : M = m.getPooled(r));
             var l = v.getPooled(o, t, n, r);
             if (c)
                 l.data = c;
@@ -1884,21 +1888,21 @@
                     return u(t);
                 case "topKeyPress":
                     var n = t.which;
-                    return n !== C ? null : (M = !0,
+                    return n !== C ? null : (w = !0,
                             P);
                 case "topTextInput":
                     var r = t.data;
-                    return r === P && M ? null : r;
+                    return r === P && w ? null : r;
                 default:
                     return null
             }
         }
         function p(e, t) {
-            if (w) {
+            if (M) {
                 if ("topCompositionEnd" === e || !b && s(e, t)) {
-                    var n = w.getData();
-                    return m.release(w),
-                        w = null,
+                    var n = M.getData();
+                    return m.release(M),
+                        M = null,
                         n
                 }
                 return null
@@ -1968,8 +1972,8 @@
                 dependencies: ["topBlur", "topCompositionUpdate", "topKeyDown", "topKeyPress", "topKeyUp", "topMouseDown"]
             }
         }
-            , M = !1
-            , w = null
+            , w = !1
+            , M = null
             , k = {
             eventTypes: _,
             extractEvents: function(e, t, n, r) {
@@ -2431,7 +2435,7 @@
             i.addPoolingTo(r),
             e.exports = r
     }
-    , [317, 36], function(e, t, n) {
+    , [322, 36], function(e, t, n) {
         "use strict";
         function r() {
             return !i && o.canUseDOM && (i = "textContent"in document.documentElement ? "textContent" : "innerText"),
@@ -2549,7 +2553,7 @@
             return "select" === t || "input" === t && "file" === e.type
         }
         function o(e) {
-            var t = E.getPooled(M.change, k, e, C(e));
+            var t = E.getPooled(w.change, k, e, C(e));
             T.accumulateTwoPhaseDispatches(t),
                 A.batchedUpdates(i, t)
         }
@@ -2558,13 +2562,13 @@
                 g.processEventQueue(!1)
         }
         function a(e, t) {
-            w = e,
+            M = e,
                 k = t,
-                w.attachEvent("onchange", o)
+                M.attachEvent("onchange", o)
         }
         function s() {
-            w && (w.detachEvent("onchange", o),
-                w = null,
+            M && (M.detachEvent("onchange", o),
+                M = null,
                 k = null)
         }
         function u(e, t) {
@@ -2576,17 +2580,17 @@
                     a(t, n)) : "topBlur" === e && s()
         }
         function l(e, t) {
-            w = e,
+            M = e,
                 k = t,
                 x = e.value,
                 I = Object.getOwnPropertyDescriptor(e.constructor.prototype, "value"),
-                Object.defineProperty(w, "value", R),
-                w.attachEvent ? w.attachEvent("onpropertychange", h) : w.addEventListener("propertychange", h, !1)
+                Object.defineProperty(M, "value", R),
+                M.attachEvent ? M.attachEvent("onpropertychange", h) : M.addEventListener("propertychange", h, !1)
         }
         function p() {
-            w && (delete w.value,
-                w.detachEvent ? w.detachEvent("onpropertychange", h) : w.removeEventListener("propertychange", h, !1),
-                w = null,
+            M && (delete M.value,
+                M.detachEvent ? M.detachEvent("onpropertychange", h) : M.removeEventListener("propertychange", h, !1),
+                M = null,
                 k = null,
                 x = null,
                 I = null)
@@ -2607,8 +2611,8 @@
                     l(t, n)) : "topBlur" === e && p()
         }
         function m(e, t) {
-            if (("topSelectionChange" === e || "topKeyUp" === e || "topKeyDown" === e) && w && w.value !== x)
-                return x = w.value,
+            if (("topSelectionChange" === e || "topKeyUp" === e || "topKeyDown" === e) && M && M.value !== x)
+                return x = M.value,
                     k
         }
         function v(e) {
@@ -2627,7 +2631,7 @@
             , C = n(65)
             , P = n(66)
             , _ = n(67)
-            , M = {
+            , w = {
             change: {
                 phasedRegistrationNames: {
                     bubbled: "onChange",
@@ -2636,7 +2640,7 @@
                 dependencies: ["topBlur", "topChange", "topClick", "topFocus", "topInput", "topKeyDown", "topKeyUp", "topSelectionChange"]
             }
         }
-            , w = null
+            , M = null
             , k = null
             , x = null
             , I = null
@@ -2654,7 +2658,7 @@
             }
         }
             , D = {
-            eventTypes: M,
+            eventTypes: w,
             extractEvents: function(e, t, n, o) {
                 var i, a, s = t ? S.getNodeFromInstance(t) : window;
                 if (r(s) ? N ? i = u : a = c : _(s) ? O ? i = d : (i = m,
@@ -2662,7 +2666,7 @@
                         i) {
                     var l = i(e, t);
                     if (l) {
-                        var p = E.getPooled(M.change, l, n, o);
+                        var p = E.getPooled(w.change, l, n, o);
                         return p.type = "change",
                             T.accumulateTwoPhaseDispatches(p),
                             p
@@ -2676,13 +2680,13 @@
     , function(e, t, n) {
         "use strict";
         function r() {
-            M.ReactReconcileTransaction && S ? void 0 : l("123")
+            w.ReactReconcileTransaction && S ? void 0 : l("123")
         }
         function o() {
             this.reinitializeTransaction(),
                 this.dirtyComponentsLength = null,
                 this.callbackQueue = h.getPooled(),
-                this.reconcileTransaction = M.ReactReconcileTransaction.getPooled(!0)
+                this.reconcileTransaction = w.ReactReconcileTransaction.getPooled(!0)
         }
         function i(e, t, n, o, i, a) {
             return r(),
@@ -2763,7 +2767,7 @@
                 this.dirtyComponentsLength = null,
                     h.release(this.callbackQueue),
                     this.callbackQueue = null,
-                    M.ReactReconcileTransaction.release(this.reconcileTransaction),
+                    w.ReactReconcileTransaction.release(this.reconcileTransaction),
                     this.reconcileTransaction = null
             },
             perform: function(e, t, n) {
@@ -2790,7 +2794,7 @@
             , _ = {
             injectReconcileTransaction: function(e) {
                 e ? void 0 : l("126"),
-                    M.ReactReconcileTransaction = e
+                    w.ReactReconcileTransaction = e
             },
             injectBatchingStrategy: function(e) {
                 e ? void 0 : l("127"),
@@ -2799,7 +2803,7 @@
                     S = e
             }
         }
-            , M = {
+            , w = {
             ReactReconcileTransaction: null,
             batchedUpdates: i,
             enqueueUpdate: u,
@@ -2807,7 +2811,7 @@
             injection: _,
             asap: c
         };
-        e.exports = M
+        e.exports = w
     }
     , function(e, t, n) {
         "use strict";
@@ -3851,7 +3855,7 @@
         }
         function s() {
             var e = this;
-            w.postMountWrapper(e)
+            M.postMountWrapper(e)
         }
         function u() {
             var e = this;
@@ -3932,8 +3936,8 @@
             , C = n(44)
             , P = n(101)
             , _ = n(38)
-            , M = n(35)
-            , w = n(104)
+            , w = n(35)
+            , M = n(104)
             , k = n(107)
             , x = n(108)
             , I = n(109)
@@ -3949,7 +3953,7 @@
             n(12),
             _)
             , B = E.deleteListener
-            , G = M.getNodeFromInstance
+            , G = w.getNodeFromInstance
             , L = P.listenTo
             , H = C.registrationNameModules
             , U = {
@@ -4041,8 +4045,8 @@
                                 e.getReactMountReady().enqueue(l, this);
                             break;
                         case "input":
-                            w.mountWrapper(this, i, t),
-                                i = w.getHostProps(this, i),
+                            M.mountWrapper(this, i, t),
+                                i = M.getHostProps(this, i),
                                 e.getReactMountReady().enqueue(l, this);
                             break;
                         case "option":
@@ -4080,7 +4084,7 @@
                                 d = i.is ? f.createElement(this._currentElement.type, i.is) : f.createElement(this._currentElement.type);
                         else
                             d = f.createElementNS(a, this._currentElement.type);
-                        M.precacheNode(this, d),
+                        w.precacheNode(this, d),
                             this._flags |= D.hasCachedChildNodes,
                         this._hostParent || A.setAttributeForRoot(d),
                             this._updateDOMProperties(null, i, e);
@@ -4172,8 +4176,8 @@
                         , a = this._currentElement.props;
                     switch (this._tag) {
                         case "input":
-                            i = w.getHostProps(this, i),
-                                a = w.getHostProps(this, a);
+                            i = M.getHostProps(this, i),
+                                a = M.getHostProps(this, a);
                             break;
                         case "option":
                             i = k.getHostProps(this, i),
@@ -4192,7 +4196,7 @@
                         this._updateDOMChildren(i, a, e, r),
                         this._tag) {
                         case "input":
-                            w.updateWrapper(this);
+                            M.updateWrapper(this);
                             break;
                         case "textarea":
                             I.updateWrapper(this);
@@ -4275,7 +4279,7 @@
                             m("66", this._tag)
                     }
                     this.unmountChildren(e),
-                        M.uncacheNode(this),
+                        w.uncacheNode(this),
                         E.deleteAllListeners(this),
                         this._rootNodeID = 0,
                         this._domID = 0,
@@ -7959,8 +7963,8 @@
             , C = n(60)
             , P = n(131)
             , _ = n(57)
-            , M = n(21)
-            , w = n(115)
+            , w = n(21)
+            , M = n(115)
             , k = (n(9),
             n(79))
             , x = n(119)
@@ -7997,7 +8001,7 @@
             _renderNewRootComponent: function(e, t, n, r) {
                 l(t) ? void 0 : d("37"),
                     y.ensureScrollValueMonitoring();
-                var o = w(e, !1);
+                var o = M(e, !1);
                 _.batchedUpdates(s, o, t, n, r);
                 var i = o._instance.rootID;
                 return B[i] = o,
@@ -8017,7 +8021,7 @@
                     var u = A.get(e);
                     a = u._processChildContext(u._context)
                 } else
-                    a = M;
+                    a = w;
                 var l = h(n);
                 if (l) {
                     var p = l._currentElement
@@ -8410,26 +8414,39 @@
             PAGE_INVALID_REPLAY: i
         }
     }
+    , function(e, t) {
+        "use strict";
+        e.exports = {
+            isCustomGame: function(e) {
+                return e && "1v1" !== e && "2v2" !== e && "main" !== e
+            },
+            chatRoomForCustomGame: function(e) {
+                return "chat_custom_queue_" + e;
+            }
+        }
+    }
     , function(e, t, n) {
         "use strict";
         var r = n(3)
-            , o = n(178)
-            , i = n(208)
-            , a = n(209)
-            , s = n(210)
+            , o = n(179)
+            , i = n(209)
+            , a = n(210)
+            , s = n(211)
             , u = n(287)
             , c = n(1)
-            , l = n(297)
-            , p = n(278)
-            , h = n(298)
-            , d = n(299)
-            , f = n(288)
-            , m = n(264)
-            , v = n(300)
-            , y = n(301)
-            , g = n(303)
-            , T = n(306)
-            , b = r.createClass({
+            , l = n(177)
+            , p = n(297)
+            , h = n(278)
+            , d = n(298)
+            , f = n(299)
+            , m = n(288)
+            , v = n(265)
+            , y = n(300)
+            , g = n(301)
+            , T = n(303)
+            , b = n(306)
+            , S = n(307)
+            , A = r.createClass({
             displayName: "RankItem",
             render: function() {
                 return this.props.stars || this.props.rank ? r.createElement("div", {
@@ -8442,7 +8459,7 @@
                         style: {
                             margin: 0
                         }
-                    }, r.createElement(l, {
+                    }, r.createElement(p, {
                         stars: Math.max(0, Math.round(10 * this.props.stars || 0) / 10)
                     })), this.props.rank ? r.createElement("p", {
                             style: {
@@ -8452,7 +8469,7 @@
                         }, "Rank #", this.props.rank || 0) : null) : null
             }
         })
-            , S = r.createClass({
+            , E = r.createClass({
             displayName: "MainMenu",
             getInitialState: function() {
                 return {
@@ -8464,8 +8481,8 @@
                         this.setState({
                             username: u.username
                         })) : i.findDOMNode(this.refs.username).focus(),
-                    h.doWhenVisible(function() {
-                        v.isPrivateURL() ? this.props.joinPrivateGame.bind(this)(v.getPrivateID()) : v.isReplayURL() ? s.getReplay(v.getReplayID(), f.startReplay) : v.isTeamURL() && this.props.joinTeam.bind(this)(v.getTeamID())
+                    d.doWhenVisible(function() {
+                        y.isPrivateURL() ? this.props.joinPrivateGame.bind(this)(y.getPrivateID()) : y.isReplayURL() ? s.getReplay(y.getReplayID(), m.startReplay) : y.isTeamURL() && this.props.joinTeam.bind(this)(y.getTeamID())
                     }
                         .bind(this)),
                     googletag.cmd.push(function() {
@@ -8477,7 +8494,7 @@
                                 showGameModes: !0
                             }) : this.props.onPlayFFA.call(this)) : void this.setState({
                             showNotConnected: !0
-                        }) : void f.startLocalTutorial(this.state.username)
+                        }) : void m.startLocalTutorial(this.state.username)
             },
             closeGameModes: function() {
                 this.setState({
@@ -8498,45 +8515,15 @@
             onLeaderboardClicked: function() {
                 this.setState({
                     showLeaderboard: !0,
-                    showReplayList: !1,
-                    ladder: "duel"
+                    showReplayList: !1
                 }),
                     s.updateStarsAndRank(),
-                    s.getLeaderboard("duel")
+                    s.getLeaderboard("duel"),
+                    s.getLeaderboard("ffa")
             },
-            swapLeaderboard: function() {
-                var e = "duel" == this.state.ladder ? "ffa" : "duel";
-                this.setState({
-                    ladder: e
-                }),
-                    s.getLeaderboard(e)
-            },
-            hideLeaderboard: function() {
+            hideLeaderboards: function() {
                 this.setState({
                     showLeaderboard: !1
-                })
-            },
-            leaderboardRows: function(e) {
-                var t = this
-                    , n = m.getState().menu.leaderboard
-                    , o = n ? n[e] : null;
-                if (!o && u) {
-                    var i = u["leaderboard:" + e];
-                    if (i)
-                        try {
-                            o = JSON.parse(i)
-                        } catch (e) {}
-                }
-                if (!o)
-                    return null;
-                var a = o.users
-                    , s = o.stars;
-                return (s || []).map(function(n, o) {
-                    var i = t.props.rank[e] === o + 1 && t.state.username === a[o];
-                    return r.createElement("tr", {
-                        key: "leaderboard-row-" + o,
-                        className: i ? "highlighted" : ""
-                    }, r.createElement("td", null, o + 1), r.createElement("td", null, a[o] || "Anonymous"), r.createElement("td", null, Math.max(0, Math.round(n || 0))))
                 })
             },
             onReplayListClicked: function() {
@@ -8553,12 +8540,12 @@
             },
             loadMoreReplays: function() {
                 var e = void 0
-                    , t = m.getState().menu.replays;
+                    , t = v.getState().menu.replays;
                 t && t.length > 0 && (e = t[t.length - 1].started - .1),
                     s.getReplayList(e)
             },
             replayRows: function() {
-                var e = m.getState().menu.replays || [];
+                var e = v.getState().menu.replays || [];
                 return e.map(function(e, t) {
                     for (var n = [], o = 0; o < e.ranking.length; o++) {
                         var i = e.ranking[o];
@@ -8579,10 +8566,10 @@
                 })
             },
             onPrivateClicked: function() {
-                this.props.joinPrivateGame.bind(this)(p())
+                this.props.joinPrivateGame.bind(this)(h())
             },
             on2v2Clicked: function() {
-                this.props.joinTeam.bind(this)(p())
+                this.props.joinTeam.bind(this)(h())
             },
             onServerChange: function(e) {
                 switch (e.target.value) {
@@ -8616,11 +8603,11 @@
                     className: "main-title"
                 }, "generals.io"), r.createElement("div", {
                     className: "rank-list"
-                }, r.createElement(b, {
+                }, r.createElement(A, {
                     name: "1v1",
                     stars: this.props.stars ? this.props.stars.duel : void 0,
                     rank: this.props.rank ? this.props.rank.duel : void 0
-                }), r.createElement(b, {
+                }), r.createElement(A, {
                     name: "FFA",
                     stars: this.props.stars ? this.props.stars.ffa : void 0,
                     rank: this.props.rank ? this.props.rank.ffa : void 0
@@ -8667,11 +8654,11 @@
                     className: "bold"
                 }, "Click"), " or use ", r.createElement("span", {
                     className: "bold"
-                }, "WASD"), " to move armies."), g ? null : r.createElement("p", {
+                }, "WASD"), " to move armies."), T ? null : r.createElement("p", {
                         style: {
                             fontSize: "14px"
                         }
-                    }, "[Spacebar] to deselect, [Q] to clear moves."), g ? null : r.createElement("p", {
+                    }, "[Spacebar] to deselect, [Q] to clear moves."), T ? null : r.createElement("p", {
                         style: {
                             fontSize: "14px"
                         }
@@ -8685,7 +8672,7 @@
                     }
                 }, "2 clicks = move 50%")), r.createElement("div", {
                     id: "main-menu-reddit-button"
-                }, r.createElement(d, null)), r.createElement("div", {
+                }, r.createElement(f, null)), r.createElement("div", {
                     id: "leaderboard-button",
                     onClick: this.onLeaderboardClicked
                 }, r.createElement("img", {
@@ -8730,7 +8717,7 @@
                         id: "game-modes",
                         className: "alert center",
                         onClick: this.ignoreClick
-                    }, r.createElement("center", null, y.adBlockEnabled() ? r.createElement("p", {
+                    }, r.createElement("center", null, g.adBlockEnabled() ? r.createElement("p", {
                             style: {
                                 padding: "5px 0",
                                 marginBottom: "15px",
@@ -8764,31 +8751,13 @@
                     }, "Team up with a friend to take down 2 opponents."), r.createElement("button", {
                         className: "inverted",
                         onClick: this.onPrivateClicked
-                    }, "Custom"), r.createElement("p", null, "Create a private game.")))) : null, this.state.showLeaderboard ? r.createElement("div", {
-                        className: "popup-background"
-                    }, r.createElement("div", {
-                        id: "leaderboard",
-                        className: "alert center"
-                    }, r.createElement("h1", {
-                        className: "center-horizontal",
-                        style: {
-                            textShadow: "1px 1px black"
-                        }
-                    }, "Leaderboards"), r.createElement("div", {
-                        id: "leaderboard-table-container"
-                    }, r.createElement("button", {
-                        className: "small inverted",
-                        onClick: this.swapLeaderboard
-                    }, "Switch Ladder"), r.createElement("h2", {
-                        style: {
-                            color: "black"
-                        }
-                    }, "duel" == this.state.ladder ? "1v1" : "FFA"), r.createElement("table", {
-                        id: "leaderboard-table"
-                    }, r.createElement("tbody", null, r.createElement("tr", null, r.createElement("th", null, "#"), r.createElement("th", null, "Username"), r.createElement("th", null, " ", r.createElement(l, null), " ")), this.leaderboardRows(this.state.ladder)))), r.createElement("button", {
-                        className: "small inverted center-horizontal",
-                        onClick: this.hideLeaderboard
-                    }, "Exit"))) : null, this.state.showReplayList ? r.createElement("div", {
+                    }, "Custom"), r.createElement("p", null, "Create a private game.")))) : null, this.state.showLeaderboard ? r.createElement(S, {
+                        allLeaderboards: v.getState().menu.leaderboards,
+                        playerRanks: this.props.rank,
+                        playerUsername: this.state.username,
+                        getLeaderboard: s.getLeaderboard,
+                        hideLeaderboards: this.hideLeaderboards
+                    }) : null, this.state.showReplayList ? r.createElement("div", {
                         className: "popup-replays"
                     }, r.createElement("div", {
                         id: "replays",
@@ -8806,7 +8775,7 @@
                         style: {
                             width: "12em"
                         }
-                    }, "Time"), r.createElement("th", null, "Turns"), r.createElement("th", null, "Result"))), r.createElement("tbody", null, this.replayRows())), m.getState().menu.replaysFinished ? null : r.createElement("button", {
+                    }, "Time"), r.createElement("th", null, "Turns"), r.createElement("th", null, "Result"))), r.createElement("tbody", null, this.replayRows())), v.getState().menu.replaysFinished ? null : r.createElement("button", {
                             className: "small inverted center-horizontal",
                             onClick: this.loadMoreReplays
                         }, "Load More")), r.createElement("button", {
@@ -8824,14 +8793,14 @@
                         }
                     }, "Changing Servers..."))) : null, this.props.showRemovedFrom2v2 ? r.createElement("div", {
                         className: "popup-background"
-                    }, r.createElement(T, {
+                    }, r.createElement(b, {
                         title: "Removed from 2v2",
                         body: r.createElement("span", null, "Your teammate left, so you were removed from the 2v2 queue."),
                         button: "Close",
                         onClick: this.props.closeRemovedFrom2v2
                     })) : null, this.state.showNotConnected ? r.createElement("div", {
                         className: "popup-background"
-                    }, r.createElement(T, {
+                    }, r.createElement(b, {
                         title: "Connecting...",
                         body: r.createElement("span", null, r.createElement("span", null, "We're still trying to establish a websocket connection to the server. Wait a few seconds and try again."), r.createElement("br", null), r.createElement("br", null), r.createElement("span", null, "If you still can't connect, make sure your firewall isn't blocking websockets and refresh the page. If that doesn't work, try disabling any adblockers or other extensions you have that may be interfering with the connection."), r.createElement("br", null), r.createElement("br", null), r.createElement("span", null, "If all else fails, contact us to let us know.")),
                         button: "Close",
@@ -8849,7 +8818,7 @@
                         e(a.play())
                 },
                 onPlay1v1: function() {
-                    s.playPrivate("1v1", this.state.username),
+                    s.play1v1(this.state.username),
                         this.closeGameModes(),
                         e(a.play("1v1"))
                 },
@@ -8859,14 +8828,15 @@
                         e(a.joinTeam(t))
                 },
                 joinPrivateGame: function(t) {
-                    s.playPrivate(t, this.state.username),
+                    l.isCustomGame(t) || alert('"' + t + '" is not an allowed custom game id.'),
+                        s.playPrivate(t, this.state.username),
                         e(a.play(t))
                 },
                 closeRemovedFrom2v2: function() {
                     e(a.closeRemovedFrom2v2())
                 }
             }
-        })(S)
+        })(E)
     }
     , function(e, t, n) {
         "use strict";
@@ -8877,9 +8847,9 @@
         }
         t.__esModule = !0,
             t.connect = t.Provider = void 0;
-        var o = n(179)
+        var o = n(180)
             , i = r(o)
-            , a = n(182)
+            , a = n(183)
             , s = r(a);
         t.Provider = i.default,
             t.connect = s.default
@@ -8916,9 +8886,9 @@
         t.__esModule = !0,
             t.default = void 0;
         var s = n(3)
-            , u = n(180)
+            , u = n(181)
             , c = r(u)
-            , l = n(181)
+            , l = n(182)
             , p = (r(l),
             function(e) {
                 function t(n, r) {
@@ -9006,8 +8976,8 @@
             try {
                 return e.apply(t)
             } catch (e) {
-                return M.value = e,
-                    M
+                return w.value = e,
+                    w
             }
         }
         function c(e, t, n) {
@@ -9023,7 +8993,7 @@
                 , b = r.withRef
                 , A = void 0 !== b && b
                 , k = T && v !== _
-                , x = w++;
+                , x = M++;
             return function(e) {
                 function t(e, t, n) {
                     var r = v(e, t, n);
@@ -9153,7 +9123,7 @@
                                         var n = u(this.updateStatePropsIfNeeded, this);
                                         if (!n)
                                             return;
-                                        n === M && (this.statePropsPrecalculationError = M.value),
+                                        n === w && (this.statePropsPrecalculationError = w.value),
                                             this.haveStatePropsBeenPrecalculated = !0
                                     }
                                     this.hasStoreStateChanged = !0,
@@ -9226,19 +9196,19 @@
             ;
         t.default = c;
         var p = n(3)
-            , h = n(180)
+            , h = n(181)
             , d = r(h)
-            , f = n(183)
+            , f = n(184)
             , m = r(f)
-            , v = n(184)
+            , v = n(185)
             , y = r(v)
-            , g = n(181)
+            , g = n(182)
             , T = (r(g),
-            n(187))
+            n(188))
             , b = (r(T),
-            n(206))
+            n(207))
             , S = r(b)
-            , A = n(207)
+            , A = n(208)
             , E = r(A)
             , C = function(e) {
             return {}
@@ -9251,10 +9221,10 @@
             , _ = function(e, t, n) {
             return l({}, n, e, t)
         }
-            , M = {
+            , w = {
             value: null
         }
-            , w = 0
+            , M = 0
     }
     , function(e, t) {
         "use strict";
@@ -9283,7 +9253,7 @@
         }
         t.__esModule = !0,
             t.default = r;
-        var o = n(185)
+        var o = n(186)
     }
     , function(e, t, n) {
         "use strict";
@@ -9294,17 +9264,17 @@
         }
         t.__esModule = !0,
             t.compose = t.applyMiddleware = t.bindActionCreators = t.combineReducers = t.createStore = void 0;
-        var o = n(186)
+        var o = n(187)
             , i = r(o)
-            , a = n(201)
+            , a = n(202)
             , s = r(a)
-            , u = n(203)
+            , u = n(204)
             , c = r(u)
-            , l = n(204)
+            , l = n(205)
             , p = r(l)
-            , h = n(205)
+            , h = n(206)
             , d = r(h)
-            , f = n(202);
+            , f = n(203);
         r(f);
         t.createStore = i.default,
             t.combineReducers = s.default,
@@ -9419,9 +9389,9 @@
         t.__esModule = !0,
             t.ActionTypes = void 0,
             t.default = o;
-        var i = n(187)
+        var i = n(188)
             , a = r(i)
-            , s = n(197)
+            , s = n(198)
             , u = r(s)
             , c = t.ActionTypes = {
             INIT: "@@redux/INIT"
@@ -9437,9 +9407,9 @@
             var n = p.call(t, "constructor") && t.constructor;
             return "function" == typeof n && n instanceof n && l.call(n) == h
         }
-        var o = n(188)
-            , i = n(194)
-            , a = n(196)
+        var o = n(189)
+            , i = n(195)
+            , a = n(197)
             , s = "[object Object]"
             , u = Function.prototype
             , c = Object.prototype
@@ -9453,21 +9423,21 @@
             return null == e ? void 0 === e ? u : s : (e = Object(e),
                     c && c in e ? i(e) : a(e))
         }
-        var o = n(189)
-            , i = n(192)
-            , a = n(193)
+        var o = n(190)
+            , i = n(193)
+            , a = n(194)
             , s = "[object Null]"
             , u = "[object Undefined]"
             , c = o ? o.toStringTag : void 0;
         e.exports = r
     }
     , function(e, t, n) {
-        var r = n(190)
+        var r = n(191)
             , o = r.Symbol;
         e.exports = o
     }
     , function(e, t, n) {
-        var r = n(191)
+        var r = n(192)
             , o = "object" == typeof self && self && self.Object === Object && self
             , i = r || o || Function("return this")();
         e.exports = i
@@ -9493,7 +9463,7 @@
             return r && (t ? e[u] = n : delete e[u]),
                 o
         }
-        var o = n(189)
+        var o = n(190)
             , i = Object.prototype
             , a = i.hasOwnProperty
             , s = i.toString
@@ -9509,7 +9479,7 @@
         e.exports = n
     }
     , function(e, t, n) {
-        var r = n(195)
+        var r = n(196)
             , o = r(Object.getPrototypeOf, Object);
         e.exports = o
     }
@@ -9528,7 +9498,7 @@
         e.exports = n
     }
     , function(e, t, n) {
-        e.exports = n(198)
+        e.exports = n(199)
     }
     , function(e, t, n) {
         (function(e, r) {
@@ -9541,7 +9511,7 @@
                 Object.defineProperty(t, "__esModule", {
                     value: !0
                 });
-                var i, a = n(200), s = o(a);
+                var i, a = n(201), s = o(a);
                 i = "undefined" != typeof self ? self : "undefined" != typeof window ? window : "undefined" != typeof e ? e : r;
                 var u = (0,
                     s.default)(i);
@@ -9549,7 +9519,7 @@
             }
         ).call(t, function() {
             return this
-        }(), n(199)(e))
+        }(), n(200)(e))
     }
     , function(e, t) {
         e.exports = function(e) {
@@ -9634,10 +9604,10 @@
         }
         t.__esModule = !0,
             t.default = a;
-        var s = n(186)
-            , u = n(187)
+        var s = n(187)
+            , u = n(188)
             , c = (r(u),
-            n(202));
+            n(203));
         r(c)
     }
     , function(e, t) {
@@ -9715,7 +9685,7 @@
                 }
             ;
         t.default = o;
-        var a = n(205)
+        var a = n(206)
             , s = r(a)
     }
     , function(e, t) {
@@ -9870,41 +9840,44 @@
     , function(e, t, n) {
         "use strict";
         function r() {
-            return O.connected
+            return R.connected
         }
         function o() {
-            O.emit("stars_and_rank", g)
+            R.emit("stars_and_rank", T)
         }
         function i(e) {
-            O.emit("play", e, g),
-                O.emit("set_username", g, e)
+            R.emit("play", e, T),
+                R.emit("set_username", T, e)
         }
-        function a(e, t) {
-            O.emit("join_private", e, t, g),
-                O.emit("set_username", g, t)
+        function a(e) {
+            R.emit("join_1v1", e, T)
         }
-        function s(e, t, n, r) {
-            b.getState().game.isLocalGame ? w.handleAttack(e, t, n, r) : O.emit("attack", e, t, n, r)
+        function s(e, t) {
+            R.emit("join_private", e, t, T),
+                R.emit("set_username", T, t)
         }
-        function u() {
-            O.emit("cancel", b.getState().queue.queue_id)
+        function u(e, t, n, r) {
+            S.getState().game.isLocalGame ? k.handleAttack(e, t, n, r) : R.emit("attack", e, t, n, r)
         }
-        function c(e) {
-            O.emit("set_force_start", b.getState().queue.queue_id, e)
+        function c() {
+            R.emit("cancel", S.getState().queue.queue_id)
         }
-        function l(e, t) {
-            O.emit("chat_message", e, t)
+        function l(e) {
+            R.emit("set_force_start", S.getState().queue.queue_id, e)
         }
-        function p(e) {
-            O.emit("leaderboard", e)
+        function p(e, t) {
+            R.emit("chat_message", e, t)
         }
-        function h() {
-            O.emit("leave_game")
+        function h(e) {
+            R.emit("leaderboard", e)
         }
         function d() {
-            b.getState().game.isLocalGame ? w.clearMoves() : O.emit("clear_moves")
+            R.emit("leave_game")
         }
-        function f(e, t) {
+        function f() {
+            S.getState().game.isLocalGame ? k.clearMoves() : R.emit("clear_moves")
+        }
+        function m(e, t) {
             var n = new XMLHttpRequest;
             n.open("GET", "/" + e + ".gior"),
                 n.responseType = "arraybuffer",
@@ -9914,124 +9887,125 @@
                 ,
                 n.send()
         }
-        function m(e) {
-            O.emit("replay_list", {
-                user_id: g,
+        function v(e) {
+            R.emit("replay_list", {
+                user_id: T,
                 max_time: e
             })
         }
-        function v(e, t) {
-            O.emit("join_team", e, t, g)
+        function y(e, t) {
+            R.emit("join_team", e, t, T)
         }
-        function y(e) {
-            O.emit("leave_team", e)
+        function g(e) {
+            R.emit("leave_team", e)
         }
-        var g, T = n(211), b = n(264), S = n(209), A = n(268), E = n(266), C = n(277), P = n(278), _ = n(287), M = n(176), w = n(288), k = n(270);
-        if (_ && _.user_id ? g = _.user_id : (g = P(),
-                _ && (_.user_id = g)),
-                console.log("user_id: " + g),
-                _)
+        var T, b = n(212), S = n(265), A = n(210), E = n(269), C = n(267), P = n(277), _ = n(278), w = n(287), M = n(176), k = n(288), x = n(271);
+        if (w && w.user_id ? T = w.user_id : (T = _(),
+                w && (w.user_id = T)),
+                console.log("user_id: " + T),
+                w)
             try {
-                if (_.hasOwnProperty("stars")) {
-                    console.log("cached stars: " + _.stars);
-                    var x = JSON.parse(_.stars);
-                    b.dispatch(S.stars(x))
+                if (w.hasOwnProperty("stars")) {
+                    console.log("cached stars: " + w.stars);
+                    var I = JSON.parse(w.stars);
+                    S.dispatch(A.stars(I))
                 }
-                if (_.hasOwnProperty("rank")) {
-                    console.log("cached rank: " + _.rank);
-                    var I = JSON.parse(_.rank);
-                    b.dispatch(S.rank(I))
+                if (w.hasOwnProperty("rank")) {
+                    console.log("cached rank: " + w.rank);
+                    var N = JSON.parse(w.rank);
+                    S.dispatch(A.rank(N))
                 }
             } catch (e) {
-                b.dispatch(S.stars({})),
-                    b.dispatch(S.rank({}))
+                S.dispatch(A.stars({})),
+                    S.dispatch(A.rank({}))
             }
-        var N = "http://ws.generals.io";
-        "localhost" === window.location.hostname && (N = "http://localhost:8080"),
-        window.location.hostname.indexOf("ngrok") >= 0 && (N = window.location.toString()),
-        "eu." === window.location.hostname.substring(0, 3) && (N = "http://euws.generals.io");
-        var O = T(N, {
+        var O = "http://ws.generals.io";
+        "localhost" === window.location.hostname && (O = "http://localhost:8080"),
+        window.location.hostname.indexOf("ngrok") >= 0 && (O = window.location.toString()),
+        "eu." === window.location.hostname.substring(0, 3) && (O = "http://euws.generals.io");
+        var R = b(O, {
             transports: ["websocket"]
         })
-            , R = !1;
-        O.on("connect", function() {
-            R ? console.log("Reconnected to server.") : console.log("Connected to server."),
-                R = !0,
+            , D = !1;
+        R.on("connect", function() {
+            D ? console.log("Reconnected to server.") : console.log("Connected to server."),
+                D = !0,
                 o()
         }),
-            O.on("disconnect", function() {
+            R.on("disconnect", function() {
                 console.log("Disconnected from server."),
-                b.getState().page !== M.PAGE_GAME || b.getState().game.isLocalGame || alert("Disconnected from server. Please refresh the page.")
+                S.getState().page !== M.PAGE_GAME || S.getState().game.isLocalGame || alert("Disconnected from server. Please refresh the page.")
             }),
-            O.on("pre_game_start", function() {
-                b.dispatch(A.prestart())
+            R.on("pre_game_start", function() {
+                S.dispatch(E.prestart())
             }),
-            O.on("game_start", function(e) {
-                b.dispatch(A.start(e))
+            R.on("game_start", function(e) {
+                S.dispatch(E.start(e))
             }),
-            O.on("game_update", function(e) {
-                b.dispatch(A.update(e))
+            R.on("game_update", function(e) {
+                S.dispatch(E.update(e))
             }),
-            O.on("queue_update", function(e, t, n) {
-                b.dispatch(E.update(e, t, n))
+            R.on("queue_update", function(e, t, n) {
+                S.dispatch(C.update(e, t, n))
             }),
-            O.on("team_update", function(e) {
-                b.dispatch(E.update(e))
+            R.on("team_update", function(e) {
+                S.dispatch(C.update(e))
             }),
-            O.on("team_joined_queue", function() {
-                k.changeURL("/"),
-                    b.dispatch(S.play("2v2"))
+            R.on("team_joined_queue", function() {
+                x.changeURL("/"),
+                    S.dispatch(A.play("2v2"))
             }),
-            O.on("removed_from_queue", function() {
-                b.dispatch(E.removeFrom2v2())
+            R.on("removed_from_queue", function() {
+                S.dispatch(C.removeFrom2v2())
             }),
-            O.on("chat_message", function(e, t) {
-                b.dispatch(C.receiveMessage(e, t))
+            R.on("chat_message", function(e, t) {
+                S.dispatch(P.receiveMessage(e, t))
             }),
-            O.on("game_lost", function(e) {
-                b.dispatch(A.lose(e))
+            R.on("game_lost", function(e) {
+                S.dispatch(E.lose(e))
             }),
-            O.on("game_won", function(e) {
-                b.dispatch(A.win(e))
+            R.on("game_won", function(e) {
+                S.dispatch(E.win(e))
             }),
-            O.on("replay_list", function(e) {
-                b.dispatch(S.receiveReplayList(e))
+            R.on("replay_list", function(e) {
+                S.dispatch(A.receiveReplayList(e))
             }),
-            O.on("server_down", function() {
+            R.on("server_down", function() {
                 window.location.reload(!1)
             }),
-            O.on("leaderboard", function(e) {
-                _ && (_["leaderboard:" + e.ladder] = JSON.stringify(e)),
-                    b.dispatch(S.leaderboard(e))
+            R.on("leaderboard", function(e) {
+                w && (w["leaderboard:" + e.ladder] = JSON.stringify(e)),
+                    S.dispatch(A.leaderboard(e))
             }),
-            O.on("stars", function(e) {
+            R.on("stars", function(e) {
                 console.log("stars: " + JSON.stringify(e)),
-                    b.dispatch(S.stars(e))
+                    S.dispatch(A.stars(e))
             }),
-            O.on("rank", function(e) {
+            R.on("rank", function(e) {
                 console.log("rank: " + JSON.stringify(e)),
-                    b.dispatch(S.rank(e))
+                    S.dispatch(A.rank(e))
             }),
-            O.on("error_user_id", function() {
-                b.dispatch(E.cancel()),
+            R.on("error_user_id", function() {
+                S.dispatch(C.cancel()),
                     alert("You are already using this account! Make sure you don't have multiple tabs with generals.io open.\n\nIf you believe you are seeing this message in error, please email us at generalsiogame@gmail.com.")
             }),
             e.exports = {
                 isConnected: r,
                 updateStarsAndRank: o,
                 play: i,
-                playPrivate: a,
-                attack: s,
-                cancel: u,
-                setForceStart: c,
-                sendChatMessage: l,
-                getLeaderboard: p,
-                leaveGame: h,
-                clearMoves: d,
-                getReplay: f,
-                getReplayList: m,
-                joinTeam: v,
-                leaveTeam: y
+                play1v1: a,
+                playPrivate: s,
+                attack: u,
+                cancel: c,
+                setForceStart: l,
+                sendChatMessage: p,
+                getLeaderboard: h,
+                leaveGame: d,
+                clearMoves: f,
+                getReplay: m,
+                getReplayList: v,
+                joinTeam: y,
+                leaveTeam: g
             }
         window.gameCtrl = e.exports;
     }
@@ -10054,16 +10028,16 @@
                 e.hasOwnProperty(n) && t.push(encodeURIComponent(n) + "=" + encodeURIComponent(e[n]));
             return t.join("&")
         }
-        var i = n(212)
-            , a = n(217)
-            , s = n(227)
-            , u = n(214)("socket.io-client");
+        var i = n(213)
+            , a = n(218)
+            , s = n(228)
+            , u = n(215)("socket.io-client");
         e.exports = t = r;
         var c = t.managers = {};
         t.protocol = a.protocol,
             t.connect = r,
-            t.Manager = n(227),
-            t.Socket = n(257)
+            t.Manager = n(228),
+            t.Socket = n(258)
     }
     , function(e, t, n) {
         (function(t) {
@@ -10084,8 +10058,8 @@
                         r.href = r.protocol + "://" + s + (n && n.port === r.port ? "" : ":" + r.port),
                         r
                 }
-                var o = n(213)
-                    , i = n(214)("socket.io-client:url");
+                var o = n(214)
+                    , i = n(215)("socket.io-client:url");
                 e.exports = r
             }
         ).call(t, function() {
@@ -10109,7 +10083,7 @@
                 s
         }
     }
-    , [318, 215], [319, 216], function(e, t) {
+    , [323, 216], [324, 217], function(e, t) {
         function n(e) {
             if (e = String(e),
                     !(e.length > 1e4)) {
@@ -10275,11 +10249,11 @@
                 data: "parser error"
             }
         }
-        var p = n(218)("socket.io-parser")
-            , h = n(221)
-            , d = n(223)
-            , f = n(224)
-            , m = n(226);
+        var p = n(219)("socket.io-parser")
+            , h = n(222)
+            , d = n(224)
+            , f = n(225)
+            , m = n(227);
         t.protocol = 4,
             t.types = ["CONNECT", "DISCONNECT", "EVENT", "ACK", "ERROR", "BINARY_EVENT", "BINARY_ACK"],
             t.CONNECT = 0,
@@ -10379,7 +10353,7 @@
                 return window.localStorage
             } catch (e) {}
         }
-        t = e.exports = n(219),
+        t = e.exports = n(220),
             t.log = i,
             t.formatArgs = o,
             t.save = a,
@@ -10465,7 +10439,7 @@
             t.disable = a,
             t.enable = i,
             t.enabled = s,
-            t.humanize = n(220),
+            t.humanize = n(221),
             t.names = [],
             t.skips = [],
             t.formatters = {};
@@ -10625,10 +10599,10 @@
                                     , P = "[object Boolean]"
                                     , _ = n("bug-string-char-index");
                                 if (!T)
-                                    var M = h.floor
-                                        , w = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334]
+                                    var w = h.floor
+                                        , M = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334]
                                         , k = function(e, t) {
-                                        return w[t] + 365 * (e - 1970) + M((e - 1969 + (t = +(t > 1))) / 4) - M((e - 1901 + t) / 100) + M((e - 1601 + t) / 400)
+                                        return M[t] + 365 * (e - 1970) + w((e - 1969 + (t = +(t > 1))) / 4) - w((e - 1901 + t) / 100) + w((e - 1601 + t) / 400)
                                     };
                                 if ((f = y.hasOwnProperty) || (f = function(e) {
                                             var t, n = {};
@@ -10725,7 +10699,7 @@
                                         return t + '"'
                                     }
                                         , D = function(e, t, n, r, o, i, a) {
-                                        var s, u, c, l, h, d, y, T, b, _, w, x, I, O, B, G;
+                                        var s, u, c, l, h, d, y, T, b, _, M, x, I, O, B, G;
                                         try {
                                             s = t[e]
                                         } catch (e) {}
@@ -10735,16 +10709,16 @@
                                                 "function" == typeof s.toJSON && (u != A && u != E && u != C || f.call(s, "toJSON")) && (s = s.toJSON(e));
                                             else if (s > -1 / 0 && s < 1 / 0) {
                                                 if (k) {
-                                                    for (h = M(s / 864e5),
-                                                             c = M(h / 365.2425) + 1970 - 1; k(c + 1, 0) <= h; c++)
+                                                    for (h = w(s / 864e5),
+                                                             c = w(h / 365.2425) + 1970 - 1; k(c + 1, 0) <= h; c++)
                                                         ;
-                                                    for (l = M((h - k(c, 0)) / 30.42); k(c, l + 1) <= h; l++)
+                                                    for (l = w((h - k(c, 0)) / 30.42); k(c, l + 1) <= h; l++)
                                                         ;
                                                     h = 1 + h - k(c, l),
                                                         d = (s % 864e5 + 864e5) % 864e5,
-                                                        y = M(d / 36e5) % 24,
-                                                        T = M(d / 6e4) % 60,
-                                                        b = M(d / 1e3) % 60,
+                                                        y = w(d / 36e5) % 24,
+                                                        T = w(d / 6e4) % 60,
+                                                        b = w(d / 1e3) % 60,
                                                         _ = d % 1e3
                                                 } else
                                                     c = s.getUTCFullYear(),
@@ -10772,21 +10746,21 @@
                                                 if (a[O] === s)
                                                     throw p();
                                             if (a.push(s),
-                                                    w = [],
+                                                    M = [],
                                                     B = i,
                                                     i += o,
                                                 u == C) {
                                                 for (I = 0,
                                                          O = s.length; I < O; I++)
                                                     x = D(I, s, n, r, o, i, a),
-                                                        w.push(x === v ? "null" : x);
-                                                G = w.length ? o ? "[\n" + i + w.join(",\n" + i) + "\n" + B + "]" : "[" + w.join(",") + "]" : "[]"
+                                                        M.push(x === v ? "null" : x);
+                                                G = M.length ? o ? "[\n" + i + M.join(",\n" + i) + "\n" + B + "]" : "[" + M.join(",") + "]" : "[]"
                                             } else
                                                 m(r || s, function(e) {
                                                     var t = D(e, s, n, r, o, i, a);
-                                                    t !== v && w.push(R(e) + ":" + (o ? " " : "") + t)
+                                                    t !== v && M.push(R(e) + ":" + (o ? " " : "") + t)
                                                 }),
-                                                    G = w.length ? o ? "{\n" + i + w.join(",\n" + i) + "\n" + B + "}" : "{" + w.join(",") + "}" : "{}";
+                                                    G = M.length ? o ? "{\n" + i + M.join(",\n" + i) + "\n" + B + "}" : "{" + M.join(",") + "}" : "{}";
                                             return a.pop(),
                                                 G
                                         }
@@ -10988,7 +10962,7 @@
                             return t.runInContext = i,
                                 t
                         }
-                        var a = n(222)
+                        var a = n(223)
                             , s = {
                             function: !0,
                             object: !0
@@ -11025,7 +10999,7 @@
                     }
                 ).call(this)
             }
-        ).call(t, n(199)(e), function() {
+        ).call(t, n(200)(e), function() {
             return this
         }())
     }
@@ -11107,8 +11081,8 @@
     }
     , function(e, t, n) {
         (function(e) {
-                var r = n(225)
-                    , o = n(226);
+                var r = n(226)
+                    , o = n(227);
                 t.deconstructPacket = function(e) {
                     function t(e) {
                         if (!e)
@@ -11245,15 +11219,15 @@
                     this.autoConnect = t.autoConnect !== !1,
                     void (this.autoConnect && this.open())) : new r(e,t)
         }
-        var o = n(228)
-            , i = n(257)
-            , a = n(258)
-            , s = n(217)
-            , u = n(260)
-            , c = n(261)
-            , l = n(214)("socket.io-client:manager")
-            , p = n(255)
-            , h = n(263)
+        var o = n(229)
+            , i = n(258)
+            , a = n(259)
+            , s = n(218)
+            , u = n(261)
+            , c = n(262)
+            , l = n(215)("socket.io-client:manager")
+            , p = n(256)
+            , h = n(264)
             , d = Object.prototype.hasOwnProperty;
         e.exports = r,
             r.prototype.emitAll = function() {
@@ -11505,11 +11479,11 @@
             }
     }
     , function(e, t, n) {
-        e.exports = n(229)
+        e.exports = n(230)
     }
     , function(e, t, n) {
-        e.exports = n(230),
-            e.exports.parser = n(237)
+        e.exports = n(231),
+            e.exports.parser = n(238)
     }
     , function(e, t, n) {
         (function(t) {
@@ -11575,22 +11549,22 @@
                         e.hasOwnProperty(n) && (t[n] = e[n]);
                     return t
                 }
-                var i = n(231)
-                    , a = n(245)
-                    , s = n(249)("engine.io-client:socket")
-                    , u = n(255)
-                    , c = n(237)
-                    , l = n(213)
-                    , p = n(256)
-                    , h = n(246);
+                var i = n(232)
+                    , a = n(246)
+                    , s = n(250)("engine.io-client:socket")
+                    , u = n(256)
+                    , c = n(238)
+                    , l = n(214)
+                    , p = n(257)
+                    , h = n(247);
                 e.exports = r,
                     r.priorWebsocketSuccess = !1,
                     a(r.prototype),
                     r.protocol = c.protocol,
                     r.Socket = r,
-                    r.Transport = n(236),
-                    r.transports = n(231),
-                    r.parser = n(237),
+                    r.Transport = n(237),
+                    r.transports = n(232),
+                    r.parser = n(238),
                     r.prototype.createTransport = function(e) {
                         s('creating transport "%s"', e);
                         var t = o(this.query);
@@ -11948,10 +11922,10 @@
                         throw new Error("JSONP disabled");
                     return new a(t)
                 }
-                var o = n(232)
-                    , i = n(234)
-                    , a = n(252)
-                    , s = n(253);
+                var o = n(233)
+                    , i = n(235)
+                    , a = n(253)
+                    , s = n(254);
                 t.polling = r,
                     t.websocket = s
             }
@@ -11961,7 +11935,7 @@
     }
     , function(e, t, n) {
         (function(t) {
-                var r = n(233);
+                var r = n(234);
                 e.exports = function(e) {
                     var n = e.xdomain
                         , o = e.xscheme
@@ -12032,11 +12006,11 @@
                     for (var e in i.requests)
                         i.requests.hasOwnProperty(e) && i.requests[e].abort()
                 }
-                var s = n(232)
-                    , u = n(235)
-                    , c = n(245)
-                    , l = n(247)
-                    , p = n(249)("engine.io-client:polling-xhr");
+                var s = n(233)
+                    , u = n(236)
+                    , c = n(246)
+                    , l = n(248)
+                    , p = n(250)("engine.io-client:polling-xhr");
                 e.exports = o,
                     e.exports.Request = i,
                     l(o, u),
@@ -12224,15 +12198,15 @@
             l && !t || (this.supportsBinary = !1),
                 o.call(this, e)
         }
-        var o = n(236)
-            , i = n(246)
-            , a = n(237)
-            , s = n(247)
-            , u = n(248)
-            , c = n(249)("engine.io-client:polling");
+        var o = n(237)
+            , i = n(247)
+            , a = n(238)
+            , s = n(248)
+            , u = n(249)
+            , c = n(250)("engine.io-client:polling");
         e.exports = r;
         var l = function() {
-            var e = n(232)
+            var e = n(233)
                 , t = new e({
                 xdomain: !1
             });
@@ -12353,8 +12327,8 @@
                 this.extraHeaders = e.extraHeaders,
                 this.localAddress = e.localAddress
         }
-        var o = n(237)
-            , i = n(245);
+        var o = n(238)
+            , i = n(246);
         e.exports = r,
             i(r.prototype),
             r.prototype.onError = function(e, t) {
@@ -12458,8 +12432,8 @@
                     }, a = 0; a < e.length; a++)
                         i(a, e[a], o)
                 }
-                var c, l = n(238), p = n(239), h = n(240), d = n(241), f = n(242);
-                e && e.ArrayBuffer && (c = n(243));
+                var c, l = n(239), p = n(240), h = n(241), d = n(242), f = n(243);
+                e && e.ArrayBuffer && (c = n(244));
                 var m = "undefined" != typeof navigator && /Android/i.test(navigator.userAgent)
                     , v = "undefined" != typeof navigator && /PhantomJS/i.test(navigator.userAgent)
                     , y = m || v;
@@ -12478,7 +12452,7 @@
                     type: "error",
                     data: "parser error"
                 }
-                    , S = n(244);
+                    , S = n(245);
                 t.encodePacket = function(t, n, i, s) {
                     "function" == typeof n && (s = n,
                         n = !1),
@@ -12741,7 +12715,7 @@
                     }
                     return n(e)
                 }
-                var o = n(225);
+                var o = n(226);
                 e.exports = r
             }
         ).call(t, function() {
@@ -12890,7 +12864,7 @@
                         !(void 0 !== r && (e.exports = r))
                 }(this)
             }
-        ).call(t, n(199)(e), function() {
+        ).call(t, n(200)(e), function() {
             return this
         }())
     }
@@ -13101,7 +13075,7 @@
             o.decode = r,
             e.exports = o
     }
-    , [318, 250], [319, 251], 216, function(e, t, n) {
+    , [323, 251], [324, 252], 217, function(e, t, n) {
         (function(t) {
                 function r() {}
                 function o(e) {
@@ -13119,8 +13093,8 @@
                         n.script && (n.script.onerror = r)
                     }, !1)
                 }
-                var i = n(235)
-                    , a = n(247);
+                var i = n(236)
+                    , a = n(248);
                 e.exports = o;
                 var s, u = /\n/g, c = /\\n/g;
                 a(o, i),
@@ -13223,10 +13197,10 @@
                     this.usingBrowserWebSocket || (h = o),
                         i.call(this, e)
                 }
-                var o, i = n(236), a = n(237), s = n(246), u = n(247), c = n(248), l = n(249)("engine.io-client:websocket"), p = t.WebSocket || t.MozWebSocket;
+                var o, i = n(237), a = n(238), s = n(247), u = n(248), c = n(249), l = n(250)("engine.io-client:websocket"), p = t.WebSocket || t.MozWebSocket;
                 if ("undefined" == typeof window)
                     try {
-                        o = n(254)
+                        o = n(255)
                     } catch (e) {}
                 var h = p;
                 h || "undefined" != typeof window || (h = o),
@@ -13385,13 +13359,13 @@
             n && n.query && (this.query = n.query),
             this.io.autoConnect && this.open()
         }
-        var o = n(217)
-            , i = n(258)
-            , a = n(259)
-            , s = n(260)
-            , u = n(261)
-            , c = n(214)("socket.io-client:socket")
-            , l = n(262);
+        var o = n(218)
+            , i = n(259)
+            , a = n(260)
+            , s = n(261)
+            , u = n(262)
+            , c = n(215)("socket.io-client:socket")
+            , l = n(263);
         e.exports = t = r;
         var p = {
             connect: 1,
@@ -13532,7 +13506,7 @@
                 var t = this.acks[e.id];
                 "function" == typeof t ? (c("calling ack %s with %j", e.id, e.data),
                         t.apply(this, e.data),
-                        delete this.acks[e.id]) : c("bad ack %s", e.id)
+                        delete this.acks[e.id]) : c("bad ack %s", e.id);
             }
             ,
             r.prototype.onconnect = function() {
@@ -13583,7 +13557,7 @@
                     this
             }
     }
-    , 245, function(e, t) {
+    , 246, function(e, t) {
         function n(e, t) {
             var n = [];
             t = t || 0;
@@ -13638,7 +13612,7 @@
                     }
                     return n(e)
                 }
-                var o = n(225);
+                var o = n(226);
                 e.exports = r
             }
         ).call(t, function() {
@@ -13683,10 +13657,10 @@
     }
     , function(e, t, n) {
         "use strict";
-        var r = n(185)
-            , o = n(265)
-            , i = n(267)
-            , a = n(271)
+        var r = n(186)
+            , o = n(266)
+            , i = n(268)
+            , a = n(272)
             , s = n(275)
             , u = n(276)
             , c = r.createStore(r.combineReducers({
@@ -13748,8 +13722,8 @@
             }
             return e
         }
-        var i = n(209)
-            , a = n(266);
+        var i = n(210)
+            , a = n(267);
         e.exports = o
     }
     , function(e, t) {
@@ -13804,11 +13778,11 @@
             }
             return e
         }
-        var o = n(209)
-            , i = n(266)
-            , a = n(268)
+        var o = n(210)
+            , i = n(267)
+            , a = n(269)
             , s = n(176)
-            , u = n(270);
+            , u = n(271);
         e.exports = r
     }
     , function(e, t, n) {
@@ -13871,7 +13845,7 @@
                 speed: e
             }
         }
-        var d = n(269)
+        var d = n(270)
             , f = "Game_prestart"
             , m = "Game_start"
             , v = "Game_update"
@@ -13992,11 +13966,11 @@
             }
             return e
         }
-        var o = n(268)
-            , i = n(209)
-            , a = n(272)
-            , s = n(273)
-            , u = n(274);
+        var o = n(269)
+            , i = n(210)
+            , a = n(273)
+            , s = n(274)
+            , u = n(177);
         e.exports = r
     }
     , function(e, t) {
@@ -14040,6 +14014,37 @@
                 return !1
             }
             ,
+            n.prototype.computeVisibility = function() {
+                var e = new (Uint8Array || Array)(this._map.length);
+                if (void 0 === Int8Array)
+                    for (var t = 0; t < e.length; t++)
+                        e[t] = 0;
+                var n = [];
+                if (this.teams)
+                    for (var t = 0; t < this.teams.length; t++) {
+                        n.push(1 << t);
+                        for (var r = 0; r < this.teams.length; r++)
+                            t != r && this.teams[t] === this.teams[r] && (n[t] |= 1 << r)
+                    }
+                for (var t = 0; t < this._map.length; t++) {
+                    var o = this.tileAt(t);
+                    o >= 0 && (e[t] = this.teams ? n[o] : 1 << o)
+                }
+                for (var i = 0; i < this.height; i++) {
+                    for (var t = this.indexFrom(i, 0), a = 0; a < this.width - 1; a++)
+                        e[a + t] |= e[a + t + 1];
+                    for (var a = this.width - 1; a > 0; a--)
+                        e[a + t] |= e[a + t - 1]
+                }
+                for (var i = 0; i < this.height - 1; i++)
+                    for (var t = this.indexFrom(i, 0), a = 0; a < this.width; a++)
+                        e[a + t] |= e[a + t + this.width];
+                for (var i = this.height - 1; i > 0; i--)
+                    for (var t = this.indexFrom(i, 0), a = 0; a < this.width; a++)
+                        e[a + t] |= e[a + t - this.width];
+                return e
+            }
+            ,
             n.prototype.tileAt = function(e) {
                 return this._map[e]
             }
@@ -14060,12 +14065,30 @@
                 this._armies[e]++
             }
             ,
-            n.prototype.serialized = function(e, t) {
+            n.prototype.serializedold = function(e, t) {
                 for (var r = [], o = [], i = e < 0, a = 0; a < this._map.length; a++)
                     i || this.visibleFrom(a, e) ? (o.push(this._map[a]),
                             r.push(this._armies[a])) : (o.push(this.tileAt(a) === n.TILE_MOUNTAIN || t.indexOf(a) >= 0 ? n.TILE_FOG_OBSTACLE : n.TILE_FOG),
                             r.push(0));
                 return [this.width, this.height].concat(r).concat(o)
+            }
+            ,
+            n.prototype.serialized = function(e, t, r) {
+                var o = new Array(2 + 2 * this._map.length)
+                    , i = 2
+                    , a = i + this._map.length
+                    , s = e < 0;
+                o[0] = this.width,
+                    o[1] = this.height;
+                for (var u = 0; u < this._map.length; u++)
+                    s || r[u] & 1 << e ? (o[u + a] = this._map[u],
+                            o[u + i] = this._armies[u]) : (o[u + a] = this.tileAt(u) === n.TILE_MOUNTAIN ? n.TILE_FOG_OBSTACLE : n.TILE_FOG,
+                            o[u + i] = 0);
+                for (var u = 0; u < t.length; u++) {
+                    var c = t[u];
+                    o[c + a] === n.TILE_FOG && (o[c + a] = n.TILE_FOG_OBSTACLE)
+                }
+                return o
             }
             ,
             n.prototype.setToSerialized = function(e) {
@@ -14161,14 +14184,6 @@
             STATE_WON: u
         }
     }
-    , function(e, t) {
-        "use strict";
-        e.exports = {
-            isCustomGame: function(e) {
-                return e && "1v1" !== e && "2v2" !== e
-            }
-        }
-    }
     , function(e, t, n) {
         "use strict";
         function r(e, t) {
@@ -14190,7 +14205,8 @@
                 case i.ACTION_JOIN_TEAM:
                     return Object.assign({}, e, {
                         isTeamQueue: !0,
-                        queue_id: t.team_id
+                        team_id: t.team_id,
+                        queue_id: void 0
                     });
                 case a.ACTION_PRESTART:
                     return Object.assign({}, e, {
@@ -14199,9 +14215,9 @@
             }
             return e
         }
-        var o = n(266)
-            , i = n(209)
-            , a = n(268);
+        var o = n(267)
+            , i = n(210)
+            , a = n(269);
         e.exports = r
     }
     , function(e, t, n) {
@@ -14397,7 +14413,7 @@
     , function(e, t) {
         "use strict";
         e.exports = function() {
-                var e, t, n = performance.now();
+                var e, t, n = Date.now();
                 try {
                     return (e = window.localStorage).setItem(n, n),
                         t = e.getItem(n) == n,
@@ -14425,7 +14441,7 @@
                 T.start(function() {
                     T = null,
                         ga("send", "event", "Tutorial", "completed"),
-                    M && (M.completed_tutorial = !0)
+                    w && (w.completed_tutorial = !0)
                 })
         }
         function i(e) {
@@ -14458,15 +14474,15 @@
                 s()
         }
         function s() {
-            w || (w = !0,
+            M || (M = !0,
                 u())
         }
         function u() {
             P.getState().game.autoPlay && l(),
-            w && setTimeout(u, 500 / P.getState().game.autoPlaySpeed)
+            M && setTimeout(u, 500 / P.getState().game.autoPlaySpeed)
         }
         function c() {
-            w = !1
+            M = !1
         }
         function l(e) {
             if (!e) {
@@ -14540,7 +14556,7 @@
         function g() {
             T.clearMoves(T.sockets[0])
         }
-        var T, b, S, A, E = n(289), C = n(290), P = n(264), _ = n(268), M = n(287), w = (n(270),
+        var T, b, S, A, E = n(289), C = n(290), P = n(265), _ = n(269), w = n(287), M = (n(271),
             !1), k = Date.now(), x = Date.now();
         e.exports = {
             startLocalTutorial: o,
@@ -14589,7 +14605,7 @@
         function o(e, t) {
             return e - t
         }
-        var i = n(272)
+        var i = n(273)
             , a = n(290)
             , s = n(1)
             , u = n(296)
@@ -14795,53 +14811,59 @@
             }
             ,
             r.prototype.update = function(e) {
-                for (var t = 0; t < this.sockets.length; t++)
-                    for (; this.inputBuffer[t].length; ) {
-                        var n = this.inputBuffer[t].splice(0, 1)[0];
-                        if (this.handleAttack(t, n[0], n[1], n[2], n[3]) !== !1) {
-                            u || this.replay.addMove(t, n[0], n[1], n[2], this.turn);
+                for (var t = 0; t < this.sockets.length; t++) {
+                    if (this.options.old_priority)
+                        var n = t;
+                    else
+                        var n = (t + this.turn) % this.sockets.length;
+                    for (; this.inputBuffer[n].length; ) {
+                        var r = this.inputBuffer[n].splice(0, 1)[0];
+                        if (this.handleAttack(n, r[0], r[1], r[2], r[3]) !== !1) {
+                            u || this.replay.addMove(n, r[0], r[1], r[2], this.turn);
                             break
                         }
                     }
+                }
                 if (this.turn++,
                     this.turn % s.RECRUIT_RATE === 0) {
-                    for (var t = 0; t < this.generals.length; t++)
-                        this.map.incrementArmyAt(this.generals[t]);
-                    for (var t = 0; t < this.cities.length; t++)
-                        (this.map.tileAt(this.cities[t]) >= 0 || this.map.armyAt(this.cities[t]) < s.MIN_CITY_ARMY) && this.map.incrementArmyAt(this.cities[t])
+                    for (var n = 0; n < this.generals.length; n++)
+                        this.map.incrementArmyAt(this.generals[n]);
+                    for (var n = 0; n < this.cities.length; n++)
+                        (this.map.tileAt(this.cities[n]) >= 0 || this.map.armyAt(this.cities[n]) < s.MIN_CITY_ARMY) && this.map.incrementArmyAt(this.cities[n])
                 }
                 if (this.turn % s.FARM_RATE === 0)
-                    for (var r = this.map.size(), t = 0; t < r; t++)
-                        this.map.tileAt(t) >= 0 && this.map.incrementArmyAt(t);
+                    for (var o = this.map.size(), n = 0; n < o; n++)
+                        this.map.tileAt(n) >= 0 && this.map.incrementArmyAt(n);
                 if (!e) {
                     this.recalculateScores();
-                    var o = {
+                    var i = {
                         scores: this.scores,
                         turn: this.turn
                     };
                     if (!this.starsCompleted || this.starsCompleted < this.sockets.length) {
                         this.stars = [],
                             this.starsCompleted = 0;
-                        for (var t = 0; t < this.sockets.length; t++)
-                            this.sockets[t].hasOwnProperty("gio_stars") ? (this.starsCompleted++,
-                                    this.stars.push(this.sockets[t].gio_stars)) : this.stars.push(null);
+                        for (var n = 0; n < this.sockets.length; n++)
+                            this.sockets[n].hasOwnProperty("gio_stars") ? (this.starsCompleted++,
+                                    this.stars.push(this.sockets[n].gio_stars)) : this.stars.push(null);
                         this.starsCompleted === this.sockets.length && (this.replay.stars = this.stars),
-                            o.stars = this.stars
+                            i.stars = this.stars
                     }
-                    this.sockets.forEach(this.sendGameUpdate.bind(this, o));
-                    var i = this.isOver();
-                    if (i) {
-                        for (var t = 0; t < i.length; t++) {
-                            var a = i[t];
-                            this.deaths.indexOf(a) >= 0 || (this.deaths.push(a),
-                                a.emit("game_won"))
+                    var a = this.map.computeVisibility();
+                    this.sockets.forEach(this.sendGameUpdate.bind(this, i, a));
+                    var c = this.isOver();
+                    if (c) {
+                        for (var n = 0; n < c.length; n++) {
+                            var l = c[n];
+                            this.deaths.indexOf(l) >= 0 || (this.deaths.push(l),
+                                l.emit("game_won"))
                         }
                         if (!u) {
-                            var c = i.reduce(function(e, t, n) {
-                                return n === i.length - 1 ? e + t.gio_username : e + t.gio_username + ", "
+                            var p = c.reduce(function(e, t, n) {
+                                return n === c.length - 1 ? e + t.gio_username : e + t.gio_username + ", "
                             }, "");
                             io.to(this.chat_room).emit("chat_message", this.chat_room, {
-                                text: this.teams ? "The team with [" + c + "] wins!" : c + " wins!"
+                                text: this.teams ? "The team with [" + p + "] wins!" : p + " wins!"
                             })
                         }
                         return !0
@@ -14871,27 +14893,26 @@
                             return [this.sockets[t]]
             }
             ,
-            r.prototype.sendGameUpdate = function(e, t, n) {
-                if (!(this.leftSockets.indexOf(t) >= 0)) {
-                    e.attackIndex = this.attackIndices[n];
-                    var o = this.type === r.types.CUSTOM && this.deaths.indexOf(t) >= 0;
-                    e.map = this.map.serialized(o ? -1 : n, this.cities);
-                    var a = this
-                        , s = function(e) {
-                        return o || a.map.visibleFrom(e, n)
+            r.prototype.sendGameUpdate = function(e, t, n, o) {
+                if (!(this.leftSockets.indexOf(n) >= 0)) {
+                    e.attackIndex = this.attackIndices[o];
+                    var a = this.type === r.types.CUSTOM && this.deaths.indexOf(n) >= 0;
+                    e.map = this.map.serialized(a ? -1 : o, this.cities, t);
+                    var s = function(e) {
+                        return a || t[e] & 1 << o
                     }
                         , u = function(e) {
-                        return o || a.map.visibleFrom(e, n) ? e : -1
+                        return a || t[e] & 1 << o ? e : -1
                     };
                     e.cities = this.cities.filter(s),
                         e.generals = this.generals.map(u),
-                        e.map_diff = i.delta(t.last_map, e.map),
-                        t.last_map = e.map,
+                        e.map_diff = i.delta(n.last_map, e.map),
+                        n.last_map = e.map,
                         delete e.map,
-                        e.cities_diff = i.delta(t.last_cities, e.cities),
-                        t.last_cities = e.cities,
+                        e.cities_diff = i.delta(n.last_cities, e.cities),
+                        n.last_cities = e.cities,
                         delete e.cities,
-                        t.emit("game_update", e)
+                        n.emit("game_update", e)
                 }
             }
             ,
@@ -15070,15 +15091,23 @@
                         turn: e[1]
                     }
                 }
-                var u = n(272)
+                var u = n(273)
                     , c = n(295)
                     , l = n(278)
                     , p = 0
                     , h = 1
                     , d = 2
-                    , f = {}
-                    , m = {}
-                    , v = {};
+                    , f = 3
+                    , m = {
+                    old_priority: !0
+                }
+                    , v = {
+                    old_priority: !0
+                }
+                    , y = {
+                    old_priority: !0
+                }
+                    , g = {};
                 r.prototype.addMove = function(e, t, n, r, o) {
                     this.moves.push({
                         index: e,
@@ -15099,7 +15128,7 @@
                     r.prototype.serialize = function() {
                         var e = this.moves.map(o)
                             , n = this.afks.map(a);
-                        return new t(c.compressToUint8Array(JSON.stringify([d, this.id, this.mapWidth, this.mapHeight, this.usernames, this.stars, this.cities, this.cityArmies, this.generals, this.mountains, e, n, this.teams])))
+                        return new t(c.compressToUint8Array(JSON.stringify([f, this.id, this.mapWidth, this.mapHeight, this.usernames, this.stars, this.cities, this.cityArmies, this.generals, this.mountains, e, n, this.teams])))
                     }
                     ,
                     r.deserialize = function(e) {
@@ -15131,11 +15160,13 @@
                     r.options = function(e) {
                         switch (e) {
                             case p:
-                                return f;
-                            case h:
                                 return m;
+                            case h:
+                                return v;
                             case d:
-                                return v
+                                return y;
+                            case f:
+                                return g
                         }
                     }
                     ,
@@ -15316,7 +15347,7 @@
                             case "binary":
                                 return N(this, t, n);
                             case "base64":
-                                return w(this, t, n);
+                                return M(this, t, n);
                             case "ucs2":
                             case "ucs-2":
                             case "utf16le":
@@ -15428,10 +15459,10 @@
                 function _(e, t, n, r) {
                     return z(Y(t), e, n, r)
                 }
-                function M(e, t, n, r) {
+                function w(e, t, n, r) {
                     return z(q(t, e.length - n), e, n, r)
                 }
-                function w(e, t, n) {
+                function M(e, t, n) {
                     return 0 === t && n === e.length ? J.fromByteArray(e) : J.fromByteArray(e.slice(t, n))
                 }
                 function k(e, t, n) {
@@ -15865,7 +15896,7 @@
                                 case "ucs-2":
                                 case "utf16le":
                                 case "utf-16le":
-                                    return M(this, e, t, n);
+                                    return w(this, e, t, n);
                                 default:
                                     if (i)
                                         throw new TypeError("Unknown encoding: " + r);
@@ -17496,29 +17527,114 @@
     , function(e, t, n) {
         "use strict";
         var r = n(3)
-            , o = n(178)
-            , i = n(266)
-            , a = n(210)
-            , s = n(1)
-            , u = n(270)
-            , c = r.createClass({
-            displayName: "Queue",
+            , o = n(308)
+            , i = n(297)
+            , a = r.createClass({
+            displayName: "Leaderboards",
             getInitialState: function() {
                 return {
-                    isForceStarting: !1
+                    ladder: "duel"
                 }
             },
-            onForceClicked: function() {
-                a.setForceStart(!this.state.isForceStarting),
-                    this.setState({
-                        isForceStarting: !this.state.isForceStarting
-                    })
+            show1v1Leaderboard: function() {
+                this.setState({
+                    ladder: "duel"
+                }),
+                    this.props.getLeaderboard("duel")
             },
-            isPrivateGame: function() {
-                return !this.props.isTeamQueue && this.props.queue_id && "1v1" !== this.props.queue_id && "2v2" !== this.props.queue_id
+            showFFALeaderboard: function() {
+                this.setState({
+                    ladder: "ffa"
+                }),
+                    this.props.getLeaderboard("ffa")
             },
+            leaderboardRows: function(e) {
+                var t = this
+                    , n = this.props.allLeaderboards
+                    , o = n ? n[e] : null;
+                if (!o && localStorage) {
+                    var i = localStorage["leaderboard:" + e];
+                    if (i)
+                        try {
+                            o = JSON.parse(i)
+                        } catch (e) {}
+                }
+                if (!o)
+                    return null;
+                var a = o.users
+                    , s = o.stars;
+                return (s || []).map(function(n, o) {
+                    var i = t.props.playerRanks && t.props.playerRanks[e] === o + 1 && t.props.playerUsername === a[o];
+                    return r.createElement("tr", {
+                        key: "leaderboard-row-" + o,
+                        className: i ? "highlighted" : ""
+                    }, r.createElement("td", null, o + 1), r.createElement("td", null, a[o] || "Anonymous"), r.createElement("td", null, Math.max(0, Math.round(n || 0))))
+                })
+            },
+            render: function() {
+                return r.createElement("div", {
+                    className: "popup-background"
+                }, r.createElement("div", {
+                    id: "leaderboard",
+                    className: "alert center"
+                }, r.createElement("h1", {
+                    className: "center-horizontal",
+                    style: {
+                        textShadow: "1px 1px black"
+                    }
+                }, "Leaderboards"), r.createElement("div", {
+                    id: "leaderboard-table-container"
+                }, r.createElement(o, {
+                    tab_id: "main-menu-leaderboard",
+                    selectedTab: "duel" === this.state.ladder ? 0 : 1,
+                    onClicks: [this.show1v1Leaderboard, this.showFFALeaderboard],
+                    titles: ["1v1", "FFA"]
+                }), r.createElement("table", {
+                    id: "leaderboard-table"
+                }, r.createElement("tbody", null, r.createElement("tr", null, r.createElement("th", null, "#"), r.createElement("th", null, "Username"), r.createElement("th", null, " ", r.createElement(i, null), " ")), this.leaderboardRows(this.state.ladder)))), r.createElement("button", {
+                    className: "small inverted center-horizontal",
+                    onClick: this.props.hideLeaderboards
+                }, "Exit")))
+            }
+        });
+        e.exports = a
+    }
+    , function(e, t, n) {
+        "use strict";
+        var r = n(3)
+            , o = r.createClass({
+            displayName: "Tabs",
+            render: function() {
+                var e = this.props.selectedTab
+                    , t = this.props.onClicks
+                    , n = this.props.tab_id
+                    , o = this.props.titles.map(function(o, i) {
+                    return r.createElement("div", {
+                        className: i === e ? "inline-button inverted" : "inline-button",
+                        onClick: t[i],
+                        key: n + "-" + i
+                    }, o)
+                });
+                return r.createElement("div", {
+                    className: "tabs background unselectable"
+                }, o)
+            }
+        });
+        e.exports = o
+    }
+    , function(e, t, n) {
+        "use strict";
+        var r = n(3)
+            , o = n(179)
+            , i = n(267)
+            , a = n(211)
+            , s = n(1)
+            , u = n(271)
+            , c = n(310)
+            , l = r.createClass({
+            displayName: "Queue",
             componentDidMount: function() {
-                this.isPrivateGame() ? u.changeURL("/games/" + encodeURIComponent(this.props.queue_id)) : this.props.isTeamQueue && u.changeURL("/teams/" + encodeURIComponent(this.props.queue_id)),
+                this.props.isTeamQueue && u.changeURL("/teams/" + encodeURIComponent(this.props.team_id)),
                     googletag.cmd.push(function() {
                         googletag.display("div-gpt-ad-1479698638527-1")
                     })
@@ -17528,30 +17644,23 @@
                     , t = this.props.queueTimeLeft % 60;
                 t < 10 && (t = "0" + t);
                 var n = "1v1" === this.props.queue_id
-                    , o = "2v2" === this.props.queue_id
-                    , i = this.isPrivateGame();
+                    , o = "2v2" === this.props.queue_id;
                 return r.createElement("div", {
                     className: "center"
                 }, r.createElement("center", null, this.props.prestart ? r.createElement("h1", {
                         className: "queue-title"
-                    }, "Game Starting...") : this.props.isTeamQueue || i ? r.createElement("div", null, r.createElement("h2", {
+                    }, "Game Starting...") : this.props.isTeamQueue ? r.createElement("div", null, r.createElement("h2", {
                             style: {
                                 whiteSpace: "nowrap",
                                 marginBottom: "5px"
                             }
                         }, "Share this link:"), r.createElement("p", {
                             className: "share-link"
-                        }, "http://" + window.location.hostname + (this.props.isTeamQueue ? "/teams/" : "/games/") + encodeURIComponent(this.props.queue_id))) : r.createElement("h1", {
+                        }, "http://" + window.location.hostname + "/teams/" + encodeURIComponent(this.props.team_id))) : r.createElement("h1", {
                             className: "queue-title"
                         }, "Waiting for ", o ? "teams" : "players", "..."), r.createElement("h2", null, o ? Math.ceil(this.props.numPlayers / 2) : this.props.numPlayers, " of ", n || this.props.isTeamQueue || o ? 2 : s.PLAYER_CAP, " ", o ? " teams" : ""), !this.props.isTeamQueue && !this.props.prestart && !this.props.queue_id && this.props.numPlayers >= 2 ? r.createElement("p", null, "Game automatically starting in ", e, ":", t) : null, this.props.prestart ? null : r.createElement("p", {
-                        style: {
-                            fontSize: "14px",
-                            margin: "10px"
-                        }
-                    }, "We'll play a gong sound when the game starts. Turn your volume up!"), this.props.prestart || n || this.props.isTeamQueue || o || !(this.props.numPlayers > 1) ? null : r.createElement("button", {
-                        onClick: this.onForceClicked,
-                        className: this.state.isForceStarting ? "inverted" : ""
-                    }, "Force Start ", this.props.numForce, " / ", Math.ceil(.7 * this.props.numPlayers)), r.createElement("br", null), this.props.prestart ? null : r.createElement("button", {
+                        className: "queue-gong-message"
+                    }, "We'll play a gong sound when the game starts. Turn your volume up!"), this.props.prestart || n || this.props.isTeamQueue || o || !(this.props.numPlayers > 1) ? null : r.createElement(c, null), r.createElement("br", null), this.props.prestart ? null : r.createElement("button", {
                         className: "small",
                         onClick: this.props.onCancelClicked.bind(this)
                     }, "Cancel"), r.createElement("div", {
@@ -17569,11 +17678,226 @@
         }, function(e) {
             return {
                 onCancelClicked: function() {
-                    this.props.isTeamQueue ? a.leaveTeam(this.props.queue_id) : a.cancel(),
+                    this.props.isTeamQueue ? a.leaveTeam(this.props.team_id) : a.cancel(),
                         e(i.cancel())
                 }
             }
-        })(c)
+        })(l)
+    }
+    , function(e, t, n) {
+        "use strict";
+        var r = n(3)
+            , o = n(265)
+            , i = n(211)
+            , a = r.createClass({
+            displayName: "ForceStartButton",
+            getInitialState: function() {
+                return {
+                    isForceStarting: !1
+                }
+            },
+            onForceClicked: function() {
+                i.setForceStart(!this.state.isForceStarting),
+                    this.setState({
+                        isForceStarting: !this.state.isForceStarting
+                    })
+            },
+            render: function() {
+                var e = o.getState().queue;
+                return r.createElement("button", {
+                    onClick: this.onForceClicked,
+                    className: this.state.isForceStarting ? "inverted" : ""
+                }, "Force Start ", e.numForce, " / ", Math.ceil(.7 * e.numPlayers))
+            }
+        });
+        e.exports = a
+    }
+    , function(e, t, n) {
+        "use strict";
+        var r = n(3)
+            , o = n(179)
+            , i = n(267)
+            , a = n(310)
+            , s = n(211)
+            , u = n(1)
+            , c = n(177)
+            , l = n(271)
+            , p = n(312)
+            , h = n(314)
+            , d = r.createClass({
+            displayName: "CustomQueue",
+            componentDidMount: function() {
+                l.changeURL("/games/" + encodeURIComponent(this.props.queue_id)),
+                    window.addEventListener("keydown", this.onKeyDown)
+            },
+            componentWillUnmount: function() {
+                window.removeEventListener("keydown", this.onKeyDown)
+            },
+            onKeyDown: function(e) {
+                h.CHAT.indexOf(e.keyCode) !== -1 && (document.getElementById("chatroom-input").focus(),
+                    e.preventDefault(),
+                    e.stopPropagation())
+            },
+            render: function() {
+                var e = c.chatRoomForCustomGame(this.props.queue_id);
+                return r.createElement("div", {
+                    onKeyDown: this.onKeyDown
+                }, r.createElement("div", {
+                    className: "center"
+                }, r.createElement("center", null, this.props.prestart ? r.createElement("h1", {
+                        className: "queue-title"
+                    }, "Game Starting...") : r.createElement("div", null, r.createElement("h2", {
+                        style: {
+                            whiteSpace: "nowrap",
+                            marginBottom: "5px"
+                        }
+                    }, "Share this link:"), r.createElement("p", {
+                        className: "share-link"
+                    }, "http://" + window.location.hostname + "/games/" + encodeURIComponent(this.props.queue_id))), r.createElement("h2", null, this.props.numPlayers + " of " + u.PLAYER_CAP), this.props.prestart ? null : r.createElement("p", {
+                        className: "queue-gong-message"
+                    }, "We'll play a gong sound when the game starts. Turn your volume up!"), !this.props.prestart && this.props.numPlayers > 1 ? r.createElement(a, null) : null, r.createElement("br", null), this.props.prestart ? null : r.createElement("button", {
+                        className: "small",
+                        onClick: this.props.onCancelClicked.bind(this)
+                    }, "Cancel"))), r.createElement("div", {
+                    id: "custom-queue-chat"
+                }, r.createElement(p, {
+                    chat_room: e,
+                    messages: this.props.all_chats[e]
+                })))
+            }
+        });
+        e.exports = o.connect(function(e) {
+            return Object.assign({
+                all_chats: e.chat
+            }, e.queue)
+        }, function(e) {
+            return {
+                onCancelClicked: function() {
+                    s.cancel(),
+                        e(i.cancel())
+                }
+            }
+        })(d)
+    }
+    , function(e, t, n) {
+        "use strict";
+        var r = n(3)
+            , o = n(313)
+            , i = n(211)
+            , a = r.createClass({
+            displayName: "ChatRoom",
+            getInitialState: function() {
+                return {
+                    currentMessage: ""
+                }
+            },
+            handleMessageChange: function(e) {
+                this.setState({
+                    currentMessage: e.target.value
+                })
+            },
+            handleKeyDown: function(e) {
+                e.stopPropagation()
+            },
+            handleKeyPress: function(e) {
+                e.stopPropagation();
+                var t = e.which || e.keyCode;
+                13 === t && (this.state.currentMessage ? (i.sendChatMessage(this.props.chat_room, this.state.currentMessage),
+                        this.setState({
+                            currentMessage: ""
+                        })) : this.refs.input.blur())
+            },
+            componentWillUpdate: function() {
+                var e = this.refs.list;
+                this.shouldScrollBottom = e.scrollTop + e.offsetHeight >= e.scrollHeight - 10
+            },
+            componentDidUpdate: function() {
+                if (this.shouldScrollBottom) {
+                    var e = this.refs.list;
+                    e.scrollTop = e.scrollHeight
+                }
+            },
+            toggleMinimizeChat: function() {
+                this.setState({
+                    minimizeChat: !this.state.minimizeChat
+                })
+            },
+            render: function() {
+                if (this.props.messages)
+                    var e = this
+                        , t = this.props.messages.map(function(t, n) {
+                        return r.createElement(o, {
+                            message: t,
+                            key: "chat_message_" + e.props.chat_room + n
+                        })
+                    });
+                var n = "chat-messages-container" + (this.state.minimizeChat ? " minimized" : "");
+                return r.createElement("div", null, r.createElement("div", {
+                    className: n,
+                    onClick: this.toggleMinimizeChat,
+                    ref: "list"
+                }, t), r.createElement("input", {
+                    id: "chatroom-input",
+                    type: "text",
+                    ref: "input",
+                    placeholder: "Press [Enter] to send a message",
+                    value: this.state.currentMessage,
+                    onChange: this.handleMessageChange,
+                    onKeyPress: this.handleKeyPress,
+                    onKeyDown: this.handleKeyDown
+                }))
+            }
+        });
+        e.exports = a
+    }
+    , function(e, t, n) {
+        "use strict";
+        var r = n(3)
+            , o = n(1)
+            , i = r.createClass({
+            displayName: "ChatMessage",
+            render: function() {
+                var e = this.props.message
+                    , t = e.hasOwnProperty("playerIndex") ? o.PLAYER_COLORS[e.playerIndex] : null;
+                return e.hasOwnProperty("username") ? r.createElement("p", {
+                        className: "chat-message"
+                    }, t ? r.createElement("span", {
+                            className: o.PLAYER_COLORS[e.playerIndex] || "white",
+                            style: {
+                                display: "inline-block",
+                                width: "10px",
+                                height: "10px",
+                                margin: "0 2px"
+                            }
+                        }) : null, r.createElement("span", {
+                        className: "username"
+                    }, e.username), ": ", e.text) : r.createElement("p", {
+                        className: "chat-message server-chat-message"
+                    }, e.text)
+            }
+        });
+        e.exports = i
+    }
+    , function(e, t, n) {
+        "use strict";
+        function r(e) {
+            return o && o[e] ? o[e].split(",").map(function(e) {
+                    return +e
+                }) : void 0
+        }
+        var o = n(287);
+        e.exports = {
+            UP: r("UP") || [87, 38],
+            DOWN: r("DOWN") || [83, 40],
+            LEFT: r("LEFT") || [65, 37],
+            RIGHT: r("RIGHT") || [68, 39],
+            CHAT: r("CHAT") || [13, 84],
+            DESELECT: r("DESELECT") || [32],
+            AUTOPLAY: r("AUTOPLAY") || [32],
+            CLEAR: r("CLEAR") || [81],
+            ZOOMIN: r("ZOOMIN") || [48],
+            ZOOMOUT: r("ZOOMOUT") || [57]
+        }
     }
     , function(e, t, n) {
         "use strict";
@@ -17601,21 +17925,22 @@
             }, e.tiles))
         }
         var i = n(3)
-            , a = n(178)
-            , s = n(268)
-            , u = n(309)
+            , a = n(179)
+            , s = n(269)
+            , u = n(316)
             , c = n(312)
-            , l = n(264)
+            , l = n(265)
             , p = n(1)
             , h = n(306)
-            , d = n(311).Tutorial
-            , f = n(210)
+            , d = n(318).Tutorial
+            , f = n(211)
             , m = n(297)
             , v = n(288)
             , y = n(303)
-            , g = (n(270),
-            n(314))
-            , T = i.createClass({
+            , g = (n(271),
+            n(319))
+            , T = n(308)
+            , b = i.createClass({
             displayName: "GamePage",
             getInitialState: function() {
                 return {
@@ -17631,12 +17956,6 @@
                 this.props.canSpectate ? this.setState({
                         isSpectating: !0
                     }) : this.exit()
-            },
-            clearMoves: function() {
-                this.clearQueuedAttacks()
-            },
-            setClearQueuedAttacks: function(e) {
-                this.clearQueuedAttacks = e
             },
             focusChat: function() {
                 this.props.isLocalGame || document.getElementById("chatroom-input").focus()
@@ -17688,8 +18007,7 @@
                 13 === e.keyCode && this.onReplayTurnJump()
             },
             watchReplay: function() {
-                "undefined" != typeof ga && ga("send", "event", "Replay", "watch"),
-                    this.clearQueuedAttacks();
+                "undefined" != typeof ga && ga("send", "event", "Replay", "watch");
                 var e = this.props.replay_id;
                 g.playAd(function() {
                     window.open("/replays/" + e)
@@ -17705,7 +18023,6 @@
                     scrollable: !this.props.lost && !this.props.won || this.props.canSpectate || this.state.isSpectating,
                     isReplay: this.props.isReplay,
                     toggleAutoPlay: this.toggleAutoPlay,
-                    setClearQueuedAttacks: this.setClearQueuedAttacks,
                     focusChat: this.focusChat
                 }), !this.state.isSpectating && this.props.lost ? i.createElement(h, {
                         title: "Game Over",
@@ -17737,11 +18054,7 @@
                     id: "game-leaderboard"
                 }, i.createElement("tbody", null, i.createElement("tr", null, i.createElement("td", null, " ", i.createElement(m, null), " "), i.createElement("td", null, "Player"), i.createElement("td", null, "Army"), i.createElement("td", null, "Land")), e)), i.createElement("div", {
                     id: "turn-counter"
-                }, "Turn ", t), this.props.isReplay || this.props.lost || this.props.won ? null : i.createElement("button", {
-                        className: "small",
-                        id: "clear-moves-button",
-                        onClick: this.clearMoves
-                    }, "Clear Moves [Q]"), this.props.isReplay ? i.createElement("div", {
+                }, "Turn ", t), this.props.isReplay ? i.createElement("div", {
                         id: "replay-top-left"
                     }, i.createElement("div", {
                         id: "replay-turn-jump",
@@ -17835,25 +18148,12 @@
                         onClick: this.exitShareReplay
                     }, "Exit")))) : null, this.props.isReplay ? i.createElement("div", {
                         id: "replay-bottom"
-                    }, this.props.autoPlay ? i.createElement("center", null, i.createElement("div", {
-                            id: "replay-autoplay-speed-bar",
-                            className: "background"
-                        }, i.createElement("div", {
-                            className: .5 === this.props.autoPlaySpeed ? "inline-button inverted" : "inline-button",
-                            onClick: this.setAutoPlaySpeed.bind(null, .5)
-                        }, "0.5x"), i.createElement("div", {
-                            className: 1 === this.props.autoPlaySpeed ? "inline-button inverted" : "inline-button",
-                            onClick: this.setAutoPlaySpeed.bind(null, 1)
-                        }, "1x"), i.createElement("div", {
-                            className: 2 === this.props.autoPlaySpeed ? "inline-button inverted" : "inline-button",
-                            onClick: this.setAutoPlaySpeed.bind(null, 2)
-                        }, "2x"), i.createElement("div", {
-                            className: 5 === this.props.autoPlaySpeed ? "inline-button inverted" : "inline-button",
-                            onClick: this.setAutoPlaySpeed.bind(null, 5)
-                        }, "5x"), i.createElement("div", {
-                            className: 10 === this.props.autoPlaySpeed ? "inline-button inverted" : "inline-button",
-                            onClick: this.setAutoPlaySpeed.bind(null, 10)
-                        }, "10x"))) : null, y ? null : i.createElement("div", {
+                    }, this.props.autoPlay ? i.createElement("center", null, i.createElement(T, {
+                            tab_id: "replay-autoplay",
+                            selectedTab: .5 === this.props.autoPlaySpeed ? 0 : 1 === this.props.autoPlaySpeed ? 1 : 2 === this.props.autoPlaySpeed ? 2 : 5 === this.props.autoPlaySpeed ? 3 : 4,
+                            onClicks: [this.setAutoPlaySpeed.bind(null, .5), this.setAutoPlaySpeed.bind(null, 1), this.setAutoPlaySpeed.bind(null, 2), this.setAutoPlaySpeed.bind(null, 5), this.setAutoPlaySpeed.bind(null, 10)],
+                            titles: ["0.5x", "1x", "2x", "5x", "10x"]
+                        })) : null, y ? null : i.createElement("div", {
                             id: "replay-bottom-bar",
                             className: "background"
                         }, i.createElement("div", null, i.createElement("span", {
@@ -17879,16 +18179,11 @@
             return Object.assign({
                 chat_messages: e.chat[t] || []
             }, e.game)
-        })(T)
+        })(b)
     }
     , function(e, t, n) {
         "use strict";
         function r(e) {
-            return localStorage[e] ? localStorage[e].split(",").map(function(e) {
-                    return +e
-                }) : void 0
-        }
-        function o(e) {
             switch (e) {
                 case d:
                     return "large";
@@ -17898,32 +18193,21 @@
                     return "tiny"
             }
         }
-        var i = n(3)
-            , a = n(178)
-            , s = n(310)
-            , u = n(210)
-            , c = n(272)
-            , l = n(311)
-            , p = n(288)
-            , h = n(303)
+        var o = n(3)
+            , i = n(179)
+            , a = n(317)
+            , s = n(211)
+            , u = n(273)
+            , c = n(318)
+            , l = n(288)
+            , p = n(303)
+            , h = n(314)
             , d = -1
             , f = 0
             , m = 1
             , v = 2
             , y = 50
-            , g = {
-            UP: r("UP") || [87, 38],
-            DOWN: r("DOWN") || [83, 40],
-            LEFT: r("LEFT") || [65, 37],
-            RIGHT: r("RIGHT") || [68, 39],
-            CHAT: r("CHAT") || [13, 84],
-            DESELECT: r("DESELECT") || [32],
-            AUTOPLAY: r("AUTOPLAY") || [32],
-            CLEAR: r("CLEAR") || [81],
-            ZOOMIN: r("ZOOMIN") || [48],
-            ZOOMOUT: r("ZOOMOUT") || [57]
-        }
-            , T = i.createClass({
+            , g = o.createClass({
             displayName: "GameMap",
             getInitialState: function() {
                 return {
@@ -17934,7 +18218,7 @@
                     },
                     attackIndex: 1,
                     queuedAttacks: [],
-                    zoom: h ? m : f,
+                    zoom: p ? m : f,
                     wheel: 0
                 }
             },
@@ -17942,11 +18226,10 @@
                 this.setState({
                     queuedAttacks: []
                 }),
-                    u.clearMoves()
+                    s.clearMoves()
             },
             componentDidMount: function() {
-                window.addEventListener("keydown", this.onKeyDown),
-                    this.props.setClearQueuedAttacks(this.clearQueuedAttacks)
+                window.addEventListener("keydown", this.onKeyDown)
             },
             componentWillUnmount: function() {
                 window.removeEventListener("keydown", this.onKeyDown)
@@ -17980,48 +18263,48 @@
                 }
             },
             onKeyDown: function(e) {
-                if (g.ZOOMIN.indexOf(e.keyCode) !== -1)
+                if (h.ZOOMIN.indexOf(e.keyCode) !== -1)
                     return void (this.state.zoom > d && this.setState({
                         zoom: this.state.zoom - 1
                     }));
-                if (g.ZOOMOUT.indexOf(e.keyCode) !== -1)
+                if (h.ZOOMOUT.indexOf(e.keyCode) !== -1)
                     return void (this.state.zoom < v && this.setState({
                         zoom: this.state.zoom + 1
                     }));
                 if (this.props.isReplay)
-                    return void (g.AUTOPLAY.indexOf(e.keyCode) !== -1 ? this.props.toggleAutoPlay() : g.RIGHT.indexOf(e.keyCode) !== -1 ? p.nextReplayTurn() : g.LEFT.indexOf(e.keyCode) !== -1 && p.backReplay());
+                    return void (h.AUTOPLAY.indexOf(e.keyCode) !== -1 ? this.props.toggleAutoPlay() : h.RIGHT.indexOf(e.keyCode) !== -1 ? l.nextReplayTurn() : h.LEFT.indexOf(e.keyCode) !== -1 && l.backReplay());
                 if (e.preventDefault(),
                         e.stopPropagation(),
-                    g.CLEAR.indexOf(e.keyCode) !== -1)
+                    h.CLEAR.indexOf(e.keyCode) !== -1)
                     return void this.clearQueuedAttacks();
-                if (g.DESELECT.indexOf(e.keyCode) !== -1)
+                if (h.DESELECT.indexOf(e.keyCode) !== -1)
                     return void this.setState({
                         selectedIndex: -1
                     });
-                if (g.CHAT.indexOf(e.keyCode) !== -1)
+                if (h.CHAT.indexOf(e.keyCode) !== -1)
                     return void this.props.focusChat();
                 if (!(this.state.selectedIndex < 0)) {
                     var t = Math.floor(this.state.selectedIndex / this.props.map.width)
                         , n = this.state.selectedIndex % this.props.map.width
                         , r = 0
                         , o = 0;
-                    if (g.LEFT.indexOf(e.keyCode) !== -1)
+                    if (h.LEFT.indexOf(e.keyCode) !== -1)
                         o = -1;
-                    else if (g.UP.indexOf(e.keyCode) !== -1)
+                    else if (h.UP.indexOf(e.keyCode) !== -1)
                         r = -1;
-                    else if (g.RIGHT.indexOf(e.keyCode) !== -1)
+                    else if (h.RIGHT.indexOf(e.keyCode) !== -1)
                         o = 1;
                     else {
-                        if (g.DOWN.indexOf(e.keyCode) === -1)
+                        if (h.DOWN.indexOf(e.keyCode) === -1)
                             return;
                         r = 1
                     }
                     var i = t + r
                         , a = n + o
                         , s = this.props.map.tileAt(this.props.map.indexFrom(i, a));
-                    s !== c.TILE_MOUNTAIN ? (this.onTileClick(i, a),
+                    s !== u.TILE_MOUNTAIN ? (this.onTileClick(i, a),
                         (s === this.props.playerIndex || this.props.teams && this.props.teams[s] === this.props.teams[this.props.playerIndex]) && this.onTileClick(i, a),
-                        l.onWASD && l.onWASD()) : this.setState({
+                        c.onWASD && c.onWASD()) : this.setState({
                             selectedIndex: -1
                         })
                 }
@@ -18047,7 +18330,7 @@
                         };
                         if (n.isAdjacent(r, this.state.selectedIndex) && r !== this.state.selectedIndex) {
                             var i = this.state.selectedIndex;
-                            u.attack(i, r, this.state.selectedIs50, this.state.attackIndex);
+                            s.attack(i, r, this.state.selectedIs50, this.state.attackIndex);
                             Object.assign(o, {
                                 queuedAttacks: this.state.queuedAttacks.concat([{
                                     attackIndex: this.state.attackIndex,
@@ -18087,7 +18370,7 @@
             onWheel: function(e) {
                 var t = this.state.wheel + e.deltaY;
                 Math.abs(t) > y && (this.onKeyDown({
-                    keyCode: t < 0 ? g.ZOOMIN[0] : g.ZOOMOUT[0]
+                    keyCode: t < 0 ? h.ZOOMIN[0] : h.ZOOMOUT[0]
                 }),
                     t = 0),
                     this.setState({
@@ -18103,7 +18386,7 @@
                             tileCoordinates: null
                         })
                     } else
-                        l.onDrag && l.onDrag(),
+                        c.onDrag && c.onDrag(),
                             this.setState({
                                 offset: {
                                     x: this.state.offset.x + e.clientX - this.state.prevMouseLocation.x,
@@ -18138,13 +18421,13 @@
                     !1
             },
             render: function() {
-                return i.createElement("div", {
+                return o.createElement("div", {
                     className: "relative",
                     style: {
                         top: this.state.offset.y,
                         left: this.state.offset.x
                     }
-                }, i.createElement(b, {
+                }, o.createElement(T, {
                     props: this.props,
                     queuedAttacks: this.state.queuedAttacks,
                     selectedIndex: this.state.selectedIndex,
@@ -18152,8 +18435,8 @@
                     onTileMouseDown: this.onTileMouseDown,
                     onMouseMove: this.onMouseMove,
                     onMouseUp: this.onMouseUp,
-                    zoomClass: this.state ? o(this.state.zoom) : null
-                }), this.props.scrollable ? i.createElement("div", {
+                    zoomClass: this.state ? r(this.state.zoom) : null
+                }), this.props.scrollable ? o.createElement("div", {
                         className: "game-scroll",
                         onMouseDown: this.onMouseDown,
                         onTouchStart: this.onMouseDown,
@@ -18166,7 +18449,7 @@
                     }) : null)
             }
         })
-            , b = i.createClass({
+            , T = o.createClass({
             displayName: "Tiles",
             shouldComponentUpdate: function(e) {
                 return this.props.props !== e.props || this.props.queuedAttacks !== e.queuedAttacks || this.props.selectedIndex !== e.selectedIndex || this.props.selectedIs50 !== e.selectedIs50 || this.props.zoomClass !== e.zoomClass
@@ -18176,25 +18459,25 @@
                     , t = e.map
                     , n = e.playerIndex
                     , r = t.height
-                    , o = [];
+                    , i = [];
                 this.props.queuedAttacks.forEach(function(e) {
                     var t = e.begin
                         , n = e.end;
-                    o[t] || (o[t] = {}),
-                        n === t + 1 ? o[t].right = !0 : n === t - 1 ? o[t].left = !0 : n > t ? o[t].down = !0 : o[t].up = !0
+                    i[t] || (i[t] = {}),
+                        n === t + 1 ? i[t].right = !0 : n === t - 1 ? i[t].left = !0 : n > t ? i[t].down = !0 : i[t].up = !0
                 });
-                for (var a = [], u = 0; u < r; u++) {
+                for (var s = [], c = 0; c < r; c++) {
                     for (var l = [], p = 0; p < t.width; p++) {
-                        var h = t.indexFrom(u, p)
+                        var h = t.indexFrom(c, p)
                             , d = t.tileAt(h)
                             , f = d === n
                             , m = h === this.props.selectedIndex
-                            , v = this.props.selectedIndex >= 0 && t.isAdjacent(this.props.selectedIndex, h) && d !== c.TILE_MOUNTAIN;
-                        l.push(i.createElement(s, {
-                            row: u,
+                            , v = this.props.selectedIndex >= 0 && t.isAdjacent(this.props.selectedIndex, h) && d !== u.TILE_MOUNTAIN;
+                        l.push(o.createElement(a, {
+                            row: c,
                             col: p,
-                            key: u + "tile" + p,
-                            number: t.armyAt(t.indexFrom(u, p)),
+                            key: c + "tile" + p,
+                            number: t.armyAt(t.indexFrom(c, p)),
                             tile: d,
                             isSelectable: f,
                             isSelected: m,
@@ -18202,34 +18485,34 @@
                             isAttackable: v,
                             isGeneral: e.generals && e.generals.indexOf(h) >= 0,
                             isCity: e.cities && e.cities.indexOf(h) >= 0,
-                            onMouseDown: f || v ? this.props.onTileMouseDown.bind(null, u, p) : null,
+                            onMouseDown: f || v ? this.props.onTileMouseDown.bind(null, c, p) : null,
                             onMouseMove: this.props.onMouseMove,
                             onMouseUp: this.props.onMouseUp,
-                            arrows: o[h],
+                            arrows: i[h],
                             zoomClass: this.props.zoomClass
                         }))
                     }
-                    a.push(i.createElement("tr", {
-                        key: "row" + u
+                    s.push(o.createElement("tr", {
+                        key: "row" + c
                     }, l))
                 }
-                return i.createElement("table", {
+                return o.createElement("table", {
                     id: "map",
                     style: {
                         borderSpacing: 0
                     }
-                }, i.createElement("tbody", null, a))
+                }, o.createElement("tbody", null, s))
             }
         });
-        e.exports = a.connect(function(e) {
+        e.exports = i.connect(function(e) {
             return e.game
-        }, null)(T)
+        }, null)(g)
     }
     , function(e, t, n) {
         "use strict";
         var r = n(3)
             , o = n(1)
-            , i = n(272)
+            , i = n(273)
             , a = r.createClass({
             displayName: "Tile",
             onContextMenu: function(e) {
@@ -18285,11 +18568,11 @@
     }
     , function(e, t, n) {
         "use strict";
-        var r = n(273)
+        var r = n(274)
             , o = n(3)
             , i = n(30)
-            , a = n(264)
-            , s = n(268)
+            , a = n(265)
+            , s = n(269)
             , u = n(303)
             , c = o.createClass({
             displayName: "Tutorial",
@@ -18370,98 +18653,6 @@
             Tutorial: c
         };
         e.exports = l
-    }
-    , function(e, t, n) {
-        "use strict";
-        var r = n(3)
-            , o = n(313)
-            , i = n(210)
-            , a = r.createClass({
-            displayName: "ChatRoom",
-            getInitialState: function() {
-                return {
-                    currentMessage: ""
-                }
-            },
-            handleMessageChange: function(e) {
-                this.setState({
-                    currentMessage: e.target.value
-                })
-            },
-            handleKeyDown: function(e) {
-                e.stopPropagation()
-            },
-            handleKeyPress: function(e) {
-                e.stopPropagation();
-                var t = e.which || e.keyCode;
-                13 === t && (this.state.currentMessage && (i.sendChatMessage(this.props.chat_room, this.state.currentMessage),
-                    this.setState({
-                        currentMessage: ""
-                    })),
-                    this.refs.input.blur())
-            },
-            componentWillUpdate: function() {
-                var e = this.refs.list;
-                this.shouldScrollBottom = e.scrollTop + e.offsetHeight >= e.scrollHeight - 10
-            },
-            componentDidUpdate: function() {
-                if (this.shouldScrollBottom) {
-                    var e = this.refs.list;
-                    e.scrollTop = e.scrollHeight
-                }
-            },
-            render: function() {
-                if (this.props.messages)
-                    var e = this
-                        , t = this.props.messages.map(function(t, n) {
-                        return r.createElement(o, {
-                            message: t,
-                            key: "chat_message_" + e.props.chat_room + n
-                        })
-                    });
-                return r.createElement("div", null, r.createElement("div", {
-                    className: "chat-messages-container",
-                    ref: "list"
-                }, t), r.createElement("input", {
-                    id: "chatroom-input",
-                    type: "text",
-                    ref: "input",
-                    placeholder: "Press [Enter] to send a message",
-                    value: this.state.currentMessage,
-                    onChange: this.handleMessageChange,
-                    onKeyPress: this.handleKeyPress,
-                    onKeyDown: this.handleKeyDown
-                }))
-            }
-        });
-        e.exports = a
-    }
-    , function(e, t, n) {
-        "use strict";
-        var r = n(3)
-            , o = n(1)
-            , i = r.createClass({
-            displayName: "ChatMessage",
-            render: function() {
-                var e = this.props.message;
-                return e.hasOwnProperty("playerIndex") ? r.createElement("p", {
-                        className: "chat-message"
-                    }, r.createElement("span", {
-                        className: o.PLAYER_COLORS[e.playerIndex],
-                        style: {
-                            display: "inline-block",
-                            width: "10px",
-                            height: "10px",
-                            margin: "0 2px"
-                        }
-                    }), r.createElement("span", {
-                        className: "username"
-                    }, e.username), ": ", e.text) : r.createElement("p", {
-                        className: "chat-message server-chat-message"
-                    }, e.text)
-            }
-        });
-        e.exports = i
     }
     , function(e, t) {
         "use strict";
