@@ -47,7 +47,7 @@
     ;
     var r = (n(1),
         n(2));
-    n(321);
+    n(322);
     var o = n(265)
         , i = n(176)
         , a = n(3)
@@ -74,7 +74,7 @@
     , function(e, t) {
         "use strict";
         e.exports = {
-            VERSION: "8.4",
+            VERSION: "9.0",
             PLAYER_CAP: 8,
             PLAYER_COLORS: ["red", "blue", "green", "purple", "teal", "darkgreen", "orange", "maroon"],
             MAX_USERNAME_LENGTH: 16,
@@ -85,10 +85,14 @@
             RECRUIT_RATE: 2,
             FARM_RATE: 50,
             MIN_GENERAL_SPACING: 9,
-            MAX_2V2_ALLY_SPACING: 14,
-            MIN_2V2_ALLY_SPACING: 5,
+            MAX_ALLY_SPACING: 14,
+            MAX_ALLY_SPACING_LOOSE: 15,
+            MIN_ALLY_SPACING: 4,
+            MIN_ALLY_SPACING_LOOSE: 3,
+            ALLY_LOOSE_THRESHOLD: 4,
             CLOSE_CITY_DISTANCE: 6,
-            TIMEOUT_CAPTURE_AFK: 25e3
+            TIMEOUT_CAPTURE_AFK: 25e3,
+            CUSTOM_GAME_URL_LENGTH: 4
         }
     }
     , function(e, t, n) {
@@ -99,9 +103,9 @@
             , a = n(177)
             , s = n(178)
             , u = n(309)
-            , c = n(311)
-            , l = n(315)
-            , p = n(320)
+            , c = n(312)
+            , l = n(316)
+            , p = n(321)
             , h = r.createClass({
             displayName: "App",
             render: function() {
@@ -315,7 +319,7 @@
         };
         e.exports = S
     }
-    , [322, 8], function(e, t) {
+    , [323, 8], function(e, t) {
         "use strict";
         function n(e) {
             for (var t = arguments.length - 1, n = "Minified React error #" + e + "; visit http://facebook.github.io/react/docs/error-decoder.html?invariant=" + e, r = 0; r < t; r++)
@@ -518,15 +522,15 @@
                                 m += o(d, f, n, i);
                     else
                         for (; !(T = b.next()).done; ) {
-                            var A = T.value;
-                            A && (d = A[1],
-                                f = v + c.escape(A[0]) + p + r(d, 0),
+                            var E = T.value;
+                            E && (d = E[1],
+                                f = v + c.escape(E[0]) + p + r(d, 0),
                                 m += o(d, f, n, i))
                         }
                 } else if ("object" === h) {
-                    var E = ""
+                    var A = ""
                         , C = String(e);
-                    a("31", "[object Object]" === C ? "object with keys {" + Object.keys(e).join(", ") + "}" : C, E)
+                    a("31", "[object Object]" === C ? "object with keys {" + Object.keys(e).join(", ") + "}" : C, A)
                 }
             }
             return m
@@ -667,7 +671,7 @@
         }
         function o(e, t) {
             var n = b.hasOwnProperty(t) ? b[t] : null;
-            A.hasOwnProperty(t) && ("OVERRIDE_BASE" !== n ? h("73", t) : void 0),
+            E.hasOwnProperty(t) && ("OVERRIDE_BASE" !== n ? h("73", t) : void 0),
             e && ("DEFINE_MANY" !== n && "DEFINE_MANY_MERGED" !== n ? h("74", t) : void 0)
         }
         function i(e, t) {
@@ -809,7 +813,7 @@
             },
             autobind: function() {}
         }
-            , A = {
+            , E = {
             replaceState: function(e, t) {
                 this.updater.enqueueReplaceState(this, e),
                 t && this.updater.enqueueCallback(this, t, "replaceState")
@@ -818,8 +822,8 @@
                 return this.updater.isMounted(this)
             }
         }
-            , E = function() {};
-        d(E.prototype, f.prototype, A);
+            , A = function() {};
+        d(A.prototype, f.prototype, E);
         var C = {
             createClass: function(e) {
                 var t = r(function(e, n, r) {
@@ -833,7 +837,7 @@
                     "object" != typeof o || Array.isArray(o) ? h("82", t.displayName || "ReactCompositeComponent") : void 0,
                         this.state = o
                 });
-                t.prototype = new E,
+                t.prototype = new A,
                     t.prototype.constructor = t,
                     t.prototype.__reactAutoBindPairs = [],
                     T.forEach(i.bind(null, t)),
@@ -1011,7 +1015,7 @@
                 i = i || _,
                     s = s || r;
                 if (null == n[r]) {
-                    var c = A[a];
+                    var c = E[a];
                     return t ? new o(null === n[r] ? "The " + c + " `" + s + "` is marked as required " + ("in `" + i + "`, but its value is `null`.") : "The " + c + " `" + s + "` is marked as required in " + ("`" + i + "`, but its value is `undefined`.")) : null
                 }
                 return e(n, r, i, a, s)
@@ -1025,7 +1029,7 @@
                 var u = t[n]
                     , c = g(u);
                 if (c !== e) {
-                    var l = A[i]
+                    var l = E[i]
                         , p = T(u);
                     return new o("Invalid " + l + " `" + a + "` of type " + ("`" + p + "` supplied to `" + r + "`, expected ") + ("`" + e + "`."))
                 }
@@ -1042,12 +1046,12 @@
                     return new o("Property `" + a + "` of component `" + r + "` has invalid PropType notation inside arrayOf.");
                 var s = t[n];
                 if (!Array.isArray(s)) {
-                    var u = A[i]
+                    var u = E[i]
                         , c = g(s);
                     return new o("Invalid " + u + " `" + a + "` of type " + ("`" + c + "` supplied to `" + r + "`, expected an array."))
                 }
                 for (var l = 0; l < s.length; l++) {
-                    var p = e(s, l, r, i, a + "[" + l + "]", E);
+                    var p = e(s, l, r, i, a + "[" + l + "]", A);
                     if (p instanceof Error)
                         return p
                 }
@@ -1059,7 +1063,7 @@
             function e(e, t, n, r, i) {
                 var a = e[t];
                 if (!S.isValidElement(a)) {
-                    var s = A[r]
+                    var s = E[r]
                         , u = g(a);
                     return new o("Invalid " + s + " `" + i + "` of type " + ("`" + u + "` supplied to `" + n + "`, expected a single ReactElement."))
                 }
@@ -1070,7 +1074,7 @@
         function l(e) {
             function t(t, n, r, i, a) {
                 if (!(t[n]instanceof e)) {
-                    var s = A[i]
+                    var s = E[i]
                         , u = e.name || _
                         , c = b(t[n]);
                     return new o("Invalid " + s + " `" + a + "` of type " + ("`" + c + "` supplied to `" + r + "`, expected ") + ("instance of `" + u + "`."))
@@ -1084,7 +1088,7 @@
                 for (var u = t[n], c = 0; c < e.length; c++)
                     if (r(u, e[c]))
                         return null;
-                var l = A[a]
+                var l = E[a]
                     , p = JSON.stringify(e);
                 return new o("Invalid " + l + " `" + s + "` of value `" + u + "` " + ("supplied to `" + i + "`, expected one of " + p + "."))
             }
@@ -1097,12 +1101,12 @@
                 var s = t[n]
                     , u = g(s);
                 if ("object" !== u) {
-                    var c = A[i];
+                    var c = E[i];
                     return new o("Invalid " + c + " `" + a + "` of type " + ("`" + u + "` supplied to `" + r + "`, expected an object."))
                 }
                 for (var l in s)
                     if (s.hasOwnProperty(l)) {
-                        var p = e(s, l, r, i, a + "." + l, E);
+                        var p = e(s, l, r, i, a + "." + l, A);
                         if (p instanceof Error)
                             return p
                     }
@@ -1114,10 +1118,10 @@
             function t(t, n, r, i, a) {
                 for (var s = 0; s < e.length; s++) {
                     var u = e[s];
-                    if (null == u(t, n, r, i, a, E))
+                    if (null == u(t, n, r, i, a, A))
                         return null
                 }
-                var c = A[i];
+                var c = E[i];
                 return new o("Invalid " + c + " `" + a + "` supplied to " + ("`" + r + "`."))
             }
             return Array.isArray(e) ? i(t) : C.thatReturnsNull
@@ -1125,7 +1129,7 @@
         function f() {
             function e(e, t, n, r, i) {
                 if (!v(e[t])) {
-                    var a = A[r];
+                    var a = E[r];
                     return new o("Invalid " + a + " `" + i + "` supplied to " + ("`" + n + "`, expected a ReactNode."))
                 }
                 return null
@@ -1137,13 +1141,13 @@
                 var s = t[n]
                     , u = g(s);
                 if ("object" !== u) {
-                    var c = A[i];
+                    var c = E[i];
                     return new o("Invalid " + c + " `" + a + "` of type `" + u + "` " + ("supplied to `" + r + "`, expected `object`."))
                 }
                 for (var l in e) {
                     var p = e[l];
                     if (p) {
-                        var h = p(s, l, r, i, a + "." + l, E);
+                        var h = p(s, l, r, i, a + "." + l, A);
                         if (h)
                             return h
                     }
@@ -1205,13 +1209,13 @@
             return e.constructor && e.constructor.name ? e.constructor.name : _
         }
         var S = n(10)
-            , A = n(24)
-            , E = n(27)
+            , E = n(24)
+            , A = n(27)
             , C = n(13)
             , P = n(17)
             , _ = (n(12),
             "<<anonymous>>")
-            , w = {
+            , M = {
             array: a("array"),
             bool: a("boolean"),
             func: a("function"),
@@ -1230,7 +1234,7 @@
             shape: m
         };
         o.prototype = Error.prototype,
-            e.exports = w
+            e.exports = M
     }
     , function(e, t) {
         "use strict";
@@ -1720,13 +1724,13 @@
     , function(e, t, n) {
         "use strict";
         function r() {
-            E || (E = !0,
+            A || (A = !0,
                 g.EventEmitter.injectReactEventListener(y),
                 g.EventPluginHub.injectEventPluginOrder(s),
                 g.EventPluginUtils.injectComponentTree(h),
                 g.EventPluginUtils.injectTreeTraversal(f),
                 g.EventPluginHub.injectEventPluginsByName({
-                    SimpleEventPlugin: A,
+                    SimpleEventPlugin: E,
                     EnterLeaveEventPlugin: u,
                     ChangeEventPlugin: a,
                     SelectEventPlugin: S,
@@ -1762,8 +1766,8 @@
             , T = n(141)
             , b = n(149)
             , S = n(150)
-            , A = n(151)
-            , E = !1;
+            , E = n(151)
+            , A = !1;
         e.exports = {
             inject: r
         }
@@ -1868,10 +1872,10 @@
         }
         function c(e, t, n, r) {
             var o, c;
-            if (b ? o = i(e) : M ? s(e, n) && (o = _.compositionEnd) : a(e, n) && (o = _.compositionStart),
+            if (b ? o = i(e) : w ? s(e, n) && (o = _.compositionEnd) : a(e, n) && (o = _.compositionStart),
                     !o)
                 return null;
-            E && (M || o !== _.compositionStart ? o === _.compositionEnd && M && (c = M.getData()) : M = m.getPooled(r));
+            A && (w || o !== _.compositionStart ? o === _.compositionEnd && w && (c = w.getData()) : w = m.getPooled(r));
             var l = v.getPooled(o, t, n, r);
             if (c)
                 l.data = c;
@@ -1888,21 +1892,21 @@
                     return u(t);
                 case "topKeyPress":
                     var n = t.which;
-                    return n !== C ? null : (w = !0,
+                    return n !== C ? null : (M = !0,
                             P);
                 case "topTextInput":
                     var r = t.data;
-                    return r === P && w ? null : r;
+                    return r === P && M ? null : r;
                 default:
                     return null
             }
         }
         function p(e, t) {
-            if (M) {
+            if (w) {
                 if ("topCompositionEnd" === e || !b && s(e, t)) {
-                    var n = M.getData();
-                    return m.release(M),
-                        M = null,
+                    var n = w.getData();
+                    return m.release(w),
+                        w = null,
                         n
                 }
                 return null
@@ -1913,14 +1917,14 @@
                 case "topKeyPress":
                     return t.which && !o(t) ? String.fromCharCode(t.which) : null;
                 case "topCompositionEnd":
-                    return E ? null : t.data;
+                    return A ? null : t.data;
                 default:
                     return null
             }
         }
         function h(e, t, n, r) {
             var o;
-            if (o = A ? l(e, n) : p(e, n),
+            if (o = E ? l(e, n) : p(e, n),
                     !o)
                 return null;
             var i = y.getPooled(_.beforeInput, t, n, r);
@@ -1938,8 +1942,8 @@
             , b = f.canUseDOM && "CompositionEvent"in window
             , S = null;
         f.canUseDOM && "documentMode"in document && (S = document.documentMode);
-        var A = f.canUseDOM && "TextEvent"in window && !S && !r()
-            , E = f.canUseDOM && (!b || S && S > 8 && S <= 11)
+        var E = f.canUseDOM && "TextEvent"in window && !S && !r()
+            , A = f.canUseDOM && (!b || S && S > 8 && S <= 11)
             , C = 32
             , P = String.fromCharCode(C)
             , _ = {
@@ -1972,8 +1976,8 @@
                 dependencies: ["topBlur", "topCompositionUpdate", "topKeyDown", "topKeyPress", "topKeyUp", "topMouseDown"]
             }
         }
-            , w = !1
-            , M = null
+            , M = !1
+            , w = null
             , k = {
             eventTypes: _,
             extractEvents: function(e, t, n, r) {
@@ -2435,7 +2439,7 @@
             i.addPoolingTo(r),
             e.exports = r
     }
-    , [322, 36], function(e, t, n) {
+    , [323, 36], function(e, t, n) {
         "use strict";
         function r() {
             return !i && o.canUseDOM && (i = "textContent"in document.documentElement ? "textContent" : "innerText"),
@@ -2553,22 +2557,22 @@
             return "select" === t || "input" === t && "file" === e.type
         }
         function o(e) {
-            var t = E.getPooled(w.change, k, e, C(e));
+            var t = A.getPooled(M.change, k, e, C(e));
             T.accumulateTwoPhaseDispatches(t),
-                A.batchedUpdates(i, t)
+                E.batchedUpdates(i, t)
         }
         function i(e) {
             g.enqueueEvents(e),
                 g.processEventQueue(!1)
         }
         function a(e, t) {
-            M = e,
+            w = e,
                 k = t,
-                M.attachEvent("onchange", o)
+                w.attachEvent("onchange", o)
         }
         function s() {
-            M && (M.detachEvent("onchange", o),
-                M = null,
+            w && (w.detachEvent("onchange", o),
+                w = null,
                 k = null)
         }
         function u(e, t) {
@@ -2580,17 +2584,17 @@
                     a(t, n)) : "topBlur" === e && s()
         }
         function l(e, t) {
-            M = e,
+            w = e,
                 k = t,
                 x = e.value,
                 I = Object.getOwnPropertyDescriptor(e.constructor.prototype, "value"),
-                Object.defineProperty(M, "value", R),
-                M.attachEvent ? M.attachEvent("onpropertychange", h) : M.addEventListener("propertychange", h, !1)
+                Object.defineProperty(w, "value", R),
+                w.attachEvent ? w.attachEvent("onpropertychange", h) : w.addEventListener("propertychange", h, !1)
         }
         function p() {
-            M && (delete M.value,
-                M.detachEvent ? M.detachEvent("onpropertychange", h) : M.removeEventListener("propertychange", h, !1),
-                M = null,
+            w && (delete w.value,
+                w.detachEvent ? w.detachEvent("onpropertychange", h) : w.removeEventListener("propertychange", h, !1),
+                w = null,
                 k = null,
                 x = null,
                 I = null)
@@ -2611,8 +2615,8 @@
                     l(t, n)) : "topBlur" === e && p()
         }
         function m(e, t) {
-            if (("topSelectionChange" === e || "topKeyUp" === e || "topKeyDown" === e) && M && M.value !== x)
-                return x = M.value,
+            if (("topSelectionChange" === e || "topKeyUp" === e || "topKeyDown" === e) && w && w.value !== x)
+                return x = w.value,
                     k
         }
         function v(e) {
@@ -2626,12 +2630,12 @@
             , T = n(42)
             , b = n(49)
             , S = n(35)
-            , A = n(57)
-            , E = n(54)
+            , E = n(57)
+            , A = n(54)
             , C = n(65)
             , P = n(66)
             , _ = n(67)
-            , w = {
+            , M = {
             change: {
                 phasedRegistrationNames: {
                     bubbled: "onChange",
@@ -2640,7 +2644,7 @@
                 dependencies: ["topBlur", "topChange", "topClick", "topFocus", "topInput", "topKeyDown", "topKeyUp", "topSelectionChange"]
             }
         }
-            , M = null
+            , w = null
             , k = null
             , x = null
             , I = null
@@ -2658,7 +2662,7 @@
             }
         }
             , D = {
-            eventTypes: w,
+            eventTypes: M,
             extractEvents: function(e, t, n, o) {
                 var i, a, s = t ? S.getNodeFromInstance(t) : window;
                 if (r(s) ? N ? i = u : a = c : _(s) ? O ? i = d : (i = m,
@@ -2666,7 +2670,7 @@
                         i) {
                     var l = i(e, t);
                     if (l) {
-                        var p = E.getPooled(w.change, l, n, o);
+                        var p = A.getPooled(M.change, l, n, o);
                         return p.type = "change",
                             T.accumulateTwoPhaseDispatches(p),
                             p
@@ -2680,13 +2684,13 @@
     , function(e, t, n) {
         "use strict";
         function r() {
-            w.ReactReconcileTransaction && S ? void 0 : l("123")
+            M.ReactReconcileTransaction && S ? void 0 : l("123")
         }
         function o() {
             this.reinitializeTransaction(),
                 this.dirtyComponentsLength = null,
                 this.callbackQueue = h.getPooled(),
-                this.reconcileTransaction = w.ReactReconcileTransaction.getPooled(!0)
+                this.reconcileTransaction = M.ReactReconcileTransaction.getPooled(!0)
         }
         function i(e, t, n, o, i, a) {
             return r(),
@@ -2741,7 +2745,7 @@
             , T = h.getPooled()
             , b = !1
             , S = null
-            , A = {
+            , E = {
             initialize: function() {
                 this.dirtyComponentsLength = y.length
             },
@@ -2750,7 +2754,7 @@
                         P()) : y.length = 0
             }
         }
-            , E = {
+            , A = {
             initialize: function() {
                 this.callbackQueue.reset()
             },
@@ -2758,7 +2762,7 @@
                 this.callbackQueue.notifyAll()
             }
         }
-            , C = [A, E];
+            , C = [E, A];
         p(o.prototype, v, {
             getTransactionWrappers: function() {
                 return C
@@ -2767,7 +2771,7 @@
                 this.dirtyComponentsLength = null,
                     h.release(this.callbackQueue),
                     this.callbackQueue = null,
-                    w.ReactReconcileTransaction.release(this.reconcileTransaction),
+                    M.ReactReconcileTransaction.release(this.reconcileTransaction),
                     this.reconcileTransaction = null
             },
             perform: function(e, t, n) {
@@ -2794,7 +2798,7 @@
             , _ = {
             injectReconcileTransaction: function(e) {
                 e ? void 0 : l("126"),
-                    w.ReactReconcileTransaction = e
+                    M.ReactReconcileTransaction = e
             },
             injectBatchingStrategy: function(e) {
                 e ? void 0 : l("127"),
@@ -2803,7 +2807,7 @@
                     S = e
             }
         }
-            , w = {
+            , M = {
             ReactReconcileTransaction: null,
             batchedUpdates: i,
             enqueueUpdate: u,
@@ -2811,7 +2815,7 @@
             injection: _,
             asap: c
         };
-        e.exports = w
+        e.exports = M
     }
     , function(e, t, n) {
         "use strict";
@@ -3851,11 +3855,11 @@
         }
         function a() {
             var e = this;
-            E.putListener(e.inst, e.registrationName, e.listener)
+            A.putListener(e.inst, e.registrationName, e.listener)
         }
         function s() {
             var e = this;
-            M.postMountWrapper(e)
+            w.postMountWrapper(e)
         }
         function u() {
             var e = this;
@@ -3931,13 +3935,13 @@
             , T = n(77)
             , b = n(78)
             , S = n(37)
-            , A = n(99)
-            , E = n(43)
+            , E = n(99)
+            , A = n(43)
             , C = n(44)
             , P = n(101)
             , _ = n(38)
-            , w = n(35)
-            , M = n(104)
+            , M = n(35)
+            , w = n(104)
             , k = n(107)
             , x = n(108)
             , I = n(109)
@@ -3952,8 +3956,8 @@
             n(132),
             n(12),
             _)
-            , B = E.deleteListener
-            , G = w.getNodeFromInstance
+            , B = A.deleteListener
+            , G = M.getNodeFromInstance
             , L = P.listenTo
             , H = C.registrationNameModules
             , U = {
@@ -4045,8 +4049,8 @@
                                 e.getReactMountReady().enqueue(l, this);
                             break;
                         case "input":
-                            M.mountWrapper(this, i, t),
-                                i = M.getHostProps(this, i),
+                            w.mountWrapper(this, i, t),
+                                i = w.getHostProps(this, i),
                                 e.getReactMountReady().enqueue(l, this);
                             break;
                         case "option":
@@ -4084,17 +4088,17 @@
                                 d = i.is ? f.createElement(this._currentElement.type, i.is) : f.createElement(this._currentElement.type);
                         else
                             d = f.createElementNS(a, this._currentElement.type);
-                        w.precacheNode(this, d),
+                        M.precacheNode(this, d),
                             this._flags |= D.hasCachedChildNodes,
-                        this._hostParent || A.setAttributeForRoot(d),
+                        this._hostParent || E.setAttributeForRoot(d),
                             this._updateDOMProperties(null, i, e);
                         var g = T(d);
                         this._createInitialChildren(e, i, r, g),
                             h = g
                     } else {
                         var S = this._createOpenTagMarkupAndPutListeners(e, i)
-                            , E = this._createContentMarkup(e, i, r);
-                        h = !E && X[this._tag] ? S + "/>" : S + ">" + E + "</" + this._currentElement.type + ">"
+                            , A = this._createContentMarkup(e, i, r);
+                        h = !A && X[this._tag] ? S + "/>" : S + ">" + A + "</" + this._currentElement.type + ">"
                     }
                     switch (this._tag) {
                         case "input":
@@ -4128,12 +4132,12 @@
                                     r === F && (o && (o = this._previousStyleCopy = v({}, t.style)),
                                         o = g.createMarkupForStyles(o, this));
                                     var a = null;
-                                    null != this._tag && d(this._tag, t) ? j.hasOwnProperty(r) || (a = A.createMarkupForCustomAttribute(r, o)) : a = A.createMarkupForProperty(r, o),
+                                    null != this._tag && d(this._tag, t) ? j.hasOwnProperty(r) || (a = E.createMarkupForCustomAttribute(r, o)) : a = E.createMarkupForProperty(r, o),
                                     a && (n += " " + a)
                                 }
                         }
-                    return e.renderToStaticMarkup ? n : (this._hostParent || (n += " " + A.createMarkupForRoot()),
-                            n += " " + A.createMarkupForID(this._domID))
+                    return e.renderToStaticMarkup ? n : (this._hostParent || (n += " " + E.createMarkupForRoot()),
+                            n += " " + E.createMarkupForID(this._domID))
                 },
                 _createContentMarkup: function(e, t, n) {
                     var r = ""
@@ -4176,8 +4180,8 @@
                         , a = this._currentElement.props;
                     switch (this._tag) {
                         case "input":
-                            i = M.getHostProps(this, i),
-                                a = M.getHostProps(this, a);
+                            i = w.getHostProps(this, i),
+                                a = w.getHostProps(this, a);
                             break;
                         case "option":
                             i = k.getHostProps(this, i),
@@ -4196,7 +4200,7 @@
                         this._updateDOMChildren(i, a, e, r),
                         this._tag) {
                         case "input":
-                            M.updateWrapper(this);
+                            w.updateWrapper(this);
                             break;
                         case "textarea":
                             I.updateWrapper(this);
@@ -4216,7 +4220,7 @@
                                         a[o] = "");
                                 this._previousStyleCopy = null
                             } else
-                                H.hasOwnProperty(r) ? e[r] && B(this, r) : d(this._tag, e) ? j.hasOwnProperty(r) || A.deleteValueForAttribute(G(this), r) : (S.properties[r] || S.isCustomAttribute(r)) && A.deleteValueForProperty(G(this), r);
+                                H.hasOwnProperty(r) ? e[r] && B(this, r) : d(this._tag, e) ? j.hasOwnProperty(r) || E.deleteValueForAttribute(G(this), r) : (S.properties[r] || S.isCustomAttribute(r)) && E.deleteValueForProperty(G(this), r);
                     for (r in t) {
                         var u = t[r]
                             , c = r === F ? this._previousStyleCopy : null != e ? e[r] : void 0;
@@ -4235,10 +4239,10 @@
                             else if (H.hasOwnProperty(r))
                                 u ? i(this, r, u, n) : c && B(this, r);
                             else if (d(this._tag, t))
-                                j.hasOwnProperty(r) || A.setValueForAttribute(G(this), r, u);
+                                j.hasOwnProperty(r) || E.setValueForAttribute(G(this), r, u);
                             else if (S.properties[r] || S.isCustomAttribute(r)) {
                                 var l = G(this);
-                                null != u ? A.setValueForProperty(l, r, u) : A.deleteValueForProperty(l, r)
+                                null != u ? E.setValueForProperty(l, r, u) : E.deleteValueForProperty(l, r)
                             }
                     }
                     a && g.setValueForStyles(G(this), a, this)
@@ -4279,8 +4283,8 @@
                             m("66", this._tag)
                     }
                     this.unmountChildren(e),
-                        w.uncacheNode(this),
-                        E.deleteAllListeners(this),
+                        M.uncacheNode(this),
+                        A.deleteAllListeners(this),
                         this._rootNodeID = 0,
                         this._domID = 0,
                         this._wrapperState = null
@@ -5695,10 +5699,10 @@
                     this._pendingStateQueue = null,
                     this._pendingReplaceState = !1,
                     this._pendingForceUpdate = !1;
-                var A;
-                return A = g.unstable_handleError ? this.performInitialMountWithErrorHandling(l, t, n, e, u) : this.performInitialMount(l, t, n, e, u),
+                var E;
+                return E = g.unstable_handleError ? this.performInitialMountWithErrorHandling(l, t, n, e, u) : this.performInitialMount(l, t, n, e, u),
                 g.componentDidMount && e.getReactMountReady().enqueue(g.componentDidMount, g),
-                    A
+                    E
             },
             _constructComponent: function(e, t, n, r) {
                 return this._constructComponentWithoutOwner(e, t, n, r)
@@ -6049,15 +6053,15 @@
                                 m += o(d, f, n, i);
                     else
                         for (; !(T = b.next()).done; ) {
-                            var A = T.value;
-                            A && (d = A[1],
-                                f = v + c.escape(A[0]) + p + r(d, 0),
+                            var E = T.value;
+                            E && (d = E[1],
+                                f = v + c.escape(E[0]) + p + r(d, 0),
                                 m += o(d, f, n, i))
                         }
                 } else if ("object" === h) {
-                    var E = ""
+                    var A = ""
                         , C = String(e);
-                    a("31", "[object Object]" === C ? "object with keys {" + Object.keys(e).join(", ") + "}" : C, E)
+                    a("31", "[object Object]" === C ? "object with keys {" + Object.keys(e).join(", ") + "}" : C, A)
                 }
             }
             return m
@@ -6144,43 +6148,43 @@
         } else {
             var b = {}
                 , S = {}
-                , A = function(e) {
+                , E = function(e) {
                 return "." + e
             }
-                , E = function(e) {
+                , A = function(e) {
                 return parseInt(e.substr(1), 10)
             };
             u = function(e, t) {
-                var n = A(e);
+                var n = E(e);
                 b[n] = t
             }
                 ,
                 c = function(e) {
-                    var t = A(e);
+                    var t = E(e);
                     return b[t]
                 }
                 ,
                 l = function(e) {
-                    var t = A(e);
+                    var t = E(e);
                     delete b[t]
                 }
                 ,
                 p = function() {
-                    return Object.keys(b).map(E)
+                    return Object.keys(b).map(A)
                 }
                 ,
                 h = function(e) {
-                    var t = A(e);
+                    var t = E(e);
                     S[t] = !0
                 }
                 ,
                 d = function(e) {
-                    var t = A(e);
+                    var t = E(e);
                     delete S[t]
                 }
                 ,
                 f = function() {
-                    return Object.keys(S).map(E)
+                    return Object.keys(S).map(A)
                 }
         }
         var C = []
@@ -7539,9 +7543,9 @@
             , T = n(161)
             , b = n(13)
             , S = n(156)
-            , A = (n(9),
+            , E = (n(9),
             {})
-            , E = {};
+            , A = {};
         ["abort", "animationEnd", "animationIteration", "animationStart", "blur", "canPlay", "canPlayThrough", "click", "contextMenu", "copy", "cut", "doubleClick", "drag", "dragEnd", "dragEnter", "dragExit", "dragLeave", "dragOver", "dragStart", "drop", "durationChange", "emptied", "encrypted", "ended", "error", "focus", "input", "invalid", "keyDown", "keyPress", "keyUp", "load", "loadedData", "loadedMetadata", "loadStart", "mouseDown", "mouseMove", "mouseOut", "mouseOver", "mouseUp", "paste", "pause", "play", "playing", "progress", "rateChange", "reset", "scroll", "seeked", "seeking", "stalled", "submit", "suspend", "timeUpdate", "touchCancel", "touchEnd", "touchMove", "touchStart", "transitionEnd", "volumeChange", "waiting", "wheel"].forEach(function(e) {
             var t = e[0].toUpperCase() + e.slice(1)
                 , n = "on" + t
@@ -7553,14 +7557,14 @@
                 },
                 dependencies: [r]
             };
-            A[e] = o,
-                E[r] = o
+            E[e] = o,
+                A[r] = o
         });
         var C = {}
             , P = {
-            eventTypes: A,
+            eventTypes: E,
             extractEvents: function(e, t, n, r) {
-                var o = E[e];
+                var o = A[e];
                 if (!o)
                     return null;
                 var a;
@@ -7957,14 +7961,14 @@
             , T = n(163)
             , b = n(164)
             , S = n(59)
-            , A = n(112)
-            , E = (n(63),
+            , E = n(112)
+            , A = (n(63),
             n(165))
             , C = n(60)
             , P = n(131)
             , _ = n(57)
-            , w = n(21)
-            , M = n(115)
+            , M = n(21)
+            , w = n(115)
             , k = (n(9),
             n(79))
             , x = n(119)
@@ -8001,14 +8005,14 @@
             _renderNewRootComponent: function(e, t, n, r) {
                 l(t) ? void 0 : d("37"),
                     y.ensureScrollValueMonitoring();
-                var o = M(e, !1);
+                var o = w(e, !1);
                 _.batchedUpdates(s, o, t, n, r);
                 var i = o._instance.rootID;
                 return B[i] = o,
                     o
             },
             renderSubtreeIntoContainer: function(e, t, n, r) {
-                return null != e && A.has(e) ? void 0 : d("38"),
+                return null != e && E.has(e) ? void 0 : d("38"),
                     H._renderSubtreeIntoContainer(e, t, n, r)
             },
             _renderSubtreeIntoContainer: function(e, t, n, r) {
@@ -8018,10 +8022,10 @@
                     child: t
                 });
                 if (e) {
-                    var u = A.get(e);
+                    var u = E.get(e);
                     a = u._processChildContext(u._context)
                 } else
-                    a = w;
+                    a = M;
                 var l = h(n);
                 if (l) {
                     var p = l._currentElement
@@ -8041,9 +8045,9 @@
                     , T = g && !!i(g)
                     , b = c(n)
                     , S = T && !l && !b
-                    , E = H._renderNewRootComponent(s, n, S, a)._renderedComponent.getPublicInstance();
-                return r && r.call(E),
-                    E
+                    , A = H._renderNewRootComponent(s, n, S, a)._renderedComponent.getPublicInstance();
+                return r && r.call(A),
+                    A
             },
             render: function(e, t, n) {
                 return H._renderSubtreeIntoContainer(null, e, t, n)
@@ -8064,12 +8068,12 @@
                 if (l(t) ? void 0 : d("41"),
                         i) {
                     var s = o(t);
-                    if (E.canReuseMarkup(e, s))
+                    if (A.canReuseMarkup(e, s))
                         return void g.precacheNode(n, s);
-                    var u = s.getAttribute(E.CHECKSUM_ATTR_NAME);
-                    s.removeAttribute(E.CHECKSUM_ATTR_NAME);
+                    var u = s.getAttribute(A.CHECKSUM_ATTR_NAME);
+                    s.removeAttribute(A.CHECKSUM_ATTR_NAME);
                     var c = s.outerHTML;
-                    s.setAttribute(E.CHECKSUM_ATTR_NAME, u);
+                    s.setAttribute(A.CHECKSUM_ATTR_NAME, u);
                     var p = e
                         , h = r(p, c)
                         , m = " (client) " + p.substring(h - 20, h + 20) + "\n (server) " + c.substring(h - 20, h + 20);
@@ -8422,6 +8426,14 @@
             },
             chatRoomForCustomGame: function(e) {
                 return "chat_custom_queue_" + e;
+            },
+            randomString: function(e) {
+                return (Math.random().toString(36) + "00000").slice(2, e + 2)
+            },
+            hasDuplicate: function(e) {
+                return e && e.some(function(t, n) {
+                        return e.indexOf(t) !== n
+                    })
             }
         }
     }
@@ -8436,17 +8448,16 @@
             , c = n(1)
             , l = n(177)
             , p = n(297)
-            , h = n(278)
-            , d = n(298)
-            , f = n(299)
-            , m = n(288)
-            , v = n(265)
-            , y = n(300)
-            , g = n(301)
-            , T = n(303)
-            , b = n(306)
-            , S = n(307)
-            , A = r.createClass({
+            , h = n(298)
+            , d = n(299)
+            , f = n(288)
+            , m = n(265)
+            , v = n(300)
+            , y = n(301)
+            , g = n(303)
+            , T = n(306)
+            , b = n(307)
+            , S = r.createClass({
             displayName: "RankItem",
             render: function() {
                 return this.props.stars || this.props.rank ? r.createElement("div", {
@@ -8481,8 +8492,8 @@
                         this.setState({
                             username: u.username
                         })) : i.findDOMNode(this.refs.username).focus(),
-                    d.doWhenVisible(function() {
-                        y.isPrivateURL() ? this.props.joinPrivateGame.bind(this)(y.getPrivateID()) : y.isReplayURL() ? s.getReplay(y.getReplayID(), m.startReplay) : y.isTeamURL() && this.props.joinTeam.bind(this)(y.getTeamID())
+                    h.doWhenVisible(function() {
+                        v.isPrivateURL() ? this.props.joinPrivateGame.bind(this)(v.getPrivateID()) : v.isReplayURL() ? s.getReplay(v.getReplayID(), f.startReplay) : v.isTeamURL() && this.props.joinTeam.bind(this)(v.getTeamID())
                     }
                         .bind(this)),
                     googletag.cmd.push(function() {
@@ -8494,7 +8505,7 @@
                                 showGameModes: !0
                             }) : this.props.onPlayFFA.call(this)) : void this.setState({
                             showNotConnected: !0
-                        }) : void m.startLocalTutorial(this.state.username)
+                        }) : void f.startLocalTutorial(this.state.username)
             },
             closeGameModes: function() {
                 this.setState({
@@ -8540,12 +8551,12 @@
             },
             loadMoreReplays: function() {
                 var e = void 0
-                    , t = v.getState().menu.replays;
+                    , t = m.getState().menu.replays;
                 t && t.length > 0 && (e = t[t.length - 1].started - .1),
                     s.getReplayList(e)
             },
             replayRows: function() {
-                var e = v.getState().menu.replays || [];
+                var e = m.getState().menu.replays || [];
                 return e.map(function(e, t) {
                     for (var n = [], o = 0; o < e.ranking.length; o++) {
                         var i = e.ranking[o];
@@ -8566,10 +8577,10 @@
                 })
             },
             onPrivateClicked: function() {
-                this.props.joinPrivateGame.bind(this)(h())
+                this.props.joinPrivateGame.bind(this)(l.randomString(c.CUSTOM_GAME_URL_LENGTH))
             },
             on2v2Clicked: function() {
-                this.props.joinTeam.bind(this)(h())
+                this.props.joinTeam.bind(this)(l.randomString(c.CUSTOM_GAME_URL_LENGTH))
             },
             onServerChange: function(e) {
                 switch (e.target.value) {
@@ -8603,11 +8614,11 @@
                     className: "main-title"
                 }, "generals.io"), r.createElement("div", {
                     className: "rank-list"
-                }, r.createElement(A, {
+                }, r.createElement(S, {
                     name: "1v1",
                     stars: this.props.stars ? this.props.stars.duel : void 0,
                     rank: this.props.rank ? this.props.rank.duel : void 0
-                }), r.createElement(A, {
+                }), r.createElement(S, {
                     name: "FFA",
                     stars: this.props.stars ? this.props.stars.ffa : void 0,
                     rank: this.props.rank ? this.props.rank.ffa : void 0
@@ -8654,11 +8665,11 @@
                     className: "bold"
                 }, "Click"), " or use ", r.createElement("span", {
                     className: "bold"
-                }, "WASD"), " to move armies."), T ? null : r.createElement("p", {
+                }, "WASD"), " to move armies."), g ? null : r.createElement("p", {
                         style: {
                             fontSize: "14px"
                         }
-                    }, "[Spacebar] to deselect, [Q] to clear moves."), T ? null : r.createElement("p", {
+                    }, "[Spacebar] to deselect, [Q] to clear moves, [E] to undo moves."), g ? null : r.createElement("p", {
                         style: {
                             fontSize: "14px"
                         }
@@ -8672,7 +8683,7 @@
                     }
                 }, "2 clicks = move 50%")), r.createElement("div", {
                     id: "main-menu-reddit-button"
-                }, r.createElement(f, null)), r.createElement("div", {
+                }, r.createElement(d, null)), r.createElement("div", {
                     id: "leaderboard-button",
                     onClick: this.onLeaderboardClicked
                 }, r.createElement("img", {
@@ -8717,7 +8728,7 @@
                         id: "game-modes",
                         className: "alert center",
                         onClick: this.ignoreClick
-                    }, r.createElement("center", null, g.adBlockEnabled() ? r.createElement("p", {
+                    }, r.createElement("center", null, y.adBlockEnabled() ? r.createElement("p", {
                             style: {
                                 padding: "5px 0",
                                 marginBottom: "15px",
@@ -8751,8 +8762,8 @@
                     }, "Team up with a friend to take down 2 opponents."), r.createElement("button", {
                         className: "inverted",
                         onClick: this.onPrivateClicked
-                    }, "Custom"), r.createElement("p", null, "Create a private game.")))) : null, this.state.showLeaderboard ? r.createElement(S, {
-                        allLeaderboards: v.getState().menu.leaderboards,
+                    }, "Custom"), r.createElement("p", null, "Create a private game.")))) : null, this.state.showLeaderboard ? r.createElement(b, {
+                        allLeaderboards: m.getState().menu.leaderboards,
                         playerRanks: this.props.rank,
                         playerUsername: this.state.username,
                         getLeaderboard: s.getLeaderboard,
@@ -8775,7 +8786,7 @@
                         style: {
                             width: "12em"
                         }
-                    }, "Time"), r.createElement("th", null, "Turns"), r.createElement("th", null, "Result"))), r.createElement("tbody", null, this.replayRows())), v.getState().menu.replaysFinished ? null : r.createElement("button", {
+                    }, "Time"), r.createElement("th", null, "Turns"), r.createElement("th", null, "Result"))), r.createElement("tbody", null, this.replayRows())), m.getState().menu.replaysFinished ? null : r.createElement("button", {
                             className: "small inverted center-horizontal",
                             onClick: this.loadMoreReplays
                         }, "Load More")), r.createElement("button", {
@@ -8793,14 +8804,14 @@
                         }
                     }, "Changing Servers..."))) : null, this.props.showRemovedFrom2v2 ? r.createElement("div", {
                         className: "popup-background"
-                    }, r.createElement(b, {
+                    }, r.createElement(T, {
                         title: "Removed from 2v2",
                         body: r.createElement("span", null, "Your teammate left, so you were removed from the 2v2 queue."),
                         button: "Close",
                         onClick: this.props.closeRemovedFrom2v2
                     })) : null, this.state.showNotConnected ? r.createElement("div", {
                         className: "popup-background"
-                    }, r.createElement(b, {
+                    }, r.createElement(T, {
                         title: "Connecting...",
                         body: r.createElement("span", null, r.createElement("span", null, "We're still trying to establish a websocket connection to the server. Wait a few seconds and try again."), r.createElement("br", null), r.createElement("br", null), r.createElement("span", null, "If you still can't connect, make sure your firewall isn't blocking websockets and refresh the page. If that doesn't work, try disabling any adblockers or other extensions you have that may be interfering with the connection."), r.createElement("br", null), r.createElement("br", null), r.createElement("span", null, "If all else fails, contact us to let us know.")),
                         button: "Close",
@@ -8976,8 +8987,8 @@
             try {
                 return e.apply(t)
             } catch (e) {
-                return w.value = e,
-                    w
+                return M.value = e,
+                    M
             }
         }
         function c(e, t, n) {
@@ -8991,9 +9002,9 @@
                 , g = r.pure
                 , T = void 0 === g || g
                 , b = r.withRef
-                , A = void 0 !== b && b
+                , E = void 0 !== b && b
                 , k = T && v !== _
-                , x = M++;
+                , x = w++;
             return function(e) {
                 function t(e, t, n) {
                     var r = v(e, t, n);
@@ -9007,7 +9018,7 @@
                         a.version = x,
                             a.store = e.store || t.store,
                             (0,
-                                E.default)(a.store, 'Could not find "store" in either the context or ' + ('props of "' + n + '". ') + "Either wrap the root component in a <Provider>, " + ('or explicitly pass "store" as a prop to "' + n + '".'));
+                                A.default)(a.store, 'Could not find "store" in either the context or ' + ('props of "' + n + '". ') + "Either wrap the root component in a <Provider>, " + ('or explicitly pass "store" as a prop to "' + n + '".'));
                         var u = a.store.getState();
                         return a.state = {
                             storeState: u
@@ -9123,7 +9134,7 @@
                                         var n = u(this.updateStatePropsIfNeeded, this);
                                         if (!n)
                                             return;
-                                        n === w && (this.statePropsPrecalculationError = w.value),
+                                        n === M && (this.statePropsPrecalculationError = M.value),
                                             this.haveStatePropsBeenPrecalculated = !0
                                     }
                                     this.hasStoreStateChanged = !0,
@@ -9136,7 +9147,7 @@
                         ,
                         s.prototype.getWrappedInstance = function() {
                             return (0,
-                                E.default)(A, "To access the wrapped instance, you need to specify { withRef: true } as the fourth argument of the connect() call."),
+                                A.default)(E, "To access the wrapped instance, you need to specify { withRef: true } as the fourth argument of the connect() call."),
                                 this.refs.wrappedInstance
                         }
                         ,
@@ -9162,7 +9173,7 @@
                             s && (c = this.updateDispatchPropsIfNeeded());
                             var h = !0;
                             return h = !!(u || c || t) && this.updateMergedPropsIfNeeded(),
-                                !h && i ? i : (A ? this.renderedElement = (0,
+                                !h && i ? i : (E ? this.renderedElement = (0,
                                             p.createElement)(e, l({}, this.mergedProps, {
                                             ref: "wrappedInstance"
                                         })) : this.renderedElement = (0,
@@ -9208,8 +9219,8 @@
             , b = (r(T),
             n(207))
             , S = r(b)
-            , A = n(208)
-            , E = r(A)
+            , E = n(208)
+            , A = r(E)
             , C = function(e) {
             return {}
         }
@@ -9221,10 +9232,10 @@
             , _ = function(e, t, n) {
             return l({}, n, e, t)
         }
-            , w = {
+            , M = {
             value: null
         }
-            , M = 0
+            , w = 0
     }
     , function(e, t) {
         "use strict";
@@ -9840,44 +9851,50 @@
     , function(e, t, n) {
         "use strict";
         function r() {
-            return R.connected
+            return B.connected
         }
         function o() {
-            R.emit("stars_and_rank", T)
+            B.emit("stars_and_rank", S)
         }
         function i(e) {
-            R.emit("play", e, T),
-                R.emit("set_username", T, e)
+            B.emit("play", e, S),
+                B.emit("set_username", S, e)
         }
         function a(e) {
-            R.emit("join_1v1", e, T)
+            B.emit("join_1v1", e, S)
         }
         function s(e, t) {
-            R.emit("join_private", e, t, T),
-                R.emit("set_username", T, t)
+            B.emit("join_private", e, t, S),
+                B.emit("set_username", S, t)
         }
-        function u(e, t, n, r) {
-            S.getState().game.isLocalGame ? k.handleAttack(e, t, n, r) : R.emit("attack", e, t, n, r)
+        function u(e, t) {
+            B.emit("set_custom_team", e, t)
         }
-        function c() {
-            R.emit("cancel", S.getState().queue.queue_id)
+        function c(e, t, n, r) {
+            A.getState().game.isLocalGame ? I.handleAttack(e, t, n, r) : B.emit("attack", e, t, n, r)
         }
-        function l(e) {
-            R.emit("set_force_start", S.getState().queue.queue_id, e)
+        function l() {
+            B.emit("cancel", A.getState().queue.queue_id)
         }
-        function p(e, t) {
-            R.emit("chat_message", e, t)
+        function p(e) {
+            B.emit("set_force_start", A.getState().queue.queue_id, e)
         }
-        function h(e) {
-            R.emit("leaderboard", e)
+        function h(e, t, n) {
+            B.emit("chat_message", e, t, n)
         }
-        function d() {
-            R.emit("leave_game")
+        function d(e) {
+            B.emit("leaderboard", e)
         }
         function f() {
-            S.getState().game.isLocalGame ? k.clearMoves() : R.emit("clear_moves")
+            B.emit("leave_game")
         }
-        function m(e, t) {
+        function m() {
+            A.getState().game.isLocalGame ? I.handleUndoMove() : B.emit("undo_move")
+        }
+        function v() {
+            A.getState().game.isLocalGame ? I.handleClearMoves() : B.emit("clear_moves")
+        }
+        function y(e, t) {
             var n = new XMLHttpRequest;
             n.open("GET", "/" + e + ".gior"),
                 n.responseType = "arraybuffer",
@@ -9887,107 +9904,113 @@
                 ,
                 n.send()
         }
-        function v(e) {
-            R.emit("replay_list", {
-                user_id: T,
+        function g(e) {
+            B.emit("replay_list", {
+                user_id: S,
                 max_time: e
             })
         }
-        function y(e, t) {
-            R.emit("join_team", e, t, T)
+        function T(e, t) {
+            B.emit("join_team", e, t, S)
         }
-        function g(e) {
-            R.emit("leave_team", e)
+        function b(e) {
+            B.emit("leave_team", e)
         }
-        var T, b = n(212), S = n(265), A = n(210), E = n(269), C = n(267), P = n(277), _ = n(278), w = n(287), M = n(176), k = n(288), x = n(271);
-        if (w && w.user_id ? T = w.user_id : (T = _(),
-                w && (w.user_id = T)),
-                console.log("user_id: " + T),
-                w)
+        var S, E = n(212), A = n(265), C = n(210), P = n(269), _ = n(267), M = n(277), w = n(278), k = n(287), x = n(176), I = n(288), N = n(271);
+        if (k && k.user_id ? S = k.user_id : (S = w(),
+                k && (k.user_id = S)),
+                console.log("user_id: " + S),
+                k)
             try {
-                if (w.hasOwnProperty("stars")) {
-                    console.log("cached stars: " + w.stars);
-                    var I = JSON.parse(w.stars);
-                    S.dispatch(A.stars(I))
+                if (k.hasOwnProperty("stars")) {
+                    console.log("cached stars: " + k.stars);
+                    var O = JSON.parse(k.stars);
+                    A.dispatch(C.stars(O))
                 }
-                if (w.hasOwnProperty("rank")) {
-                    console.log("cached rank: " + w.rank);
-                    var N = JSON.parse(w.rank);
-                    S.dispatch(A.rank(N))
+                if (k.hasOwnProperty("rank")) {
+                    console.log("cached rank: " + k.rank);
+                    var R = JSON.parse(k.rank);
+                    A.dispatch(C.rank(R))
                 }
             } catch (e) {
-                S.dispatch(A.stars({})),
-                    S.dispatch(A.rank({}))
+                A.dispatch(C.stars({})),
+                    A.dispatch(C.rank({}))
             }
-        var O = "http://ws.generals.io";
-        "localhost" === window.location.hostname && (O = "http://localhost:8080"),
-        window.location.hostname.indexOf("ngrok") >= 0 && (O = window.location.toString()),
-        "eu." === window.location.hostname.substring(0, 3) && (O = "http://euws.generals.io");
-        var R = b(O, {
+        var D = "http://ws.generals.io";
+        "localhost" === window.location.hostname && (D = "http://localhost:8080"),
+        window.location.hostname.indexOf("ngrok") >= 0 && (D = window.location.toString()),
+        "eu." === window.location.hostname.substring(0, 3) && (D = "http://euws.generals.io");
+        var B = E(D, {
             transports: ["websocket"]
         })
-            , D = !1;
-        R.on("connect", function() {
-            D ? console.log("Reconnected to server.") : console.log("Connected to server."),
-                D = !0,
+            , G = !1;
+        B.on("connect", function() {
+            G ? console.log("Reconnected to server.") : console.log("Connected to server."),
+                G = !0,
                 o()
         }),
-            R.on("disconnect", function() {
+            B.on("disconnect", function() {
                 console.log("Disconnected from server."),
-                S.getState().page !== M.PAGE_GAME || S.getState().game.isLocalGame || alert("Disconnected from server. Please refresh the page.")
+                A.getState().page !== x.PAGE_GAME || A.getState().game.isLocalGame || alert("Disconnected from server. Please refresh the page.")
             }),
-            R.on("pre_game_start", function() {
-                S.dispatch(E.prestart())
+            B.on("pre_game_start", function() {
+                A.dispatch(P.prestart())
             }),
-            R.on("game_start", function(e) {
-                S.dispatch(E.start(e))
+            B.on("game_start", function(e) {
+                A.dispatch(P.start(e))
             }),
-            R.on("game_update", function(e) {
-                S.dispatch(E.update(e))
+            B.on("game_update", function(e) {
+                A.dispatch(P.update(e))
             }),
-            R.on("queue_update", function(e, t, n) {
-                S.dispatch(C.update(e, t, n))
+            B.on("queue_update", function(e) {
+                A.dispatch(_.update(e))
             }),
-            R.on("team_update", function(e) {
-                S.dispatch(C.update(e))
+            B.on("team_update", function(e) {
+                A.dispatch(_.update({
+                    numPlayers: e
+                }))
             }),
-            R.on("team_joined_queue", function() {
-                x.changeURL("/"),
-                    S.dispatch(A.play("2v2"))
+            B.on("team_joined_queue", function() {
+                N.changeURL("/"),
+                    A.dispatch(C.play("2v2"))
             }),
-            R.on("removed_from_queue", function() {
-                S.dispatch(C.removeFrom2v2())
+            B.on("removed_from_queue", function() {
+                A.dispatch(_.removeFrom2v2())
             }),
-            R.on("chat_message", function(e, t) {
-                S.dispatch(P.receiveMessage(e, t))
+            B.on("chat_message", function(e, t) {
+                A.dispatch(M.receiveMessage(e, t))
             }),
-            R.on("game_lost", function(e) {
-                S.dispatch(E.lose(e))
+            B.on("game_lost", function(e) {
+                A.dispatch(P.lose(e))
             }),
-            R.on("game_won", function(e) {
-                S.dispatch(E.win(e))
+            B.on("game_won", function(e) {
+                A.dispatch(P.win(e))
             }),
-            R.on("replay_list", function(e) {
-                S.dispatch(A.receiveReplayList(e))
+            B.on("replay_list", function(e) {
+                A.dispatch(C.receiveReplayList(e))
             }),
-            R.on("server_down", function() {
+            B.on("server_down", function() {
                 window.location.reload(!1)
             }),
-            R.on("leaderboard", function(e) {
-                w && (w["leaderboard:" + e.ladder] = JSON.stringify(e)),
-                    S.dispatch(A.leaderboard(e))
+            B.on("leaderboard", function(e) {
+                k && (k["leaderboard:" + e.ladder] = JSON.stringify(e)),
+                    A.dispatch(C.leaderboard(e))
             }),
-            R.on("stars", function(e) {
+            B.on("stars", function(e) {
                 console.log("stars: " + JSON.stringify(e)),
-                    S.dispatch(A.stars(e))
+                    A.dispatch(C.stars(e))
             }),
-            R.on("rank", function(e) {
+            B.on("rank", function(e) {
                 console.log("rank: " + JSON.stringify(e)),
-                    S.dispatch(A.rank(e))
+                    A.dispatch(C.rank(e))
             }),
-            R.on("error_user_id", function() {
-                S.dispatch(C.cancel()),
+            B.on("error_user_id", function() {
+                A.dispatch(_.cancel()),
                     alert("You are already using this account! Make sure you don't have multiple tabs with generals.io open.\n\nIf you believe you are seeing this message in error, please email us at generalsiogame@gmail.com.")
+            }),
+            B.on("error_queue_full", function() {
+                A.dispatch(_.cancel()),
+                    alert("This game is already full.")
             }),
             e.exports = {
                 isConnected: r,
@@ -9995,17 +10018,19 @@
                 play: i,
                 play1v1: a,
                 playPrivate: s,
-                attack: u,
-                cancel: c,
-                setForceStart: l,
-                sendChatMessage: p,
-                getLeaderboard: h,
-                leaveGame: d,
-                clearMoves: f,
-                getReplay: m,
-                getReplayList: v,
-                joinTeam: y,
-                leaveTeam: g
+                setCustomTeam: u,
+                attack: c,
+                cancel: l,
+                setForceStart: p,
+                sendChatMessage: h,
+                getLeaderboard: d,
+                leaveGame: f,
+                undoMove: m,
+                clearMoves: v,
+                getReplay: y,
+                getReplayList: g,
+                joinTeam: T,
+                leaveTeam: b
             }
         window.gameCtrl = e.exports;
     }
@@ -10083,7 +10108,7 @@
                 s
         }
     }
-    , [323, 216], [324, 217], function(e, t) {
+    , [324, 216], [325, 217], function(e, t) {
         function n(e) {
             if (e = String(e),
                     !(e.length > 1e4)) {
@@ -10593,16 +10618,16 @@
                             if (!n("json")) {
                                 var b = "[object Function]"
                                     , S = "[object Date]"
-                                    , A = "[object Number]"
-                                    , E = "[object String]"
+                                    , E = "[object Number]"
+                                    , A = "[object String]"
                                     , C = "[object Array]"
                                     , P = "[object Boolean]"
                                     , _ = n("bug-string-char-index");
                                 if (!T)
-                                    var w = h.floor
-                                        , M = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334]
+                                    var M = h.floor
+                                        , w = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334]
                                         , k = function(e, t) {
-                                        return M[t] + 365 * (e - 1970) + w((e - 1969 + (t = +(t > 1))) / 4) - w((e - 1901 + t) / 100) + w((e - 1601 + t) / 400)
+                                        return w[t] + 365 * (e - 1970) + M((e - 1969 + (t = +(t > 1))) / 4) - M((e - 1901 + t) / 100) + M((e - 1601 + t) / 400)
                                     };
                                 if ((f = y.hasOwnProperty) || (f = function(e) {
                                             var t, n = {};
@@ -10699,26 +10724,26 @@
                                         return t + '"'
                                     }
                                         , D = function(e, t, n, r, o, i, a) {
-                                        var s, u, c, l, h, d, y, T, b, _, M, x, I, O, B, G;
+                                        var s, u, c, l, h, d, y, T, b, _, w, x, I, O, B, G;
                                         try {
                                             s = t[e]
                                         } catch (e) {}
                                         if ("object" == typeof s && s)
                                             if (u = g.call(s),
                                                 u != S || f.call(s, "toJSON"))
-                                                "function" == typeof s.toJSON && (u != A && u != E && u != C || f.call(s, "toJSON")) && (s = s.toJSON(e));
+                                                "function" == typeof s.toJSON && (u != E && u != A && u != C || f.call(s, "toJSON")) && (s = s.toJSON(e));
                                             else if (s > -1 / 0 && s < 1 / 0) {
                                                 if (k) {
-                                                    for (h = w(s / 864e5),
-                                                             c = w(h / 365.2425) + 1970 - 1; k(c + 1, 0) <= h; c++)
+                                                    for (h = M(s / 864e5),
+                                                             c = M(h / 365.2425) + 1970 - 1; k(c + 1, 0) <= h; c++)
                                                         ;
-                                                    for (l = w((h - k(c, 0)) / 30.42); k(c, l + 1) <= h; l++)
+                                                    for (l = M((h - k(c, 0)) / 30.42); k(c, l + 1) <= h; l++)
                                                         ;
                                                     h = 1 + h - k(c, l),
                                                         d = (s % 864e5 + 864e5) % 864e5,
-                                                        y = w(d / 36e5) % 24,
-                                                        T = w(d / 6e4) % 60,
-                                                        b = w(d / 1e3) % 60,
+                                                        y = M(d / 36e5) % 24,
+                                                        T = M(d / 6e4) % 60,
+                                                        b = M(d / 1e3) % 60,
                                                         _ = d % 1e3
                                                 } else
                                                     c = s.getUTCFullYear(),
@@ -10737,30 +10762,30 @@
                                         if (u = g.call(s),
                                             u == P)
                                             return "" + s;
-                                        if (u == A)
-                                            return s > -1 / 0 && s < 1 / 0 ? "" + s : "null";
                                         if (u == E)
+                                            return s > -1 / 0 && s < 1 / 0 ? "" + s : "null";
+                                        if (u == A)
                                             return R("" + s);
                                         if ("object" == typeof s) {
                                             for (O = a.length; O--; )
                                                 if (a[O] === s)
                                                     throw p();
                                             if (a.push(s),
-                                                    M = [],
+                                                    w = [],
                                                     B = i,
                                                     i += o,
                                                 u == C) {
                                                 for (I = 0,
                                                          O = s.length; I < O; I++)
                                                     x = D(I, s, n, r, o, i, a),
-                                                        M.push(x === v ? "null" : x);
-                                                G = M.length ? o ? "[\n" + i + M.join(",\n" + i) + "\n" + B + "]" : "[" + M.join(",") + "]" : "[]"
+                                                        w.push(x === v ? "null" : x);
+                                                G = w.length ? o ? "[\n" + i + w.join(",\n" + i) + "\n" + B + "]" : "[" + w.join(",") + "]" : "[]"
                                             } else
                                                 m(r || s, function(e) {
                                                     var t = D(e, s, n, r, o, i, a);
-                                                    t !== v && M.push(R(e) + ":" + (o ? " " : "") + t)
+                                                    t !== v && w.push(R(e) + ":" + (o ? " " : "") + t)
                                                 }),
-                                                    G = M.length ? o ? "{\n" + i + M.join(",\n" + i) + "\n" + B + "}" : "{" + M.join(",") + "}" : "{}";
+                                                    G = w.length ? o ? "{\n" + i + w.join(",\n" + i) + "\n" + B + "}" : "{" + w.join(",") + "}" : "{}";
                                             return a.pop(),
                                                 G
                                         }
@@ -10774,17 +10799,17 @@
                                                 i = {};
                                                 for (var u, c = 0, l = t.length; c < l; u = t[c++],
                                                     a = g.call(u),
-                                                (a == E || a == A) && (i[u] = 1))
+                                                (a == A || a == E) && (i[u] = 1))
                                                     ;
                                             }
                                         if (n)
-                                            if ((a = g.call(n)) == A) {
+                                            if ((a = g.call(n)) == E) {
                                                 if ((n -= n % 1) > 0)
                                                     for (r = "",
                                                          n > 10 && (n = 10); r.length < n; r += " ")
                                                         ;
                                             } else
-                                                a == E && (r = n.length <= 10 ? n : n.slice(0, 10));
+                                                a == A && (r = n.length <= 10 ? n : n.slice(0, 10));
                                         return D("", (u = {},
                                             u[""] = e,
                                             u), o, i, r, "", [])
@@ -13075,7 +13100,7 @@
             o.decode = r,
             e.exports = o
     }
-    , [323, 251], [324, 252], 217, function(e, t, n) {
+    , [324, 251], [325, 252], 217, function(e, t, n) {
         (function(t) {
                 function r() {}
                 function o(e) {
@@ -13506,7 +13531,7 @@
                 var t = this.acks[e.id];
                 "function" == typeof t ? (c("calling ack %s with %j", e.id, e.data),
                         t.apply(this, e.data),
-                        delete this.acks[e.id]) : c("bad ack %s", e.id);
+                        delete this.acks[e.id]) : c("bad ack %s", e.id)
             }
             ,
             r.prototype.onconnect = function() {
@@ -13733,13 +13758,10 @@
                 type: i
             }
         }
-        function r(e, t, n) {
-            return {
-                type: a,
-                numPlayers: e,
-                numForce: t,
-                queueTimeLeft: n
-            }
+        function r(e) {
+            return Object.assign({
+                type: a
+            }, e)
         }
         function o() {
             return {
@@ -13836,12 +13858,12 @@
         }
         function p() {
             return {
-                type: A
+                type: E
             }
         }
         function h(e) {
             return {
-                type: E,
+                type: A,
                 speed: e
             }
         }
@@ -13854,8 +13876,8 @@
             , T = "Game_exit"
             , b = "Game_update_tutorialState"
             , S = "Game_toggle_autoPlay"
-            , A = "Game_invalid_replay"
-            , E = "Game_set_autoPlay_speed";
+            , E = "Game_invalid_replay"
+            , A = "Game_set_autoPlay_speed";
         e.exports = {
             ACTION_PRESTART: f,
             ACTION_START: m,
@@ -13865,8 +13887,8 @@
             ACTION_EXIT: T,
             ACTION_UPDATE_TUTORIAL_STATE: b,
             ACTION_TOGGLE_AUTOPLAY: S,
-            ACTION_INVALID_REPLAY: A,
-            ACTION_SET_AUTOPLAY_SPEED: E,
+            ACTION_INVALID_REPLAY: E,
+            ACTION_SET_AUTOPLAY_SPEED: A,
             prestart: r,
             start: o,
             update: i,
@@ -14427,27 +14449,29 @@
         function r() {}
         function o(e) {
             var t = {
+                id: "player",
                 emit: v,
                 gio_username: e,
-                gio_stars: Math.max(0, Math.round(P.getState().menu.stars || 0))
+                gio_stars: Math.max(0, Math.round(_.getState().menu.stars || 0))
             }
                 , n = {
+                id: "ai",
                 emit: r,
                 gio_username: "generals.io Tutorial",
                 gio_stars: 0
             };
-            P.dispatch(_.prestart()),
-                T = new E([t, n],!1,E.types.TUTORIAL),
-                T.start(function() {
-                    T = null,
+            _.dispatch(M.prestart()),
+                b = new C([t, n],!1,C.types.TUTORIAL),
+                b.start(function() {
+                    b = null,
                         ga("send", "event", "Tutorial", "completed"),
                     w && (w.completed_tutorial = !0)
                 })
         }
         function i(e) {
-            var t = C.deserialize(e);
+            var t = P.deserialize(e);
             if (!t)
-                return void P.dispatch(_.invalidReplay());
+                return void _.dispatch(M.invalidReplay());
             var n = 0
                 , r = {};
             window.location.search.replace(/([^?=&]+)(=([^&]*))?/g, function(e, t, n, o) {
@@ -14458,72 +14482,73 @@
                 a(t, n)
         }
         function a(e, t) {
-            var n = E.createFromReplay(e);
-            P.dispatch(_.prestart(!0)),
-                P.dispatch(_.start({
+            var n = C.createFromReplay(e);
+            _.dispatch(M.prestart(!0)),
+                _.dispatch(M.start({
                     playerIndex: null,
                     replay_id: e.id,
                     usernames: e.usernames,
-                    stars: e.stars
+                    stars: e.stars,
+                    teams: e.teams
                 }, !0, !1, !0)),
-                T = n,
-                b = e,
-                S = 0,
+                b = n,
+                S = e,
+                E = 0,
                 A = 0,
                 f(t),
                 s()
         }
         function s() {
-            M || (M = !0,
+            k || (k = !0,
                 u())
         }
         function u() {
-            P.getState().game.autoPlay && l(),
-            M && setTimeout(u, 500 / P.getState().game.autoPlaySpeed)
+            _.getState().game.autoPlay && l(),
+            k && setTimeout(u, 500 / _.getState().game.autoPlaySpeed)
         }
         function c() {
-            M = !1
+            k = !1
         }
         function l(e) {
             if (!e) {
                 var t = Date.now();
-                if (t - k < 40)
+                if (t - x < 40)
                     return;
-                k = t
+                x = t
             }
-            if (!T.isOver()) {
-                for (; b.moves.length > S && b.moves[S].turn <= T.turn; ) {
-                    var n = b.moves[S++];
-                    T.handleAttack(n.index, n.start, n.end, n.is50)
+            if (!b.isOver()) {
+                for (; S.moves.length > E && S.moves[E].turn <= b.turn; ) {
+                    var n = S.moves[E++];
+                    b.handleAttack(n.index, n.start, n.end, n.is50)
                 }
-                for (; b.afks.length > A && b.afks[A].turn <= T.turn; ) {
-                    var r = b.afks[A++]
+                for (; S.afks.length > A && S.afks[A].turn <= b.turn; ) {
+                    var r = S.afks[A++]
                         , o = r.index;
-                    T.deaths.indexOf(T.sockets[o]) >= 0 ? T.tryNeutralizePlayer(o) : (T.deaths.push(T.sockets[o]),
-                            T.alivePlayers--)
+                    b.deaths.indexOf(b.sockets[o]) >= 0 ? b.tryNeutralizePlayer(o) : (b.deaths.push(b.sockets[o]),
+                            b.alivePlayers--)
                 }
-                T.update(!0),
+                b.update(!0),
                 e || p()
             }
         }
         function p() {
-            T.recalculateScores(),
-                P.dispatch(_.update({
-                    turn: T.turn,
-                    scores: T.scores,
-                    cities: T.cities,
-                    generals: T.generals,
-                    map: T.map
+            b.recalculateScores(),
+                _.dispatch(M.update({
+                    turn: b.turn,
+                    scores: b.scores,
+                    cities: b.cities,
+                    generals: b.generals,
+                    map: b.map
                 }))
         }
         function h() {
             var e = Date.now();
-            e - x < 250 || (x = e,
-                a(b, Math.max(0, T.turn - 20)))
+            e - I < 250 || (I = e,
+                a(S, Math.max(0, b.turn - 20)))
         }
         function d(e) {
             var t = 2 * e;
-            t < T.turn ? a(b, Math.max(0, t)) : t > T.turn && f(t - T.turn)
+            t < b.turn ? a(S, Math.max(0, t)) : t > b.turn && f(t - b.turn)
         }
         function f(e) {
             for (var t = 0; t < e; t++)
@@ -14532,37 +14557,41 @@
         }
         function m() {
             c(),
-                T = null,
-                b = null
+                b = null,
+                S = null
         }
         function v(e, t) {
             switch (e) {
                 case "game_start":
-                    P.dispatch(_.start(t, !0, !0));
+                    _.dispatch(M.start(t, !0, !0));
                     break;
                 case "game_update":
-                    P.dispatch(_.update(t));
+                    _.dispatch(M.update(t));
                     break;
                 case "game_won":
-                    P.dispatch(_.win(t));
+                    _.dispatch(M.win(t));
                     break;
                 case "game_lost":
                     console.error("ERROR: Lost tutorial game?")
             }
         }
         function y(e, t, n, r) {
-            T && T.bufferAttack(this.id, e, t, n, r)
+            b && b.bufferAttack(b.sockets[0].id, e, t, n, r)
         }
         function g() {
-            T.clearMoves(T.sockets[0])
+            b.undoMove(b.sockets[0].id)
         }
-        var T, b, S, A, E = n(289), C = n(290), P = n(265), _ = n(269), w = n(287), M = (n(271),
-            !1), k = Date.now(), x = Date.now();
+        function T() {
+            b.clearMoves(b.sockets[0].id)
+        }
+        var b, S, E, A, C = n(289), P = n(290), _ = n(265), M = n(269), w = n(287), k = (n(271),
+            !1), x = Date.now(), I = Date.now();
         e.exports = {
             startLocalTutorial: o,
             startReplay: i,
             handleAttack: y,
-            handleClearMoves: g,
+            handleUndoMove: g,
+            handleClearMoves: T,
             nextReplayTurn: l,
             backReplay: h,
             exitReplay: m,
@@ -14587,13 +14616,13 @@
                     this.chat_room = "game_" + this.startTime + e[0].id,
                     this.attackIndices = [],
                     this.deaths = [];
-                for (var c = 0; c < e.length; c++)
+                for (var u = 0; u < e.length; u++)
                     this.inputBuffer.push([]),
                         this.scores.push({
                             total: 1,
                             tiles: 1
                         }),
-                    u || e[c].join(this.chat_room),
+                    c || e[u].join(this.chat_room),
                         this.attackIndices.push(0);
                 if (!o) {
                     for (var l = !1; !l || !this.validateGame(); )
@@ -14608,8 +14637,9 @@
         var i = n(273)
             , a = n(290)
             , s = n(1)
-            , u = n(296)
-            , c = -1;
+            , u = n(177)
+            , c = n(296)
+            , l = -1;
         r.prototype.addMountain = function(e) {
             this.map.setTile(e, i.TILE_MOUNTAIN)
         }
@@ -14663,50 +14693,73 @@
                     , n = Math.round(t + Math.random() * e.length * (Math.random() - .5))
                     , o = Math.round(t + Math.random() * e.length * (Math.random() - .5))
                     , a = Math.round(5 + e.length * (2 + Math.random()))
-                    , u = s.MIN_GENERAL_SPACING * (1.8 - .1 * e.length);
+                    , c = s.MIN_GENERAL_SPACING * (1.8 - .1 * e.length);
                 this.map = new i(n,o,this.teams);
-                var c = this.map.size();
+                var l = this.map.size();
                 if (this.generals = [],
-                    this.type === r.types["2v2"]) {
-                    for (var l; ; ) {
-                        l = [];
-                        for (var p = 0; p < 4; p++)
-                            l.push(Math.floor(Math.random() * c));
-                        if (this.map.distance(l[0], l[1]) <= s.MAX_2V2_ALLY_SPACING && this.map.distance(l[2], l[3]) <= s.MAX_2V2_ALLY_SPACING && this.map.distance(l[0], l[1]) >= s.MIN_2V2_ALLY_SPACING && this.map.distance(l[2], l[3]) >= s.MIN_2V2_ALLY_SPACING)
+                    this.teams && u.hasDuplicate(this.teams)) {
+                    for (var p, h = 0, d = s.MIN_ALLY_SPACING, f = s.MAX_ALLY_SPACING, m = 0; m < this.teams.length; m++) {
+                        var v = this.teams[m];
+                        if (this.teams.filter(function(e) {
+                                return e === v
+                            }).length >= s.ALLY_LOOSE_THRESHOLD) {
+                            d = s.MIN_ALLY_SPACING_LOOSE,
+                                f = s.MAX_ALLY_SPACING_LOOSE;
+                            break
+                        }
+                    }
+                    for (; ; ) {
+                        h++,
+                            p = [];
+                        for (var m = 0; m < e.length; m++)
+                            p.push(Math.floor(Math.random() * l));
+                        for (var y = !1, m = 0; m < p.length; m++) {
+                            for (var g = 0; g < m; g++)
+                                if (this.teams[m] === this.teams[g]) {
+                                    var T = this.map.distance(p[m], p[g]);
+                                    if (T > f || T < d) {
+                                        y = !0;
+                                        break
+                                    }
+                                }
+                            if (y)
+                                break
+                        }
+                        if (!y)
                             break
                     }
-                    for (var p = 0; p < 4; p++)
-                        this.addGeneral(l[p])
+                    for (var m = 0; m < e.length; m++)
+                        this.addGeneral(p[m])
                 } else
-                    for (var p = 0; p < e.length; p++) {
-                        for (var h, d = !1, f = 0; !d; ) {
-                            if (f++,
-                                f > 5e3)
+                    for (var m = 0; m < e.length; m++) {
+                        for (var b, S = !1, h = 0; !S; ) {
+                            if (h++,
+                                h > 5e3)
                                 return !1;
-                            h = Math.floor(Math.random() * c),
-                                d = !0;
-                            for (var m = 0; m < this.generals.length; m++)
-                                if (this.map.distance(this.generals[m], h) <= u) {
-                                    d = !1;
+                            b = Math.floor(Math.random() * l),
+                                S = !0;
+                            for (var g = 0; g < this.generals.length; g++)
+                                if (this.map.distance(this.generals[g], b) <= c) {
+                                    S = !1;
                                     break
                                 }
                         }
-                        this.addGeneral(h)
+                        this.addGeneral(b)
                     }
                 this.cities = [];
-                for (var p = 0; p < a; p++) {
-                    var v = Math.floor(Math.random() * c);
-                    if (this.hasCityOrGeneral(v))
-                        p--;
+                for (var m = 0; m < a; m++) {
+                    var E = Math.floor(Math.random() * l);
+                    if (this.hasCityOrGeneral(E))
+                        m--;
                     else {
-                        var y = s.MIN_CITY_ARMY
-                            , g = s.MAX_CITY_ARMY;
-                        this.addCity(v, Math.round(y + Math.random() * (g - y)))
+                        var A = s.MIN_CITY_ARMY
+                            , C = s.MAX_CITY_ARMY;
+                        this.addCity(E, Math.round(A + Math.random() * (C - A)))
                     }
                 }
-                for (var T = c * (.2 + .08 * Math.random()), p = 0; p < T; p++) {
-                    var v = Math.floor(Math.random() * c);
-                    this.hasCityOrGeneral(v) ? p-- : this.addMountain(v)
+                for (var P = l * (.2 + .08 * Math.random()), m = 0; m < P; m++) {
+                    var E = Math.floor(Math.random() * l);
+                    this.hasCityOrGeneral(E) ? m-- : this.addMountain(E)
                 }
                 return !0
             }
@@ -14802,24 +14855,28 @@
                     })
                 }),
                     setTimeout(function() {
-                        t.update(),
-                            t.setIntervalReturn = setInterval(function() {
+                        return t.update() ? void e() : void (t.setIntervalReturn = setInterval(function() {
                                 t.update() && (clearInterval(t.setIntervalReturn),
                                     e())
-                            }, 500)
+                            }, 500))
                     }, 0)
             }
             ,
             r.prototype.update = function(e) {
                 for (var t = 0; t < this.sockets.length; t++) {
                     if (this.options.old_priority)
+                        if (this.options.priority_cycle)
+                            var n = (t + this.turn) % this.sockets.length;
+                        else
+                            var n = t;
+                    else if (this.turns % 2 === 0)
                         var n = t;
                     else
-                        var n = (t + this.turn) % this.sockets.length;
+                        var n = this.sockets.length - 1 - t;
                     for (; this.inputBuffer[n].length; ) {
                         var r = this.inputBuffer[n].splice(0, 1)[0];
                         if (this.handleAttack(n, r[0], r[1], r[2], r[3]) !== !1) {
-                            u || this.replay.addMove(n, r[0], r[1], r[2], this.turn);
+                            c || this.replay.addMove(n, r[0], r[1], r[2], this.turn);
                             break
                         }
                     }
@@ -14851,16 +14908,16 @@
                     }
                     var a = this.map.computeVisibility();
                     this.sockets.forEach(this.sendGameUpdate.bind(this, i, a));
-                    var c = this.isOver();
-                    if (c) {
-                        for (var n = 0; n < c.length; n++) {
-                            var l = c[n];
+                    var u = this.isOver();
+                    if (u) {
+                        for (var n = 0; n < u.length; n++) {
+                            var l = u[n];
                             this.deaths.indexOf(l) >= 0 || (this.deaths.push(l),
                                 l.emit("game_won"))
                         }
-                        if (!u) {
-                            var p = c.reduce(function(e, t, n) {
-                                return n === c.length - 1 ? e + t.gio_username : e + t.gio_username + ", "
+                        if (!c) {
+                            var p = u.reduce(function(e, t, n) {
+                                return n === u.length - 1 ? e + t.gio_username : e + t.gio_username + ", "
                             }, "");
                             io.to(this.chat_room).emit("chat_message", this.chat_room, {
                                 text: this.teams ? "The team with [" + p + "] wins!" : p + " wins!"
@@ -14962,18 +15019,23 @@
                     , s = this.generals.indexOf(n);
                 if (a !== i && s >= 0) {
                     this.map.replaceAll(i, a, .5);
-                    var l = this.sockets[i];
-                    this.deaths.indexOf(l) < 0 && (this.deaths.push(l),
+                    var u = this.sockets[i];
+                    this.deaths.indexOf(u) < 0 && (this.deaths.push(u),
                         this.alivePlayers--,
-                        l.emit("game_lost", {
+                        u.emit("game_lost", {
                             killer: a
                         })),
                         this.cities.push(n),
-                        this.generals[s] = c,
-                    u || io.to(this.chat_room).emit("chat_message", this.chat_room, {
+                        this.generals[s] = l,
+                    c || io.to(this.chat_room).emit("chat_message", this.chat_room, {
                         text: this.sockets[a].gio_username + " captured " + this.sockets[s].gio_username + "."
                     })
                 }
+            }
+            ,
+            r.prototype.undoMove = function(e) {
+                var t = this.indexOfSocketID(e);
+                return t < 0 ? void console.error("Client Input for socket_id not in game: " + e) : void (this.inputBuffer[t].length > 0 && (this.inputBuffer[t] = this.inputBuffer[t].slice(0, -1)))
             }
             ,
             r.prototype.clearMoves = function(e) {
@@ -14985,10 +15047,10 @@
                 var t = this.indexOfSocketID(e);
                 if (t < 0)
                     return void console.error("Trying to handleQuit() for socket not in game.");
-                if (u || io.to(this.chat_room).emit("chat_message", this.chat_room, {
+                if (c || io.to(this.chat_room).emit("chat_message", this.chat_room, {
                         text: this.sockets[t].gio_username + " quit."
                     }),
-                    this.generals[t] !== c) {
+                    this.generals[t] !== l) {
                     this.deaths.push(this.sockets[t]),
                         this.alivePlayers--,
                         this.replay.addAFK(t, this.turn);
@@ -15008,12 +15070,12 @@
             ,
             r.prototype.tryNeutralizePlayer = function(e) {
                 var t = this.generals[e];
-                this.generals[e] = c;
+                this.generals[e] = l;
                 var n = this.aliveTeammate(e)
                     , r = Number.isInteger(n) ? n : i.TILE_EMPTY;
                 this.map.tileAt(t) === e && (this.map.replaceAll(e, r),
                     this.cities.push(t),
-                u || this.replay.addAFK(e, this.turn))
+                c || this.replay.addAFK(e, this.turn))
             }
             ,
             r.prototype.handleLeave = function(e) {
@@ -15021,7 +15083,7 @@
                 delete t.gio_stars,
                     t.leave(this.chat_room),
                     this.leftSockets.push(t),
-                u || io.to(this.chat_room).emit("chat_message", this.chat_room, {
+                c || io.to(this.chat_room).emit("chat_message", this.chat_room, {
                     text: t.gio_username + " left."
                 })
             }
@@ -15094,20 +15156,23 @@
                 var u = n(273)
                     , c = n(295)
                     , l = n(278)
-                    , p = 0
-                    , h = 1
-                    , d = 2
-                    , f = 3
-                    , m = {
-                    old_priority: !0
-                }
-                    , v = {
-                    old_priority: !0
-                }
-                    , y = {
-                    old_priority: !0
-                }
-                    , g = {};
+                    , p = 4
+                    , h = {
+                    REPLAY_VERSION_1: {
+                        old_priority: !0
+                    },
+                    REPLAY_VERSION_2: {
+                        old_priority: !0
+                    },
+                    REPLAY_VERSION_3: {
+                        old_priority: !0
+                    },
+                    REPLAY_VERSION_4: {
+                        old_priority: !0,
+                        priority_cycle: !0
+                    },
+                    REPLAY_VERSION_5: {}
+                };
                 r.prototype.addMove = function(e, t, n, r, o) {
                     this.moves.push({
                         index: e,
@@ -15128,7 +15193,7 @@
                     r.prototype.serialize = function() {
                         var e = this.moves.map(o)
                             , n = this.afks.map(a);
-                        return new t(c.compressToUint8Array(JSON.stringify([f, this.id, this.mapWidth, this.mapHeight, this.usernames, this.stars, this.cities, this.cityArmies, this.generals, this.mountains, e, n, this.teams])))
+                        return new t(c.compressToUint8Array(JSON.stringify([p, this.id, this.mapWidth, this.mapHeight, this.usernames, this.stars, this.cities, this.cityArmies, this.generals, this.mountains, e, n, this.teams])))
                     }
                     ,
                     r.deserialize = function(e) {
@@ -15158,16 +15223,7 @@
                     }
                     ,
                     r.options = function(e) {
-                        switch (e) {
-                            case p:
-                                return m;
-                            case h:
-                                return v;
-                            case d:
-                                return y;
-                            case f:
-                                return g
-                        }
+                        return h[e] || {}
                     }
                     ,
                     e.exports = r
@@ -15347,7 +15403,7 @@
                             case "binary":
                                 return N(this, t, n);
                             case "base64":
-                                return M(this, t, n);
+                                return w(this, t, n);
                             case "ucs2":
                             case "ucs-2":
                             case "utf16le":
@@ -15430,7 +15486,7 @@
                         }
                     return -1
                 }
-                function A(e, t, n, r) {
+                function E(e, t, n, r) {
                     n = Number(n) || 0;
                     var o = e.length - n;
                     r ? (r = Number(r),
@@ -15447,7 +15503,7 @@
                     }
                     return a
                 }
-                function E(e, t, n, r) {
+                function A(e, t, n, r) {
                     return z(K(t, e.length - n), e, n, r)
                 }
                 function C(e, t, n, r) {
@@ -15459,10 +15515,10 @@
                 function _(e, t, n, r) {
                     return z(Y(t), e, n, r)
                 }
-                function w(e, t, n, r) {
+                function M(e, t, n, r) {
                     return z(q(t, e.length - n), e, n, r)
                 }
-                function M(e, t, n) {
+                function w(e, t, n) {
                     return 0 === t && n === e.length ? J.fromByteArray(e) : J.fromByteArray(e.slice(t, n))
                 }
                 function k(e, t, n) {
@@ -15881,10 +15937,10 @@
                         for (var i = !1; ; )
                             switch (r) {
                                 case "hex":
-                                    return A(this, e, t, n);
+                                    return E(this, e, t, n);
                                 case "utf8":
                                 case "utf-8":
-                                    return E(this, e, t, n);
+                                    return A(this, e, t, n);
                                 case "ascii":
                                     return C(this, e, t, n);
                                 case "latin1":
@@ -15896,7 +15952,7 @@
                                 case "ucs-2":
                                 case "utf16le":
                                 case "utf-16le":
-                                    return w(this, e, t, n);
+                                    return M(this, e, t, n);
                                 default:
                                     if (i)
                                         throw new TypeError("Unknown encoding: " + r);
@@ -17606,7 +17662,7 @@
             displayName: "Tabs",
             render: function() {
                 var e = this.props.selectedTab
-                    , t = this.props.onClicks
+                    , t = this.props.onClicks || []
                     , n = this.props.tab_id
                     , o = this.props.titles.map(function(o, i) {
                     return r.createElement("div", {
@@ -17631,7 +17687,8 @@
             , s = n(1)
             , u = n(271)
             , c = n(310)
-            , l = r.createClass({
+            , l = n(311)
+            , p = r.createClass({
             displayName: "Queue",
             componentDidMount: function() {
                 this.props.isTeamQueue && u.changeURL("/teams/" + encodeURIComponent(this.props.team_id)),
@@ -17658,9 +17715,16 @@
                             className: "share-link"
                         }, "http://" + window.location.hostname + "/teams/" + encodeURIComponent(this.props.team_id))) : r.createElement("h1", {
                             className: "queue-title"
-                        }, "Waiting for ", o ? "teams" : "players", "..."), r.createElement("h2", null, o ? Math.ceil(this.props.numPlayers / 2) : this.props.numPlayers, " of ", n || this.props.isTeamQueue || o ? 2 : s.PLAYER_CAP, " ", o ? " teams" : ""), !this.props.isTeamQueue && !this.props.prestart && !this.props.queue_id && this.props.numPlayers >= 2 ? r.createElement("p", null, "Game automatically starting in ", e, ":", t) : null, this.props.prestart ? null : r.createElement("p", {
+                        }, "Waiting for ", o ? "teams" : "players", "..."), r.createElement("h2", null, o ? Math.ceil(this.props.numPlayers / 2) : this.props.numPlayers, " of ", n || this.props.isTeamQueue || o ? 2 : s.PLAYER_CAP, " ", o ? " teams" : ""), !this.props.isTeamQueue && !this.props.prestart && !this.props.queue_id && this.props.numPlayers >= 2 ? r.createElement("p", null, "Game automatically starting in ", e, ":", t) : null, r.createElement("div", null, this.props.isTeamQueue ? null : r.createElement("p", {
+                        style: {
+                            marginRight: "3px",
+                            display: "inline"
+                        }
+                    }, "You are:"), this.props.isTeamQueue ? null : r.createElement(l, {
+                        playerIndex: this.props.playerIndex
+                    }), this.props.prestart ? null : r.createElement("p", {
                         className: "queue-gong-message"
-                    }, "We'll play a gong sound when the game starts. Turn your volume up!"), this.props.prestart || n || this.props.isTeamQueue || o || !(this.props.numPlayers > 1) ? null : r.createElement(c, null), r.createElement("br", null), this.props.prestart ? null : r.createElement("button", {
+                    }, "We'll play a gong sound when the game starts. Turn your volume up!")), this.props.prestart || n || this.props.isTeamQueue || o || !(this.props.numPlayers > 1) ? null : r.createElement(c, null), r.createElement("br", null), this.props.prestart ? null : r.createElement("button", {
                         className: "small",
                         onClick: this.props.onCancelClicked.bind(this)
                     }, "Cancel"), r.createElement("div", {
@@ -17682,7 +17746,7 @@
                         e(i.cancel())
                 }
             }
-        })(l)
+        })(p)
     }
     , function(e, t, n) {
         "use strict";
@@ -17715,20 +17779,30 @@
     , function(e, t, n) {
         "use strict";
         var r = n(3)
-            , o = n(179)
-            , i = n(267)
-            , a = n(310)
-            , s = n(211)
-            , u = n(1)
-            , c = n(177)
-            , l = n(271)
-            , p = n(312)
-            , h = n(314)
-            , d = r.createClass({
+            , o = n(1)
+            , i = r.createClass({
+            displayName: "InlineColorBlock",
+            render: function() {
+                return !Number.isInteger(this.props.playerIndex) || this.props.playerIndex < 0 || this.props.playerIndex >= o.PLAYER_COLORS.length ? null : r.createElement("span", {
+                        className: "inline-color-block " + o.PLAYER_COLORS[this.props.playerIndex]
+                    })
+            }
+        });
+        e.exports = i
+    }
+    , function(e, t, n) {
+        "use strict";
+        for (var r = n(3), o = n(179), i = n(267), a = n(310), s = n(211), u = n(1), c = n(177), l = n(271), p = n(313), h = n(315), d = n(308), f = n(311), m = [], v = 0; v < u.PLAYER_CAP; v++)
+            m.push(v + 1);
+        var y = r.createClass({
             displayName: "CustomQueue",
             componentDidMount: function() {
                 l.changeURL("/games/" + encodeURIComponent(this.props.queue_id)),
-                    window.addEventListener("keydown", this.onKeyDown)
+                    window.addEventListener("keydown", this.onKeyDown);
+                var e = this;
+                this.teamOnClicks = m.map(function(t) {
+                    return e.joinTeam.bind(e, t)
+                })
             },
             componentWillUnmount: function() {
                 window.removeEventListener("keydown", this.onKeyDown)
@@ -17737,6 +17811,32 @@
                 h.CHAT.indexOf(e.keyCode) !== -1 && (document.getElementById("chatroom-input").focus(),
                     e.preventDefault(),
                     e.stopPropagation())
+            },
+            joinTeam: function(e) {
+                s.setCustomTeam(this.props.queue_id, e)
+            },
+            renderTeams: function() {
+                if (!this.props.teams || !this.props.usernames)
+                    return null;
+                for (var e = [], t = 0; t < u.PLAYER_CAP; t++)
+                    e.push([]);
+                for (var t = 0; t < this.props.teams.length; t++)
+                    e[this.props.teams[t] - 1].push({
+                        username: this.props.usernames[t],
+                        playerIndex: t
+                    });
+                for (var n = [], t = 0; t < e.length; t++)
+                    e[t].length && n.push(r.createElement("div", {
+                        className: "custom-team-container",
+                        key: "custom-team-" + t
+                    }, r.createElement("h4", null, "Team " + (t + 1)), e[t].map(function(e, n) {
+                        return r.createElement("div", {
+                            key: "custom-team" + t + "-" + n
+                        }, r.createElement(f, {
+                            playerIndex: e.playerIndex
+                        }), r.createElement("p", null, e.username || "Anonymous"))
+                    })));
+                return n
             },
             render: function() {
                 var e = c.chatRoomForCustomGame(this.props.queue_id);
@@ -17753,16 +17853,35 @@
                         }
                     }, "Share this link:"), r.createElement("p", {
                         className: "share-link"
-                    }, "http://" + window.location.hostname + "/games/" + encodeURIComponent(this.props.queue_id))), r.createElement("h2", null, this.props.numPlayers + " of " + u.PLAYER_CAP), this.props.prestart ? null : r.createElement("p", {
+                    }, "http://" + window.location.hostname + "/games/" + encodeURIComponent(this.props.queue_id))), this.props.prestart ? null : r.createElement("div", {
+                        className: "custom-queue-teams-container"
+                    }, r.createElement("h3", {
+                        style: {
+                            margin: 0
+                        }
+                    }, "Select your team:"), r.createElement(d, {
+                        tab_id: "custom-team",
+                        selectedTab: this.props.teams && this.props.teams[this.props.playerIndex] - 1 || 0,
+                        onClicks: this.teamOnClicks,
+                        titles: m
+                    }), r.createElement("br", null), this.renderTeams()), r.createElement("div", null, r.createElement("p", {
+                    style: {
+                        marginRight: "3px",
+                        display: "inline"
+                    }
+                }, "You are:"), r.createElement(f, {
+                    playerIndex: this.props.playerIndex
+                }), this.props.prestart ? null : r.createElement("p", {
                         className: "queue-gong-message"
-                    }, "We'll play a gong sound when the game starts. Turn your volume up!"), !this.props.prestart && this.props.numPlayers > 1 ? r.createElement(a, null) : null, r.createElement("br", null), this.props.prestart ? null : r.createElement("button", {
+                    }, "We'll play a gong sound when the game starts. Turn your volume up!")), !this.props.prestart && this.props.numPlayers > 1 ? r.createElement(a, null) : null, r.createElement("br", null), this.props.prestart ? null : r.createElement("button", {
                         className: "small",
                         onClick: this.props.onCancelClicked.bind(this)
                     }, "Cancel"))), r.createElement("div", {
                     id: "custom-queue-chat"
                 }, r.createElement(p, {
                     chat_room: e,
-                    messages: this.props.all_chats[e]
+                    messages: this.props.all_chats[e],
+                    playerIndex: this.props.playerIndex
                 })))
             }
         });
@@ -17777,12 +17896,12 @@
                         e(i.cancel())
                 }
             }
-        })(d)
+        })(y)
     }
     , function(e, t, n) {
         "use strict";
         var r = n(3)
-            , o = n(313)
+            , o = n(314)
             , i = n(211)
             , a = r.createClass({
             displayName: "ChatRoom",
@@ -17802,7 +17921,7 @@
             handleKeyPress: function(e) {
                 e.stopPropagation();
                 var t = e.which || e.keyCode;
-                13 === t && (this.state.currentMessage ? (i.sendChatMessage(this.props.chat_room, this.state.currentMessage),
+                13 === t && (this.state.currentMessage ? (i.sendChatMessage(this.props.chat_room, this.state.currentMessage, this.props.playerIndex),
                         this.setState({
                             currentMessage: ""
                         })) : this.refs.input.blur())
@@ -17854,21 +17973,16 @@
         "use strict";
         var r = n(3)
             , o = n(1)
-            , i = r.createClass({
+            , i = n(311)
+            , a = r.createClass({
             displayName: "ChatMessage",
             render: function() {
                 var e = this.props.message
                     , t = e.hasOwnProperty("playerIndex") ? o.PLAYER_COLORS[e.playerIndex] : null;
                 return e.hasOwnProperty("username") ? r.createElement("p", {
                         className: "chat-message"
-                    }, t ? r.createElement("span", {
-                            className: o.PLAYER_COLORS[e.playerIndex] || "white",
-                            style: {
-                                display: "inline-block",
-                                width: "10px",
-                                height: "10px",
-                                margin: "0 2px"
-                            }
+                    }, t ? r.createElement(i, {
+                            playerIndex: e.playerIndex
                         }) : null, r.createElement("span", {
                         className: "username"
                     }, e.username), ": ", e.text) : r.createElement("p", {
@@ -17876,7 +17990,7 @@
                     }, e.text)
             }
         });
-        e.exports = i
+        e.exports = a
     }
     , function(e, t, n) {
         "use strict";
@@ -17894,6 +18008,7 @@
             CHAT: r("CHAT") || [13, 84],
             DESELECT: r("DESELECT") || [32],
             AUTOPLAY: r("AUTOPLAY") || [32],
+            UNDO: r("UNDO") || [69],
             CLEAR: r("CLEAR") || [81],
             ZOOMIN: r("ZOOMIN") || [48],
             ZOOMOUT: r("ZOOMOUT") || [57]
@@ -17901,19 +18016,22 @@
     }
     , function(e, t, n) {
         "use strict";
-        function r(e, t, n) {
+        function r(e, t, n, r) {
             return Object.assign({
-                username: e[n.i] || "Anonymous",
-                stars: t ? t[n.i] : ""
-            }, n)
+                username: e[r.i] || "Anonymous",
+                stars: t ? t[r.i] : "",
+                team: n ? n[r.i] : void 0
+            }, r)
         }
         function o(e) {
             return i.createElement("tr", {
                 className: 0 === e.tiles ? "dead" : e.dead ? "afk" : "",
                 key: "game-leaderboard-row" + e.i
-            }, i.createElement("td", {
+            }, Number.isInteger(e.team) ? i.createElement("td", {
+                    key: "game-leaderboard-team" + e.i
+                }, e.team) : null, i.createElement("td", {
                 key: "game-leaderboard-stars" + e.i
-            }, " ", null !== e.stars ? i.createElement(m, {
+            }, " ", null !== e.stars ? i.createElement(v, {
                     stars: e.stars
                 }) : null, " "), i.createElement("td", {
                 key: "game-leaderboard-name" + e.i,
@@ -17927,20 +18045,21 @@
         var i = n(3)
             , a = n(179)
             , s = n(269)
-            , u = n(316)
-            , c = n(312)
+            , u = n(317)
+            , c = n(313)
             , l = n(265)
             , p = n(1)
-            , h = n(306)
-            , d = n(318).Tutorial
-            , f = n(211)
-            , m = n(297)
-            , v = n(288)
-            , y = n(303)
-            , g = (n(271),
-            n(319))
-            , T = n(308)
-            , b = i.createClass({
+            , h = n(177)
+            , d = n(306)
+            , f = n(319).Tutorial
+            , m = n(211)
+            , v = n(297)
+            , y = n(288)
+            , g = n(303)
+            , T = (n(271),
+            n(320))
+            , b = n(308)
+            , S = i.createClass({
             displayName: "GamePage",
             getInitialState: function() {
                 return {
@@ -17948,8 +18067,11 @@
                     useShareReplayStartTurn: !1
                 }
             },
+            componentDidMount: function() {
+                this.showTeamsInLeaderboard = h.hasDuplicate(this.props.teams)
+            },
             exit: function() {
-                this.props.isReplay ? v.exitReplay() : f.leaveGame(),
+                this.props.isReplay ? y.exitReplay() : m.leaveGame(),
                     l.dispatch(s.exit())
             },
             exitOrSpectate: function() {
@@ -17998,7 +18120,7 @@
             onReplayTurnJump: function() {
                 var e = document.getElementById("replay-turn-jump-input")
                     , t = parseInt(e.value);
-                Number.isInteger(t) && (v.jumpToTurn(t),
+                Number.isInteger(t) && (y.jumpToTurn(t),
                     e.value = "",
                     e.blur())
             },
@@ -18009,13 +18131,13 @@
             watchReplay: function() {
                 "undefined" != typeof ga && ga("send", "event", "Replay", "watch");
                 var e = this.props.replay_id;
-                g.playAd(function() {
+                T.playAd(function() {
                     window.open("/replays/" + e)
                 })
             },
             render: function() {
                 var e;
-                this.props.scores && (e = this.props.scores.map(r.bind(null, this.props.usernames, this.props.stars)).map(o));
+                this.props.scores && (e = this.props.scores.map(r.bind(null, this.props.usernames, this.props.stars, this.showTeamsInLeaderboard ? this.props.teams : null)).map(o));
                 var t = Number.isInteger(this.props.turn) ? Math.floor(this.props.turn / 2) : 0;
                 return i.createElement("div", {
                     id: "game-page"
@@ -18024,7 +18146,7 @@
                     isReplay: this.props.isReplay,
                     toggleAutoPlay: this.toggleAutoPlay,
                     focusChat: this.focusChat
-                }), !this.state.isSpectating && this.props.lost ? i.createElement(h, {
+                }), !this.state.isSpectating && this.props.lost ? i.createElement(d, {
                         title: "Game Over",
                         body: i.createElement("span", null, "You were defeated by ", i.createElement("span", {
                             style: {
@@ -18035,11 +18157,11 @@
                         button2: "Watch Replay",
                         onClick: this.exitOrSpectate,
                         onClick2: this.watchReplay
-                    }) : null, !this.state.isSpectating && this.props.won ? this.props.isTutorial ? i.createElement(h, {
+                    }) : null, !this.state.isSpectating && this.props.won ? this.props.isTutorial ? i.createElement(d, {
                             title: "You won!",
                             button: "Exit",
                             onClick: this.exit
-                        }) : i.createElement(h, {
+                        }) : i.createElement(d, {
                             title: "You won!",
                             button: "Exit",
                             button2: "Watch Replay",
@@ -18052,7 +18174,7 @@
                         messages: this.props.chat_messages
                     })), i.createElement("table", {
                     id: "game-leaderboard"
-                }, i.createElement("tbody", null, i.createElement("tr", null, i.createElement("td", null, " ", i.createElement(m, null), " "), i.createElement("td", null, "Player"), i.createElement("td", null, "Army"), i.createElement("td", null, "Land")), e)), i.createElement("div", {
+                }, i.createElement("tbody", null, i.createElement("tr", null, this.showTeamsInLeaderboard ? i.createElement("td", null, "Team") : null, i.createElement("td", null, " ", i.createElement(v, null), " "), i.createElement("td", null, "Player"), i.createElement("td", null, "Army"), i.createElement("td", null, "Land")), e)), i.createElement("div", {
                     id: "turn-counter"
                 }, "Turn ", t), this.props.isReplay ? i.createElement("div", {
                         id: "replay-top-left"
@@ -18148,12 +18270,12 @@
                         onClick: this.exitShareReplay
                     }, "Exit")))) : null, this.props.isReplay ? i.createElement("div", {
                         id: "replay-bottom"
-                    }, this.props.autoPlay ? i.createElement("center", null, i.createElement(T, {
+                    }, this.props.autoPlay ? i.createElement("center", null, i.createElement(b, {
                             tab_id: "replay-autoplay",
                             selectedTab: .5 === this.props.autoPlaySpeed ? 0 : 1 === this.props.autoPlaySpeed ? 1 : 2 === this.props.autoPlaySpeed ? 2 : 5 === this.props.autoPlaySpeed ? 3 : 4,
                             onClicks: [this.setAutoPlaySpeed.bind(null, .5), this.setAutoPlaySpeed.bind(null, 1), this.setAutoPlaySpeed.bind(null, 2), this.setAutoPlaySpeed.bind(null, 5), this.setAutoPlaySpeed.bind(null, 10)],
                             titles: ["0.5x", "1x", "2x", "5x", "10x"]
-                        })) : null, y ? null : i.createElement("div", {
+                        })) : null, g ? null : i.createElement("div", {
                             id: "replay-bottom-bar",
                             className: "background"
                         }, i.createElement("div", null, i.createElement("span", {
@@ -18162,7 +18284,7 @@
                             className: "bold"
                         }, "[Spacebar]"), i.createElement("br", null), "Toggle Auto Play"), i.createElement("div", null, i.createElement("span", {
                             className: "bold"
-                        }, "[→]"), i.createElement("br", null), "Next Move"))) : null, this.props.isTutorial ? i.createElement(d, {
+                        }, "[→]"), i.createElement("br", null), "Next Move"))) : null, this.props.isTutorial ? i.createElement(f, {
                         state: this.props.tutorialState,
                         scores: this.props.scores,
                         playerIndex: this.props.playerIndex,
@@ -18179,7 +18301,7 @@
             return Object.assign({
                 chat_messages: e.chat[t] || []
             }, e.game)
-        })(b)
+        })(S)
     }
     , function(e, t, n) {
         "use strict";
@@ -18195,13 +18317,13 @@
         }
         var o = n(3)
             , i = n(179)
-            , a = n(317)
+            , a = n(318)
             , s = n(211)
             , u = n(273)
-            , c = n(318)
+            , c = n(319)
             , l = n(288)
             , p = n(303)
-            , h = n(314)
+            , h = n(315)
             , d = -1
             , f = 0
             , m = 1
@@ -18221,6 +18343,15 @@
                     zoom: p ? m : f,
                     wheel: 0
                 }
+            },
+            undoQueuedAttack: function() {
+                if (this.state.queuedAttacks.length > 0) {
+                    var e = this.state.queuedAttacks.slice(0, -1);
+                    this.setState({
+                        queuedAttacks: e
+                    })
+                }
+                s.undoMove()
             },
             clearQueuedAttacks: function() {
                 this.setState({
@@ -18275,7 +18406,9 @@
                     return void (h.AUTOPLAY.indexOf(e.keyCode) !== -1 ? this.props.toggleAutoPlay() : h.RIGHT.indexOf(e.keyCode) !== -1 ? l.nextReplayTurn() : h.LEFT.indexOf(e.keyCode) !== -1 && l.backReplay());
                 if (e.preventDefault(),
                         e.stopPropagation(),
-                    h.CLEAR.indexOf(e.keyCode) !== -1)
+                    h.UNDO.indexOf(e.keyCode) !== -1)
+                    return void this.undoQueuedAttack();
+                if (h.CLEAR.indexOf(e.keyCode) !== -1)
                     return void this.clearQueuedAttacks();
                 if (h.DESELECT.indexOf(e.keyCode) !== -1)
                     return void this.setState({
