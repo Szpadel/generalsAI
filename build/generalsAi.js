@@ -47,7 +47,7 @@
     ;
     var r = (n(1),
         n(2));
-    n(322);
+    n(323);
     var o = n(265)
         , i = n(176)
         , a = n(3)
@@ -74,7 +74,7 @@
     , function(e, t) {
         "use strict";
         e.exports = {
-            VERSION: "9.0",
+            VERSION: "9.0.1",
             PLAYER_CAP: 8,
             PLAYER_COLORS: ["red", "blue", "green", "purple", "teal", "darkgreen", "orange", "maroon"],
             MAX_USERNAME_LENGTH: 16,
@@ -85,11 +85,8 @@
             RECRUIT_RATE: 2,
             FARM_RATE: 50,
             MIN_GENERAL_SPACING: 9,
-            MAX_ALLY_SPACING: 14,
-            MAX_ALLY_SPACING_LOOSE: 15,
-            MIN_ALLY_SPACING: 4,
-            MIN_ALLY_SPACING_LOOSE: 3,
-            ALLY_LOOSE_THRESHOLD: 4,
+            MAX_ALLY_SPACING: 12,
+            MIN_ALLY_SPACING: 3,
             CLOSE_CITY_DISTANCE: 6,
             TIMEOUT_CAPTURE_AFK: 25e3,
             CUSTOM_GAME_URL_LENGTH: 4
@@ -105,7 +102,7 @@
             , u = n(309)
             , c = n(312)
             , l = n(316)
-            , p = n(321)
+            , p = n(322)
             , h = r.createClass({
             displayName: "App",
             render: function() {
@@ -319,7 +316,7 @@
         };
         e.exports = S
     }
-    , [323, 8], function(e, t) {
+    , [324, 8], function(e, t) {
         "use strict";
         function n(e) {
             for (var t = arguments.length - 1, n = "Minified React error #" + e + "; visit http://facebook.github.io/react/docs/error-decoder.html?invariant=" + e, r = 0; r < t; r++)
@@ -2439,7 +2436,7 @@
             i.addPoolingTo(r),
             e.exports = r
     }
-    , [323, 36], function(e, t, n) {
+    , [324, 36], function(e, t, n) {
         "use strict";
         function r() {
             return !i && o.canUseDOM && (i = "textContent"in document.documentElement ? "textContent" : "innerText"),
@@ -3997,7 +3994,7 @@
             topVolumeChange: "volumechange",
             topWaiting: "waiting"
         }
-            , X = {
+            , q = {
             area: !0,
             base: !0,
             br: !0,
@@ -4014,14 +4011,14 @@
             track: !0,
             wbr: !0
         }
-            , q = {
+            , X = {
             listing: !0,
             pre: !0,
             textarea: !0
         }
             , Y = v({
             menuitem: !0
-        }, X)
+        }, q)
             , z = /^[a-zA-Z][a-zA-Z:_\.\-\d]*$/
             , Q = {}
             , J = {}.hasOwnProperty
@@ -4098,7 +4095,7 @@
                     } else {
                         var S = this._createOpenTagMarkupAndPutListeners(e, i)
                             , A = this._createContentMarkup(e, i, r);
-                        h = !A && X[this._tag] ? S + "/>" : S + ">" + A + "</" + this._currentElement.type + ">"
+                        h = !A && q[this._tag] ? S + "/>" : S + ">" + A + "</" + this._currentElement.type + ">"
                     }
                     switch (this._tag) {
                         case "input":
@@ -4154,7 +4151,7 @@
                             r = s.join("")
                         }
                     }
-                    return q[this._tag] && "\n" === r.charAt(0) ? "\n" + r : r
+                    return X[this._tag] && "\n" === r.charAt(0) ? "\n" + r : r
                 },
                 _createInitialChildren: function(e, t, n, r) {
                     var o = t.dangerouslySetInnerHTML;
@@ -10108,7 +10105,7 @@
                 s
         }
     }
-    , [324, 216], [325, 217], function(e, t) {
+    , [325, 216], [326, 217], function(e, t) {
         function n(e) {
             if (e = String(e),
                     !(e.length > 1e4)) {
@@ -13100,7 +13097,7 @@
             o.decode = r,
             e.exports = o
     }
-    , [324, 251], [325, 252], 217, function(e, t, n) {
+    , [325, 251], [326, 252], 217, function(e, t, n) {
         (function(t) {
                 function r() {}
                 function o(e) {
@@ -13938,15 +13935,17 @@
                     });
                 case o.ACTION_START:
                     return delete t.type,
-                        Object.assign(Object.assign({}, e, t), {
+                        Object.assign({}, e, Object.assign({
                             lost: void 0,
                             won: void 0,
                             generals: void 0,
+                            cities: void 0,
+                            teams: void 0,
                             tutorialState: s.STATE_WELCOME,
                             autoPlay: !1,
                             autoPlaySpeed: 1,
                             last_map: void 0
-                        });
+                        }, t));
                 case o.ACTION_UPDATE:
                     var n;
                     var x;
@@ -14226,6 +14225,7 @@
                         n;
                 case i.ACTION_JOIN_TEAM:
                     return Object.assign({}, e, {
+                        prestart: !1,
                         isTeamQueue: !0,
                         team_id: t.team_id,
                         queue_id: void 0
@@ -14698,68 +14698,67 @@
                 var l = this.map.size();
                 if (this.generals = [],
                     this.teams && u.hasDuplicate(this.teams)) {
-                    for (var p, h = 0, d = s.MIN_ALLY_SPACING, f = s.MAX_ALLY_SPACING, m = 0; m < this.teams.length; m++) {
-                        var v = this.teams[m];
-                        if (this.teams.filter(function(e) {
-                                return e === v
-                            }).length >= s.ALLY_LOOSE_THRESHOLD) {
-                            d = s.MIN_ALLY_SPACING_LOOSE,
-                                f = s.MAX_ALLY_SPACING_LOOSE;
-                            break
-                        }
-                    }
-                    for (; ; ) {
+                    for (var p, h = 0; ; ) {
                         h++,
                             p = [];
-                        for (var m = 0; m < e.length; m++)
+                        for (var d = 0; d < e.length; d++)
                             p.push(Math.floor(Math.random() * l));
-                        for (var y = !1, m = 0; m < p.length; m++) {
-                            for (var g = 0; g < m; g++)
-                                if (this.teams[m] === this.teams[g]) {
-                                    var T = this.map.distance(p[m], p[g]);
-                                    if (T > f || T < d) {
-                                        y = !0;
+                        for (var f = !1, m = p.map(function() {
+                            return 1 / 0
+                        }), d = 0; d < p.length; d++) {
+                            for (var v = 0; v < d; v++)
+                                if (this.teams[d] === this.teams[v]) {
+                                    var y = this.map.distance(p[d], p[v]);
+                                    if (y < s.MIN_ALLY_SPACING) {
+                                        f = !0;
                                         break
                                     }
+                                    m[d] = Math.min(y, m[d]),
+                                        m[v] = Math.min(y, m[v])
                                 }
-                            if (y)
+                            if (f)
                                 break
                         }
-                        if (!y)
+                        for (var d = 0; d < m.length; d++)
+                            if (m[d] < 1 / 0 && m[d] > s.MAX_ALLY_SPACING) {
+                                f = !0;
+                                break
+                            }
+                        if (!f)
                             break
                     }
-                    for (var m = 0; m < e.length; m++)
-                        this.addGeneral(p[m])
+                    for (var d = 0; d < e.length; d++)
+                        this.addGeneral(p[d])
                 } else
-                    for (var m = 0; m < e.length; m++) {
-                        for (var b, S = !1, h = 0; !S; ) {
+                    for (var d = 0; d < e.length; d++) {
+                        for (var g, T = !1, h = 0; !T; ) {
                             if (h++,
                                 h > 5e3)
                                 return !1;
-                            b = Math.floor(Math.random() * l),
-                                S = !0;
-                            for (var g = 0; g < this.generals.length; g++)
-                                if (this.map.distance(this.generals[g], b) <= c) {
-                                    S = !1;
+                            g = Math.floor(Math.random() * l),
+                                T = !0;
+                            for (var v = 0; v < this.generals.length; v++)
+                                if (this.map.distance(this.generals[v], g) <= c) {
+                                    T = !1;
                                     break
                                 }
                         }
-                        this.addGeneral(b)
+                        this.addGeneral(g)
                     }
                 this.cities = [];
-                for (var m = 0; m < a; m++) {
-                    var E = Math.floor(Math.random() * l);
-                    if (this.hasCityOrGeneral(E))
-                        m--;
+                for (var d = 0; d < a; d++) {
+                    var b = Math.floor(Math.random() * l);
+                    if (this.hasCityOrGeneral(b))
+                        d--;
                     else {
-                        var A = s.MIN_CITY_ARMY
-                            , C = s.MAX_CITY_ARMY;
-                        this.addCity(E, Math.round(A + Math.random() * (C - A)))
+                        var S = s.MIN_CITY_ARMY
+                            , E = s.MAX_CITY_ARMY;
+                        this.addCity(b, Math.round(S + Math.random() * (E - S)))
                     }
                 }
-                for (var P = l * (.2 + .08 * Math.random()), m = 0; m < P; m++) {
-                    var E = Math.floor(Math.random() * l);
-                    this.hasCityOrGeneral(E) ? m-- : this.addMountain(E)
+                for (var A = l * (.2 + .08 * Math.random()), d = 0; d < A; d++) {
+                    var b = Math.floor(Math.random() * l);
+                    this.hasCityOrGeneral(b) ? d-- : this.addMountain(b)
                 }
                 return !0
             }
@@ -15507,7 +15506,7 @@
                     return z(K(t, e.length - n), e, n, r)
                 }
                 function C(e, t, n, r) {
-                    return z(X(t), e, n, r)
+                    return z(q(t), e, n, r)
                 }
                 function P(e, t, n, r) {
                     return C(e, t, n, r)
@@ -15516,7 +15515,7 @@
                     return z(Y(t), e, n, r)
                 }
                 function M(e, t, n, r) {
-                    return z(q(t, e.length - n), e, n, r)
+                    return z(X(t, e.length - n), e, n, r)
                 }
                 function w(e, t, n) {
                     return 0 === t && n === e.length ? J.fromByteArray(e) : J.fromByteArray(e.slice(t, n))
@@ -15698,12 +15697,12 @@
                     }
                     return i
                 }
-                function X(e) {
+                function q(e) {
                     for (var t = [], n = 0; n < e.length; ++n)
                         t.push(255 & e.charCodeAt(n));
                     return t
                 }
-                function q(e, t) {
+                function X(e, t) {
                     for (var n, r, o, i = [], a = 0; a < e.length && !((t -= 2) < 0); ++a)
                         n = e.charCodeAt(a),
                             r = n >> 8,
@@ -18016,50 +18015,23 @@
     }
     , function(e, t, n) {
         "use strict";
-        function r(e, t, n, r) {
-            return Object.assign({
-                username: e[r.i] || "Anonymous",
-                stars: t ? t[r.i] : "",
-                team: n ? n[r.i] : void 0
-            }, r)
-        }
-        function o(e) {
-            return i.createElement("tr", {
-                className: 0 === e.tiles ? "dead" : e.dead ? "afk" : "",
-                key: "game-leaderboard-row" + e.i
-            }, Number.isInteger(e.team) ? i.createElement("td", {
-                    key: "game-leaderboard-team" + e.i
-                }, e.team) : null, i.createElement("td", {
-                key: "game-leaderboard-stars" + e.i
-            }, " ", null !== e.stars ? i.createElement(v, {
-                    stars: e.stars
-                }) : null, " "), i.createElement("td", {
-                key: "game-leaderboard-name" + e.i,
-                className: "leaderboard-name " + p.PLAYER_COLORS[e.i]
-            }, e.username), i.createElement("td", {
-                key: "game-leaderboard-score" + e.i
-            }, e.total), i.createElement("td", {
-                key: "game-leaderboard-tiles" + e.i
-            }, e.tiles))
-        }
-        var i = n(3)
-            , a = n(179)
-            , s = n(269)
-            , u = n(317)
-            , c = n(313)
-            , l = n(265)
-            , p = n(1)
-            , h = n(177)
-            , d = n(306)
-            , f = n(319).Tutorial
-            , m = n(211)
-            , v = n(297)
-            , y = n(288)
-            , g = n(303)
-            , T = (n(271),
+        var r = n(3)
+            , o = n(179)
+            , i = n(269)
+            , a = n(317)
+            , s = n(313)
+            , u = n(265)
+            , c = (n(1),
+            n(306))
+            , l = n(319).Tutorial
+            , p = n(211)
+            , h = n(288)
+            , d = n(303)
+            , f = (n(271),
             n(320))
-            , b = n(308)
-            , S = i.createClass({
+            , m = n(308)
+            , v = n(321)
+            , y = r.createClass({
             displayName: "GamePage",
             getInitialState: function() {
                 return {
@@ -18067,12 +18039,9 @@
                     useShareReplayStartTurn: !1
                 }
             },
-            componentDidMount: function() {
-                this.showTeamsInLeaderboard = h.hasDuplicate(this.props.teams)
-            },
             exit: function() {
-                this.props.isReplay ? y.exitReplay() : m.leaveGame(),
-                    l.dispatch(s.exit())
+                this.props.isReplay ? h.exitReplay() : p.leaveGame(),
+                    u.dispatch(i.exit())
             },
             exitOrSpectate: function() {
                 this.props.canSpectate ? this.setState({
@@ -18083,10 +18052,10 @@
                 this.props.isLocalGame || document.getElementById("chatroom-input").focus()
             },
             toggleAutoPlay: function() {
-                l.dispatch(s.toggleAutoPlay())
+                u.dispatch(i.toggleAutoPlay())
             },
             setAutoPlaySpeed: function(e) {
-                l.dispatch(s.setAutoPlaySpeed(e))
+                u.dispatch(i.setAutoPlaySpeed(e))
             },
             shareReplay: function() {
                 this.setState({
@@ -18120,7 +18089,7 @@
             onReplayTurnJump: function() {
                 var e = document.getElementById("replay-turn-jump-input")
                     , t = parseInt(e.value);
-                Number.isInteger(t) && (y.jumpToTurn(t),
+                Number.isInteger(t) && (h.jumpToTurn(t),
                     e.value = "",
                     e.blur())
             },
@@ -18131,24 +18100,22 @@
             watchReplay: function() {
                 "undefined" != typeof ga && ga("send", "event", "Replay", "watch");
                 var e = this.props.replay_id;
-                T.playAd(function() {
+                f.playAd(function() {
                     window.open("/replays/" + e)
                 })
             },
             render: function() {
-                var e;
-                this.props.scores && (e = this.props.scores.map(r.bind(null, this.props.usernames, this.props.stars, this.showTeamsInLeaderboard ? this.props.teams : null)).map(o));
-                var t = Number.isInteger(this.props.turn) ? Math.floor(this.props.turn / 2) : 0;
-                return i.createElement("div", {
+                var e = Number.isInteger(this.props.turn) ? Math.floor(this.props.turn / 2) : 0;
+                return r.createElement("div", {
                     id: "game-page"
-                }, i.createElement(u, {
+                }, r.createElement(a, {
                     scrollable: !this.props.lost && !this.props.won || this.props.canSpectate || this.state.isSpectating,
                     isReplay: this.props.isReplay,
                     toggleAutoPlay: this.toggleAutoPlay,
                     focusChat: this.focusChat
-                }), !this.state.isSpectating && this.props.lost ? i.createElement(d, {
+                }), !this.state.isSpectating && this.props.lost ? r.createElement(c, {
                         title: "Game Over",
-                        body: i.createElement("span", null, "You were defeated by ", i.createElement("span", {
+                        body: r.createElement("span", null, "You were defeated by ", r.createElement("span", {
                             style: {
                                 fontFamily: "Quicksand-Bold"
                             }
@@ -18157,53 +18124,56 @@
                         button2: "Watch Replay",
                         onClick: this.exitOrSpectate,
                         onClick2: this.watchReplay
-                    }) : null, !this.state.isSpectating && this.props.won ? this.props.isTutorial ? i.createElement(d, {
+                    }) : null, !this.state.isSpectating && this.props.won ? this.props.isTutorial ? r.createElement(c, {
                             title: "You won!",
                             button: "Exit",
                             onClick: this.exit
-                        }) : i.createElement(d, {
+                        }) : r.createElement(c, {
                             title: "You won!",
                             button: "Exit",
                             button2: "Watch Replay",
                             onClick: this.exit,
                             onClick2: this.watchReplay
-                        }) : null, this.props.isLocalGame ? null : i.createElement("div", {
+                        }) : null, this.props.isLocalGame ? null : r.createElement("div", {
                         id: "in-game-chat"
-                    }, i.createElement(c, {
+                    }, r.createElement(s, {
                         chat_room: this.props.chat_room,
                         messages: this.props.chat_messages
-                    })), i.createElement("table", {
-                    id: "game-leaderboard"
-                }, i.createElement("tbody", null, i.createElement("tr", null, this.showTeamsInLeaderboard ? i.createElement("td", null, "Team") : null, i.createElement("td", null, " ", i.createElement(v, null), " "), i.createElement("td", null, "Player"), i.createElement("td", null, "Army"), i.createElement("td", null, "Land")), e)), i.createElement("div", {
+                    })), r.createElement(v, {
+                    stars: this.props.stars,
+                    scores: this.props.scores,
+                    usernames: this.props.usernames,
+                    teams: this.props.teams
+                }), r.createElement("div", {
                     id: "turn-counter"
-                }, "Turn ", t), this.props.isReplay ? i.createElement("div", {
+                }, "Turn ", e), this.props.isReplay ? r.createElement("div", {
                         id: "replay-top-left"
-                    }, i.createElement("div", {
+                    }, r.createElement("div", {
                         id: "replay-turn-jump",
                         className: "background"
-                    }, "Jump to turn:", i.createElement("input", {
+                    }, "Jump to turn:", r.createElement("input", {
                         type: "text",
                         id: "replay-turn-jump-input",
                         className: "unselectable",
                         placeholder: Math.floor(this.props.turn / 2),
                         onKeyDown: this.onReplayTurnJumpKeyDown
-                    }), i.createElement("div", {
+                    }), r.createElement("div", {
                         id: "replay-turn-jump-button",
                         className: "inline-button",
                         onClick: this.onReplayTurnJump
-                    }, "→")), i.createElement("button", {
+                    }, "→")), r.createElement("button", {
                         className: this.props.autoPlay ? "small inverted" : "small",
                         onClick: this.toggleAutoPlay,
                         style: {
                             display: "block"
                         }
-                    }, "AutoPlay"), i.createElement("button", {
+                    }, "AutoPlay"), r.createElement("button", {
                         className: "small",
                         onClick: this.exit,
                         style: {
                             display: "block"
                         }
-                    }, "Exit")) : null, this.state.isSpectating ? i.createElement("button", {
+                    }, "Exit")) : null, this.state.isSpectating ? r.createElement("button", {
                         className: "small",
                         onClick: this.exit,
                         style: {
@@ -18212,44 +18182,44 @@
                             top: "35px",
                             left: "-10px"
                         }
-                    }, "Exit") : null, this.props.isReplay ? i.createElement("button", {
+                    }, "Exit") : null, this.props.isReplay ? r.createElement("button", {
                         className: "small",
                         id: "share-replay-button",
                         onClick: this.shareReplay
-                    }, "Share Replay") : null, this.state && this.state.showingShareReplay ? i.createElement("div", {
+                    }, "Share Replay") : null, this.state && this.state.showingShareReplay ? r.createElement("div", {
                         className: "popup-background",
                         style: {
                             zIndex: 50
                         }
-                    }, i.createElement("div", {
+                    }, r.createElement("div", {
                         id: "share-replay",
                         className: "alert center"
-                    }, i.createElement("center", null, i.createElement("h2", {
+                    }, r.createElement("center", null, r.createElement("h2", {
                         className: "unselectable",
                         style: {
                             color: "black"
                         }
-                    }, "Share this Replay:"), i.createElement("p", {
+                    }, "Share this Replay:"), r.createElement("p", {
                         className: "share-link inverted",
                         style: {
                             margin: "10px",
                             padding: "5px 20px"
                         }
-                    }, "http://" + window.location.hostname + "/replays/" + this.props.replay_id + (this.state.useShareReplayStartTurn ? "?t=" + (this.state.shareReplayStartTurn || Math.floor(this.props.turn / 2)) : "")), i.createElement("input", {
+                    }, "http://" + window.location.hostname + "/replays/" + this.props.replay_id + (this.state.useShareReplayStartTurn ? "?t=" + (this.state.shareReplayStartTurn || Math.floor(this.props.turn / 2)) : "")), r.createElement("input", {
                         type: "checkbox",
                         style: {
                             display: "inline-block"
                         },
                         checked: this.state.useShareReplayStartTurn,
                         onChange: this.onShareReplayUseTurnChange
-                    }), i.createElement("p", {
+                    }), r.createElement("p", {
                         className: "unselectable",
                         style: {
                             color: "black",
                             margin: "5px",
                             display: "inline-block"
                         }
-                    }, "Start at Turn:"), i.createElement("input", {
+                    }, "Start at Turn:"), r.createElement("input", {
                         type: "text",
                         className: "unselectable",
                         style: {
@@ -18262,29 +18232,29 @@
                         value: this.state.shareReplayStartTurn,
                         onKeyDown: this.onShareReplayStartTimeKeyDown,
                         onChange: this.onShareReplayStartTimeChange
-                    }), i.createElement("br", null), i.createElement("button", {
+                    }), r.createElement("br", null), r.createElement("button", {
                         className: "small inverted unselectable",
                         style: {
                             marginTop: "15px"
                         },
                         onClick: this.exitShareReplay
-                    }, "Exit")))) : null, this.props.isReplay ? i.createElement("div", {
+                    }, "Exit")))) : null, this.props.isReplay ? r.createElement("div", {
                         id: "replay-bottom"
-                    }, this.props.autoPlay ? i.createElement("center", null, i.createElement(b, {
+                    }, this.props.autoPlay ? r.createElement("center", null, r.createElement(m, {
                             tab_id: "replay-autoplay",
                             selectedTab: .5 === this.props.autoPlaySpeed ? 0 : 1 === this.props.autoPlaySpeed ? 1 : 2 === this.props.autoPlaySpeed ? 2 : 5 === this.props.autoPlaySpeed ? 3 : 4,
                             onClicks: [this.setAutoPlaySpeed.bind(null, .5), this.setAutoPlaySpeed.bind(null, 1), this.setAutoPlaySpeed.bind(null, 2), this.setAutoPlaySpeed.bind(null, 5), this.setAutoPlaySpeed.bind(null, 10)],
                             titles: ["0.5x", "1x", "2x", "5x", "10x"]
-                        })) : null, g ? null : i.createElement("div", {
+                        })) : null, d ? null : r.createElement("div", {
                             id: "replay-bottom-bar",
                             className: "background"
-                        }, i.createElement("div", null, i.createElement("span", {
+                        }, r.createElement("div", null, r.createElement("span", {
                             className: "bold"
-                        }, "[←]"), i.createElement("br", null), "Back"), i.createElement("div", null, i.createElement("span", {
+                        }, "[←]"), r.createElement("br", null), "Back"), r.createElement("div", null, r.createElement("span", {
                             className: "bold"
-                        }, "[Spacebar]"), i.createElement("br", null), "Toggle Auto Play"), i.createElement("div", null, i.createElement("span", {
+                        }, "[Spacebar]"), r.createElement("br", null), "Toggle Auto Play"), r.createElement("div", null, r.createElement("span", {
                             className: "bold"
-                        }, "[→]"), i.createElement("br", null), "Next Move"))) : null, this.props.isTutorial ? i.createElement(f, {
+                        }, "[→]"), r.createElement("br", null), "Next Move"))) : null, this.props.isTutorial ? r.createElement(l, {
                         state: this.props.tutorialState,
                         scores: this.props.scores,
                         playerIndex: this.props.playerIndex,
@@ -18296,12 +18266,12 @@
                     }) : null)
             }
         });
-        e.exports = a.connect(function(e) {
+        e.exports = o.connect(function(e) {
             var t = e.game.chat_room;
             return Object.assign({
                 chat_messages: e.chat[t] || []
             }, e.game)
-        })(S)
+        })(y)
     }
     , function(e, t, n) {
         "use strict";
@@ -18833,6 +18803,62 @@
                     e()
                 }
             }
+    }
+    , function(e, t, n) {
+        "use strict";
+        var r = n(3)
+            , o = n(297)
+            , i = n(1)
+            , a = n(177)
+            , s = n(303)
+            , u = r.createClass({
+            displayName: "InGameLeaderboard",
+            getInitialState: function() {
+                return {
+                    minimized: s
+                }
+            },
+            componentWillMount: function() {
+                this.showTeamsInLeaderboard = a.hasDuplicate(this.props.teams)
+            },
+            toggleMinimize: function() {
+                this.setState({
+                    minimized: !this.state.minimized
+                })
+            },
+            renderRow: function(e) {
+                var t = this.props.usernames[e.i] || "Anonymous"
+                    , n = this.props.stars ? this.props.stars[e.i] : ""
+                    , a = this.props.teams ? this.props.teams[e.i] : void 0;
+                return this.state.minimized && (t = " "),
+                    r.createElement("tr", {
+                        className: 0 === e.tiles ? "dead" : e.dead ? "afk" : "",
+                        key: "game-leaderboard-row" + e.i
+                    }, this.showTeamsInLeaderboard && !this.state.minimized ? r.createElement("td", {
+                            key: "game-leaderboard-team" + e.i
+                        }, a) : null, this.state.minimized ? null : r.createElement("td", {
+                            key: "game-leaderboard-stars" + e.i
+                        }, " ", null !== n ? r.createElement(o, {
+                                stars: n
+                            }) : null, " "), r.createElement("td", {
+                        key: "game-leaderboard-name" + e.i,
+                        className: "leaderboard-name " + i.PLAYER_COLORS[e.i]
+                    }, t), r.createElement("td", {
+                        key: "game-leaderboard-score" + e.i
+                    }, e.total), r.createElement("td", {
+                        key: "game-leaderboard-tiles" + e.i
+                    }, e.tiles))
+            },
+            render: function() {
+                if (this.props.scores)
+                    var e = this.props.scores.map(this.renderRow);
+                return r.createElement("table", {
+                    id: "game-leaderboard",
+                    onClick: this.toggleMinimize
+                }, r.createElement("tbody", null, r.createElement("tr", null, this.showTeamsInLeaderboard && !this.state.minimized ? r.createElement("td", null, "Team") : null, this.state.minimized ? null : r.createElement("td", null, " ", r.createElement(o, null), " "), this.state.minimized ? r.createElement("td", null, " ") : r.createElement("td", null, "Player"), r.createElement("td", null, "Army"), r.createElement("td", null, "Land")), e))
+            }
+        });
+        e.exports = u
     }
     , function(e, t, n) {
         "use strict";
