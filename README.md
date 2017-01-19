@@ -14,7 +14,7 @@ Install browser extension that allow to replace resources like [Requestly](https
 
 Add redirect rule url matching with regexp
 ```
-/http://(eu\.)?generals\.io/generals-bundle-prod-v11\.js/
+/http://(eu\.)?generals\.io/generals-bundle-prod-v11.0\.js/
 ```
 With destination:
 ```
