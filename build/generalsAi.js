@@ -21025,7 +21025,7 @@
       }
       exports.DeepTreeSearch = DeepTreeSearch;
   });
-  define("tasks/protect-general-task", ["require", "exports", "tasks/abstract-task", "map-processor"], function (require, exports, abstract_task_3, map_processor_2) {
+  define("tasks/protect-general-task", ["require", "exports", "tasks/abstract-task", "deep-tree-search"], function (require, exports, abstract_task_3, deep_tree_search_1) {
       "use strict";
       class ProtectGeneralTask extends abstract_task_3.AbstractTask {
           constructor(board) {
@@ -21034,26 +21034,8 @@
               this.name = 'Protect General';
               this.maxScore = 0;
               this.distance = 0;
-              this.mapProcessor = new map_processor_2.MapProcessor(this.board, null, ProtectGeneralTask.compareResults);
-          }
-          static compareResults(a, b) {
-              const aKillIt = a.customData.army > 0;
-              const bKillIt = b.customData.army > 0;
-              if (aKillIt && !bKillIt) {
-                  return 1;
-              }
-              else if (!aKillIt && bKillIt) {
-                  return -1;
-              }
-              const moves = b.customData.moves - a.customData.moves;
-              if (moves !== 0 && aKillIt && bKillIt) {
-                  return moves;
-              }
-              const army = a.customData.army - b.customData.army;
-              if (army !== 0) {
-                  return army;
-              }
-              return b.customData.generalDistance - a.customData.generalDistance;
+              this.previousBestPath = null;
+              this.deepTreeSearch = new deep_tree_search_1.DeepTreeSearch(this.board);
           }
           onNextTurn(boardChanges) {
               this.maxScore = 0;
@@ -21063,12 +21045,12 @@
                   for (let pNum of playerArmy) {
                       let p = this.board.toPoint(pNum);
                       let dist = this.board.generalDistance.getGeneralDistance(p);
-                      if (dist > 25) {
+                      if (dist > 13) {
                           continue;
                       }
                       const tp = this.board.getTileProperties(p);
-                      const armyMultiplier = dist > 5 ? (tp.army - dist) : tp.army * 5;
-                      let score = ((25 - dist) * (25 - dist) * armyMultiplier);
+                      const armyMultiplier = dist > 3 ? (tp.army - dist) : tp.army * 5;
+                      let score = ((13 - dist) * (13 - dist) * armyMultiplier);
                       if (this.maxScore < score) {
                           this.maxScore = score;
                           this.dangerArmy = p;
@@ -21092,73 +21074,71 @@
               if (!this.dangerArmy) {
                   return false;
               }
-              let bestResult;
-              this.mapProcessor.process([this.dangerArmy], (p, r) => {
+              const startDepth = 14;
+              let bestPath;
+              let minMoves = Infinity;
+              let bestArmyLeft = Infinity;
+              this.deepTreeSearch.process(this.dangerArmy, startDepth, (p, depthLeft, acc, stop) => {
                   const tp = this.board.getTileProperties(p);
-                  if (r.customData.lastGap < 1) {
-                      r.customData.lastGap = 1;
-                      r.customData.gapLength = 0;
+                  let armyLeft = acc.armyLeft;
+                  let path = acc.path.slice();
+                  let moves = acc.moves;
+                  let valid = acc.valid;
+                  path.push(p);
+                  if (armyLeft === null) {
+                      armyLeft = tp.army;
                   }
-                  if (tp.isFog) {
-                      r.terminate();
-                  }
-                  if (r.customData.army > 0) {
-                      r.terminate();
-                  }
-                  const availableArmy = tp.isMine ? (tp.army - 1) : -(tp.army + 1);
-                  r.customData.moves += tp.isEnemy ? 2 : 1;
-                  r.customData.lastGap -= availableArmy;
-                  r.customData.army += availableArmy;
-                  if (r.path.length === 1) {
-                      r.customData.lastGap = 1;
-                      r.customData.gapLength = 0;
-                  }
-                  if (r.customData.lastGap > 0) {
-                      r.customData.gapLength++;
-                  }
-                  r.customData.generalDistance += this.board.generalDistance.getGeneralDistance(p);
-                  if (r.customData.moves > 25) {
-                      r.terminate();
-                  }
-                  r.score = r.customData.army / r.customData.moves;
-                  r.isValid = r.customData.lastGap <= 0;
-              }, { army: 0, lastGap: 1, gapLength: 0, moves: 0, generalDistance: 0 });
-              this.mapProcessor.forEach((r) => {
-                  if (r.path.length >= 2 && r.isValid) {
-                      const betterPath = bestResult && ProtectGeneralTask.compareResults(bestResult, r) < 0;
-                      if (!bestResult || betterPath) {
-                          bestResult = r;
+                  else {
+                      if (tp.isMine) {
+                          moves += 1;
+                          armyLeft -= tp.army - 1;
+                          if (tp.army > 1) {
+                              valid = true;
+                          }
+                      }
+                      else {
+                          moves += 2;
+                          armyLeft += tp.army + 1;
+                      }
+                      const canUse = tp.isMine || tp.isEmpty || (tp.isEnemy && tp.army <= 10);
+                      if (!canUse || (minMoves < moves && bestArmyLeft < 0)) {
+                          stop();
+                          return;
                       }
                   }
-              });
-              if (bestResult) {
-                  if (bestResult.path.length < 2) {
+                  if (path.length >= 2 && valid) {
+                      const weCanKillIt = bestArmyLeft < 0;
+                      const itCanKillIt = armyLeft < 0;
+                      const shorterPath = weCanKillIt && itCanKillIt && moves < minMoves;
+                      const betterPath = !weCanKillIt && armyLeft < bestArmyLeft;
+                      if (shorterPath || betterPath) {
+                          bestPath = path;
+                          minMoves = moves;
+                          bestArmyLeft = armyLeft;
+                      }
+                  }
+                  return { armyLeft, path, moves, valid };
+              }, { armyLeft: null, path: [], moves: 0, valid: false });
+              if (bestPath) {
+                  if (bestPath.length < 2) {
                       return false;
                   }
-                  // this.board.debug.displayMapOverlay(this.board, (p) =>{
-                  //     const r = this.mapProcessor.getResult(p);
-                  //     if(r) {
-                  //         return `${r.score}-${r.customData.moves}`;
-                  //     }
-                  //     return '';
-                  // });
-                  let l = bestResult.path.length;
-                  console.log('Protect General!');
-                  this.board.debug.showPath(bestResult.path);
-                  return this.board.attack(bestResult.path[l - 1], bestResult.path[l - 2], false);
+                  let l = bestPath.length;
+                  this.board.debug.showPath(bestPath);
+                  return this.board.attack(bestPath[l - 1], bestPath[l - 2], false);
               }
               return false;
           }
       }
       exports.ProtectGeneralTask = ProtectGeneralTask;
   });
-  define("tasks/city-capture-task", ["require", "exports", "tasks/abstract-task", "deep-tree-search"], function (require, exports, abstract_task_4, deep_tree_search_1) {
+  define("tasks/city-capture-task", ["require", "exports", "tasks/abstract-task", "deep-tree-search"], function (require, exports, abstract_task_4, deep_tree_search_2) {
       "use strict";
       class CityCaptureTask extends abstract_task_4.AbstractTask {
           constructor(board) {
               super(board);
               this.name = 'City Capture';
-              this.deepTreeSearch = new deep_tree_search_1.DeepTreeSearch(this.board);
+              this.deepTreeSearch = new deep_tree_search_2.DeepTreeSearch(this.board);
           }
           onNextTurn(boardChanges) {
           }
@@ -21383,7 +21363,7 @@
       }
       exports.IncreaseScoreMoveChoicer = IncreaseScoreMoveChoicer;
   });
-  define("tasks/collect-task", ["require", "exports", "tasks/abstract-task", "targets-generators/army-target-generator", "priority-map", "move-choicer/increase-score", "deep-tree-search", "map-processor"], function (require, exports, abstract_task_6, army_target_generator_1, priority_map_5, increase_score_1, deep_tree_search_2, map_processor_3) {
+  define("tasks/collect-task", ["require", "exports", "tasks/abstract-task", "targets-generators/army-target-generator", "priority-map", "move-choicer/increase-score", "deep-tree-search", "map-processor"], function (require, exports, abstract_task_6, army_target_generator_1, priority_map_5, increase_score_1, deep_tree_search_3, map_processor_2) {
       "use strict";
       class CollectTask extends abstract_task_6.AbstractTask {
           constructor(board) {
@@ -21395,9 +21375,9 @@
               this.debugMap = new Map();
               this.priorityMap = new priority_map_5.PriorityMap(this.board);
               this.moveChoicer = new increase_score_1.IncreaseScoreMoveChoicer(this.board);
-              this.deepTreeSearch = new deep_tree_search_2.DeepTreeSearch(this.board);
+              this.deepTreeSearch = new deep_tree_search_3.DeepTreeSearch(this.board);
               this.armyTargetGenerator = new army_target_generator_1.ArmyTargetGenerator(this.board, this.priorityMap);
-              this.mapProcessor = new map_processor_3.MapProcessor(this.board);
+              this.mapProcessor = new map_processor_2.MapProcessor(this.board);
           }
           onNextTurn(boardChanges) {
               this.armyTargetGenerator.onNextTurn(boardChanges);

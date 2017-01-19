@@ -3,44 +3,19 @@ import {BoardChanges, Board} from "../board";
 import {DeepTreeSearch} from "../deep-tree-search";
 import {Point} from "../tile";
 import {DebugParameters} from "../debug-layout";
-import {MapProcessor, Result} from "../map-processor";
 
 export class ProtectGeneralTask extends AbstractTask implements DebugParameters{
     debugSectionName: string = 'Protect General Task';
     name = 'Protect General';
-    private mapProcessor: MapProcessor;
+    private deepTreeSearch: DeepTreeSearch;
     private dangerArmy: Point;
     private maxScore = 0;
     private distance = 0;
+    private previousBestPath = null;
 
     constructor(board: Board) {
         super(board);
-        this.mapProcessor = new MapProcessor(this.board, null, ProtectGeneralTask.compareResults);
-    }
-
-    static compareResults(a: Result, b: Result) {
-        const aKillIt = a.customData.army > 0;
-        const bKillIt = b.customData.army > 0;
-
-        if(aKillIt && !bKillIt) {
-            return 1;
-        }else if(!aKillIt && bKillIt) {
-            return -1;
-        }
-
-        const moves = b.customData.moves - a.customData.moves;
-
-        if(moves !== 0 && aKillIt && bKillIt) {
-            return moves;
-        }
-
-        const army = a.customData.army - b.customData.army;
-
-        if(army !== 0) {
-            return army;
-        }
-
-        return b.customData.generalDistance - a.customData.generalDistance;
+        this.deepTreeSearch = new DeepTreeSearch(this.board);
     }
 
     onNextTurn(boardChanges: BoardChanges) {
@@ -51,12 +26,12 @@ export class ProtectGeneralTask extends AbstractTask implements DebugParameters{
             for (let pNum of playerArmy) {
                 let p = this.board.toPoint(pNum);
                 let dist = this.board.generalDistance.getGeneralDistance(p);
-                if(dist > 25) {
+                if(dist > 13) {
                     continue;
                 }
                 const tp = this.board.getTileProperties(p);
-                const armyMultiplier = dist > 5 ?  (tp.army -dist) : tp.army*5;
-                let score = ((25 - dist)*(25 - dist) * armyMultiplier);
+                const armyMultiplier = dist > 3 ?  (tp.army -dist) : tp.army*5;
+                let score = ((13 - dist)*(13 - dist) * armyMultiplier);
 
                 if(this.maxScore < score) {
                     this.maxScore = score;
@@ -87,77 +62,67 @@ export class ProtectGeneralTask extends AbstractTask implements DebugParameters{
             return false;
         }
 
-        let bestResult: Result;
+        const startDepth = 14;
+        let bestPath: Point[];
+        let minMoves = Infinity;
+        let bestArmyLeft = Infinity;
 
-        this.mapProcessor.process([this.dangerArmy], (p, r) => {
-            const tp = this.board.getTileProperties(p);
-            if(r.customData.lastGap < 1) {
-                r.customData.lastGap = 1;
-                r.customData.gapLength = 0;
-            }
+        this.deepTreeSearch.process(this.dangerArmy, startDepth,
+            (p, depthLeft, acc, stop) => {
+                const tp = this.board.getTileProperties(p);
+                let armyLeft = acc.armyLeft;
+                let path = acc.path.slice();
+                let moves = acc.moves;
+                let valid = acc.valid;
+                path.push(p);
 
-            if(tp.isFog) {
-                r.terminate();
-            }
+                if (armyLeft === null) {
+                    armyLeft = tp.army;
+                } else {
+                    if(tp.isMine) {
+                        moves += 1;
+                        armyLeft -= tp.army -1;
+                        if(tp.army > 1) {
+                            valid = true;
+                        }
+                    }else {
+                        moves += 2;
+                        armyLeft += tp.army + 1;
+                    }
 
-            if(r.customData.army > 0) {
-                r.terminate();
-                //return;
-            }
-
-            const availableArmy = tp.isMine ? (tp.army-1) : -(tp.army+1);
-            r.customData.moves += tp.isEnemy ? 2 : 1;
-            r.customData.lastGap -= availableArmy;
-            r.customData.army += availableArmy;
-
-            if(r.path.length === 1) {
-                r.customData.lastGap = 1;
-                r.customData.gapLength = 0;
-            }
-
-            if(r.customData.lastGap > 0 ) {
-                r.customData.gapLength++;
-            }
-
-            r.customData.generalDistance += this.board.generalDistance.getGeneralDistance(p);
-
-            if(r.customData.moves > 25) {
-                r.terminate();
-            }
-
-            r.score = r.customData.army / r.customData.moves;
-            r.isValid = r.customData.lastGap <= 0;
-        }, {army: 0, lastGap: 1, gapLength: 0, moves: 0, generalDistance: 0});
-
-
-        this.mapProcessor.forEach((r) => {
-            if (r.path.length >= 2 && r.isValid) {
-                const betterPath = bestResult && ProtectGeneralTask.compareResults(bestResult, r) < 0;
-
-                if (!bestResult || betterPath) {
-                    bestResult = r;
+                    const canUse = tp.isMine || tp.isEmpty || (tp.isEnemy && tp.army <= 10);
+                    if (!canUse || (minMoves < moves && bestArmyLeft < 0)) {
+                        stop();
+                        return;
+                    }
                 }
-            }
-        });
 
-        if (bestResult) {
-            if (bestResult.path.length < 2) {
+                if (path.length >= 2 && valid) {
+                    const weCanKillIt = bestArmyLeft < 0;
+                    const itCanKillIt = armyLeft < 0;
+                    const shorterPath = weCanKillIt && itCanKillIt && moves < minMoves;
+                    const betterPath = !weCanKillIt && armyLeft < bestArmyLeft;
+
+                    if(shorterPath || betterPath) {
+                        bestPath = path;
+                        minMoves = moves;
+                        bestArmyLeft = armyLeft;
+                    }
+                }
+
+                return {armyLeft, path, moves, valid};
+            }, {armyLeft: null, path: [], moves: 0, valid: false});
+
+
+        if (bestPath) {
+            if (bestPath.length < 2) {
                 return false;
             }
 
-            // this.board.debug.displayMapOverlay(this.board, (p) =>{
-            //     const r = this.mapProcessor.getResult(p);
-            //     if(r) {
-            //         return `${r.score}-${r.customData.moves}`;
-            //     }
-            //     return '';
-            // });
+            let l = bestPath.length;
 
-            let l = bestResult.path.length;
-
-            console.log('Protect General!');
-            this.board.debug.showPath(bestResult.path);
-            return this.board.attack(bestResult.path[l - 1], bestResult.path[l - 2], false);
+            this.board.debug.showPath(bestPath);
+            return this.board.attack(bestPath[l - 1], bestPath[l - 2], false);
 
         }
         return false;
