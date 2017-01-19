@@ -47,21 +47,21 @@
     ;
     var r = (n(1),
         n(2));
-    n(323);
+    n(325);
     var o = n(265)
         , i = n(176)
         , a = n(3)
         , s = n(209)
-        , u = n(179);
+        , c = n(179);
     n(211);
-    var c = u.connect(function(e) {
+    var u = c.connect(function(e) {
         return {
             state: e
         }
     })(r);
-    s.render(a.createElement(u.Provider, {
+    s.render(a.createElement(c.Provider, {
         store: n(265)
-    }, a.createElement(c, null)), document.getElementById("react-container")),
+    }, a.createElement(u, null)), document.getElementById("react-container")),
         window.onbeforeunload = function(e) {
             if (e = e || window.event,
                 o.getState().page === i.PAGE_GAME && !o.getState().game.isReplay) {
@@ -74,7 +74,7 @@
     , function(e, t) {
         "use strict";
         e.exports = {
-            VERSION: "9.0.1",
+            VERSION: "11.0",
             PLAYER_CAP: 8,
             PLAYER_COLORS: ["red", "blue", "green", "purple", "teal", "darkgreen", "orange", "maroon"],
             MAX_USERNAME_LENGTH: 16,
@@ -89,7 +89,10 @@
             MIN_ALLY_SPACING: 3,
             CLOSE_CITY_DISTANCE: 6,
             TIMEOUT_CAPTURE_AFK: 25e3,
-            CUSTOM_GAME_URL_LENGTH: 4
+            CUSTOM_GAME_URL_LENGTH: 4,
+            PING_DURATION: 2e3,
+            TEAMS_2V2: [0, 0, 1, 1],
+            PRE_GAME_START_DELAY: 1500
         }
     }
     , function(e, t, n) {
@@ -99,10 +102,10 @@
             , i = n(176)
             , a = n(177)
             , s = n(178)
-            , u = n(309)
-            , c = n(312)
-            , l = n(316)
-            , p = n(322)
+            , c = n(313)
+            , u = n(316)
+            , l = n(319)
+            , p = n(324)
             , h = r.createClass({
             displayName: "App",
             render: function() {
@@ -110,9 +113,9 @@
                     , t = null;
                 return e.page === i.PAGE_MAIN_MENU ? t = r.createElement(s, {
                         key: "main-menu"
-                    }) : e.page === i.PAGE_QUEUE ? t = !e.queue.isTeamQueue && a.isCustomGame(e.queue.queue_id) ? r.createElement(c, {
+                    }) : e.page === i.PAGE_QUEUE ? t = !e.queue.isTeamQueue && a.isCustomGame(e.queue.queue_id) ? r.createElement(u, {
                                 key: "custom-queue"
-                            }) : r.createElement(u, {
+                            }) : r.createElement(c, {
                                 key: "queue"
                             }) : e.page === i.PAGE_GAME ? t = r.createElement(l, {
                                 key: "game-page"
@@ -139,15 +142,15 @@
             , i = n(19)
             , a = n(22)
             , s = n(23)
-            , u = n(25)
-            , c = n(10)
+            , c = n(25)
+            , u = n(10)
             , l = n(26)
             , p = n(28)
             , h = n(29)
             , d = (n(12),
-            c.createElement)
-            , f = c.createFactory
-            , m = c.cloneElement
+            u.createElement)
+            , f = u.createFactory
+            , m = u.cloneElement
             , v = r
             , y = {
             Children: {
@@ -161,14 +164,14 @@
             PureComponent: a,
             createElement: d,
             cloneElement: m,
-            isValidElement: c.isValidElement,
+            isValidElement: u.isValidElement,
             PropTypes: l,
             createClass: s.createClass,
             createFactory: f,
             createMixin: function(e) {
                 return e
             },
-            DOM: u,
+            DOM: c,
             version: p,
             __spread: v
         };
@@ -208,10 +211,10 @@
         var o = Object.prototype.hasOwnProperty
             , i = Object.prototype.propertyIsEnumerable;
         e.exports = r() ? Object.assign : function(e, t) {
-                for (var r, a, s = n(e), u = 1; u < arguments.length; u++) {
-                    r = Object(arguments[u]);
-                    for (var c in r)
-                        o.call(r, c) && (s[c] = r[c]);
+                for (var r, a, s = n(e), c = 1; c < arguments.length; c++) {
+                    r = Object(arguments[c]);
+                    for (var u in r)
+                        o.call(r, u) && (s[u] = r[u]);
                     if (Object.getOwnPropertySymbols) {
                         a = Object.getOwnPropertySymbols(r);
                         for (var l = 0; l < a.length; l++)
@@ -250,27 +253,27 @@
                 this.context = r,
                 this.count = 0
         }
-        function u(e, t, n) {
+        function c(e, t, n) {
             var o = e.result
                 , i = e.keyPrefix
                 , a = e.func
                 , s = e.context
-                , u = a.call(s, t, e.count++);
-            Array.isArray(u) ? c(u, o, n, v.thatReturnsArgument) : null != u && (m.isValidElement(u) && (u = m.cloneAndReplaceKey(u, i + (!u.key || t && t.key === u.key ? "" : r(u.key) + "/") + n)),
-                    o.push(u))
+                , c = a.call(s, t, e.count++);
+            Array.isArray(c) ? u(c, o, n, v.thatReturnsArgument) : null != c && (m.isValidElement(c) && (c = m.cloneAndReplaceKey(c, i + (!c.key || t && t.key === c.key ? "" : r(c.key) + "/") + n)),
+                    o.push(c))
         }
-        function c(e, t, n, o, i) {
+        function u(e, t, n, o, i) {
             var a = "";
             null != n && (a = r(n) + "/");
-            var c = s.getPooled(t, a, o, i);
-            y(e, u, c),
-                s.release(c)
+            var u = s.getPooled(t, a, o, i);
+            y(e, c, u),
+                s.release(u)
         }
         function l(e, t, n) {
             if (null == e)
                 return e;
             var r = [];
-            return c(e, r, null, t, n),
+            return u(e, r, null, t, n),
                 r
         }
         function p(e, t, n) {
@@ -281,7 +284,7 @@
         }
         function d(e) {
             var t = [];
-            return c(e, t, null, v.thatReturnsArgument),
+            return u(e, t, null, v.thatReturnsArgument),
                 t
         }
         var f = n(7)
@@ -310,13 +313,13 @@
         var S = {
             forEach: a,
             map: l,
-            mapIntoWithKeyPrefixInternal: c,
+            mapIntoWithKeyPrefixInternal: u,
             count: h,
             toArray: d
         };
         e.exports = S
     }
-    , [324, 8], function(e, t) {
+    , [326, 8], function(e, t) {
         "use strict";
         function n(e) {
             for (var t = arguments.length - 1, n = "Minified React error #" + e + "; visit http://facebook.github.io/react/docs/error-decoder.html?invariant=" + e, r = 0; r < t; r++)
@@ -333,19 +336,19 @@
         "use strict";
         function r(e, t, n, r, o, i, a, s) {
             if (!e) {
-                var u;
+                var c;
                 if (void 0 === t)
-                    u = new Error("Minified exception occurred; use the non-minified dev environment for the full error message and additional helpful warnings.");
+                    c = new Error("Minified exception occurred; use the non-minified dev environment for the full error message and additional helpful warnings.");
                 else {
-                    var c = [n, r, o, i, a, s]
+                    var u = [n, r, o, i, a, s]
                         , l = 0;
-                    u = new Error(t.replace(/%s/g, function() {
-                        return c[l++]
+                    c = new Error(t.replace(/%s/g, function() {
+                        return u[l++]
                     })),
-                        u.name = "Invariant Violation"
+                        c.name = "Invariant Violation"
                 }
-                throw u.framesToPop = 1,
-                    u
+                throw c.framesToPop = 1,
+                    c
             }
         }
         e.exports = r
@@ -363,8 +366,8 @@
             , s = (n(12),
             n(14),
             Object.prototype.hasOwnProperty)
-            , u = n(15)
-            , c = {
+            , c = n(15)
+            , u = {
             key: !0,
             ref: !0,
             __self: !0,
@@ -372,7 +375,7 @@
         }
             , l = function(e, t, n, r, o, i, a) {
             var s = {
-                $$typeof: u,
+                $$typeof: c,
                 type: e,
                 key: t,
                 ref: n,
@@ -382,29 +385,29 @@
             return s
         };
         l.createElement = function(e, t, n) {
-            var i, u = {}, p = null, h = null, d = null, f = null;
+            var i, c = {}, p = null, h = null, d = null, f = null;
             if (null != t) {
                 r(t) && (h = t.ref),
                 o(t) && (p = "" + t.key),
                     d = void 0 === t.__self ? null : t.__self,
                     f = void 0 === t.__source ? null : t.__source;
                 for (i in t)
-                    s.call(t, i) && !c.hasOwnProperty(i) && (u[i] = t[i])
+                    s.call(t, i) && !u.hasOwnProperty(i) && (c[i] = t[i])
             }
             var m = arguments.length - 2;
             if (1 === m)
-                u.children = n;
+                c.children = n;
             else if (m > 1) {
                 for (var v = Array(m), y = 0; y < m; y++)
                     v[y] = arguments[y + 2];
-                u.children = v
+                c.children = v
             }
             if (e && e.defaultProps) {
                 var g = e.defaultProps;
                 for (i in g)
-                    void 0 === u[i] && (u[i] = g[i])
+                    void 0 === c[i] && (c[i] = g[i])
             }
-            return l(e, p, h, d, f, a.current, u)
+            return l(e, p, h, d, f, a.current, c)
         }
             ,
             l.createFactory = function(e) {
@@ -419,15 +422,15 @@
             }
             ,
             l.cloneElement = function(e, t, n) {
-                var u, p = i({}, e.props), h = e.key, d = e.ref, f = e._self, m = e._source, v = e._owner;
+                var c, p = i({}, e.props), h = e.key, d = e.ref, f = e._self, m = e._source, v = e._owner;
                 if (null != t) {
                     r(t) && (d = t.ref,
                         v = a.current),
                     o(t) && (h = "" + t.key);
                     var y;
                     e.type && e.type.defaultProps && (y = e.type.defaultProps);
-                    for (u in t)
-                        s.call(t, u) && !c.hasOwnProperty(u) && (void 0 === t[u] && void 0 !== y ? p[u] = y[u] : p[u] = t[u])
+                    for (c in t)
+                        s.call(t, c) && !u.hasOwnProperty(c) && (void 0 === t[c] && void 0 !== y ? p[c] = y[c] : p[c] = t[c])
                 }
                 var g = arguments.length - 2;
                 if (1 === g)
@@ -441,7 +444,7 @@
             }
             ,
             l.isValidElement = function(e) {
-                return "object" == typeof e && null !== e && e.$$typeof === u
+                return "object" == typeof e && null !== e && e.$$typeof === c
             }
             ,
             e.exports = l
@@ -494,7 +497,7 @@
     , function(e, t, n) {
         "use strict";
         function r(e, t) {
-            return e && "object" == typeof e && null != e.key ? c.escape(e.key) : t.toString(36)
+            return e && "object" == typeof e && null != e.key ? u.escape(e.key) : t.toString(36)
         }
         function o(e, t, n, i) {
             var h = typeof e;
@@ -509,7 +512,7 @@
                         f = v + r(d, y),
                         m += o(d, f, n, i);
             else {
-                var g = u(e);
+                var g = c(e);
                 if (g) {
                     var T, b = g.call(e);
                     if (g !== e.entries)
@@ -521,7 +524,7 @@
                         for (; !(T = b.next()).done; ) {
                             var E = T.value;
                             E && (d = E[1],
-                                f = v + c.escape(E[0]) + p + r(d, 0),
+                                f = v + u.escape(E[0]) + p + r(d, 0),
                                 m += o(d, f, n, i))
                         }
                 } else if ("object" === h) {
@@ -538,8 +541,8 @@
         var a = n(8)
             , s = (n(11),
             n(15))
-            , u = n(17)
-            , c = (n(9),
+            , c = n(17)
+            , u = (n(9),
             n(18))
             , l = (n(12),
             ".")
@@ -646,14 +649,14 @@
         function r(e, t, n) {
             this.props = e,
                 this.context = t,
-                this.refs = u,
+                this.refs = c,
                 this.updater = n || s
         }
         function o() {}
         var i = n(5)
             , a = n(19)
             , s = n(20)
-            , u = n(21);
+            , c = n(21);
         o.prototype = a.prototype,
             r.prototype = new o,
             r.prototype.constructor = r,
@@ -695,7 +698,7 @@
                             else if (s) {
                                 var f = b[i];
                                 !l || "DEFINE_MANY_MERGED" !== f && "DEFINE_MANY" !== f ? h("77", f, i) : void 0,
-                                    "DEFINE_MANY_MERGED" === f ? n[i] = u(n[i], a) : "DEFINE_MANY" === f && (n[i] = c(n[i], a))
+                                    "DEFINE_MANY_MERGED" === f ? n[i] = c(n[i], a) : "DEFINE_MANY" === f && (n[i] = u(n[i], a))
                             } else
                                 n[i] = a
                         }
@@ -723,7 +726,7 @@
                     e[n] = t[n]);
             return e
         }
-        function u(e, t) {
+        function c(e, t) {
             return function() {
                 var n = e.apply(this, arguments)
                     , r = t.apply(this, arguments);
@@ -737,7 +740,7 @@
                     o
             }
         }
-        function c(e, t) {
+        function u(e, t) {
             return function() {
                 e.apply(this, arguments),
                     t.apply(this, arguments)
@@ -800,7 +803,7 @@
                 e.contextTypes = d({}, e.contextTypes, t)
             },
             getDefaultProps: function(e, t) {
-                e.getDefaultProps ? e.getDefaultProps = u(e.getDefaultProps, t) : e.getDefaultProps = t
+                e.getDefaultProps ? e.getDefaultProps = c(e.getDefaultProps, t) : e.getDefaultProps = t
             },
             propTypes: function(e, t) {
                 e.propTypes = d({}, e.propTypes, t)
@@ -1008,12 +1011,12 @@
                 this.stack = ""
         }
         function i(e) {
-            function t(t, n, r, i, a, s, u) {
+            function t(t, n, r, i, a, s, c) {
                 i = i || _,
                     s = s || r;
                 if (null == n[r]) {
-                    var c = E[a];
-                    return t ? new o(null === n[r] ? "The " + c + " `" + s + "` is marked as required " + ("in `" + i + "`, but its value is `null`.") : "The " + c + " `" + s + "` is marked as required in " + ("`" + i + "`, but its value is `undefined`.")) : null
+                    var u = E[a];
+                    return t ? new o(null === n[r] ? "The " + u + " `" + s + "` is marked as required " + ("in `" + i + "`, but its value is `null`.") : "The " + u + " `" + s + "` is marked as required in " + ("`" + i + "`, but its value is `undefined`.")) : null
                 }
                 return e(n, r, i, a, s)
             }
@@ -1023,11 +1026,11 @@
         }
         function a(e) {
             function t(t, n, r, i, a, s) {
-                var u = t[n]
-                    , c = g(u);
-                if (c !== e) {
+                var c = t[n]
+                    , u = g(c);
+                if (u !== e) {
                     var l = E[i]
-                        , p = T(u);
+                        , p = T(c);
                     return new o("Invalid " + l + " `" + a + "` of type " + ("`" + p + "` supplied to `" + r + "`, expected ") + ("`" + e + "`."))
                 }
                 return null
@@ -1037,15 +1040,15 @@
         function s() {
             return i(C.thatReturns(null))
         }
-        function u(e) {
+        function c(e) {
             function t(t, n, r, i, a) {
                 if ("function" != typeof e)
                     return new o("Property `" + a + "` of component `" + r + "` has invalid PropType notation inside arrayOf.");
                 var s = t[n];
                 if (!Array.isArray(s)) {
-                    var u = E[i]
-                        , c = g(s);
-                    return new o("Invalid " + u + " `" + a + "` of type " + ("`" + c + "` supplied to `" + r + "`, expected an array."))
+                    var c = E[i]
+                        , u = g(s);
+                    return new o("Invalid " + c + " `" + a + "` of type " + ("`" + u + "` supplied to `" + r + "`, expected an array."))
                 }
                 for (var l = 0; l < s.length; l++) {
                     var p = e(s, l, r, i, a + "[" + l + "]", A);
@@ -1056,13 +1059,13 @@
             }
             return i(t)
         }
-        function c() {
+        function u() {
             function e(e, t, n, r, i) {
                 var a = e[t];
                 if (!S.isValidElement(a)) {
                     var s = E[r]
-                        , u = g(a);
-                    return new o("Invalid " + s + " `" + i + "` of type " + ("`" + u + "` supplied to `" + n + "`, expected a single ReactElement."))
+                        , c = g(a);
+                    return new o("Invalid " + s + " `" + i + "` of type " + ("`" + c + "` supplied to `" + n + "`, expected a single ReactElement."))
                 }
                 return null
             }
@@ -1072,9 +1075,9 @@
             function t(t, n, r, i, a) {
                 if (!(t[n]instanceof e)) {
                     var s = E[i]
-                        , u = e.name || _
-                        , c = b(t[n]);
-                    return new o("Invalid " + s + " `" + a + "` of type " + ("`" + c + "` supplied to `" + r + "`, expected ") + ("instance of `" + u + "`."))
+                        , c = e.name || _
+                        , u = b(t[n]);
+                    return new o("Invalid " + s + " `" + a + "` of type " + ("`" + u + "` supplied to `" + r + "`, expected ") + ("instance of `" + c + "`."))
                 }
                 return null
             }
@@ -1082,12 +1085,12 @@
         }
         function p(e) {
             function t(t, n, i, a, s) {
-                for (var u = t[n], c = 0; c < e.length; c++)
-                    if (r(u, e[c]))
+                for (var c = t[n], u = 0; u < e.length; u++)
+                    if (r(c, e[u]))
                         return null;
                 var l = E[a]
                     , p = JSON.stringify(e);
-                return new o("Invalid " + l + " `" + s + "` of value `" + u + "` " + ("supplied to `" + i + "`, expected one of " + p + "."))
+                return new o("Invalid " + l + " `" + s + "` of value `" + c + "` " + ("supplied to `" + i + "`, expected one of " + p + "."))
             }
             return Array.isArray(e) ? i(t) : C.thatReturnsNull
         }
@@ -1096,10 +1099,10 @@
                 if ("function" != typeof e)
                     return new o("Property `" + a + "` of component `" + r + "` has invalid PropType notation inside objectOf.");
                 var s = t[n]
-                    , u = g(s);
-                if ("object" !== u) {
-                    var c = E[i];
-                    return new o("Invalid " + c + " `" + a + "` of type " + ("`" + u + "` supplied to `" + r + "`, expected an object."))
+                    , c = g(s);
+                if ("object" !== c) {
+                    var u = E[i];
+                    return new o("Invalid " + u + " `" + a + "` of type " + ("`" + c + "` supplied to `" + r + "`, expected an object."))
                 }
                 for (var l in s)
                     if (s.hasOwnProperty(l)) {
@@ -1114,12 +1117,12 @@
         function d(e) {
             function t(t, n, r, i, a) {
                 for (var s = 0; s < e.length; s++) {
-                    var u = e[s];
-                    if (null == u(t, n, r, i, a, A))
+                    var c = e[s];
+                    if (null == c(t, n, r, i, a, A))
                         return null
                 }
-                var c = E[i];
-                return new o("Invalid " + c + " `" + a + "` supplied to " + ("`" + r + "`."))
+                var u = E[i];
+                return new o("Invalid " + u + " `" + a + "` supplied to " + ("`" + r + "`."))
             }
             return Array.isArray(e) ? i(t) : C.thatReturnsNull
         }
@@ -1136,10 +1139,10 @@
         function m(e) {
             function t(t, n, r, i, a) {
                 var s = t[n]
-                    , u = g(s);
-                if ("object" !== u) {
-                    var c = E[i];
-                    return new o("Invalid " + c + " `" + a + "` of type `" + u + "` " + ("supplied to `" + r + "`, expected `object`."))
+                    , c = g(s);
+                if ("object" !== c) {
+                    var u = E[i];
+                    return new o("Invalid " + u + " `" + a + "` of type `" + c + "` " + ("supplied to `" + r + "`, expected `object`."))
                 }
                 for (var l in e) {
                     var p = e[l];
@@ -1221,8 +1224,8 @@
             string: a("string"),
             symbol: a("symbol"),
             any: s(),
-            arrayOf: u,
-            element: c(),
+            arrayOf: c,
+            element: u(),
             instanceOf: l,
             node: f(),
             objectOf: h,
@@ -1293,18 +1296,18 @@
             }
         }
         var s = n(5)
-            , u = n(4)
-            , c = n(32)
+            , c = n(4)
+            , u = n(32)
             , l = n(173)
             , p = function(e) {
             function t() {
                 var n, i, a;
                 r(this, t);
-                for (var s = arguments.length, c = Array(s), p = 0; p < s; p++)
-                    c[p] = arguments[p];
-                return n = i = o(this, e.call.apply(e, [this].concat(c))),
+                for (var s = arguments.length, u = Array(s), p = 0; p < s; p++)
+                    u[p] = arguments[p];
+                return n = i = o(this, e.call.apply(e, [this].concat(u))),
                     i._wrapChild = function(e) {
-                        return u.createElement(l, {
+                        return c.createElement(l, {
                             name: i.props.transitionName,
                             appear: i.props.transitionAppear,
                             enter: i.props.transitionEnter,
@@ -1320,19 +1323,19 @@
             }
             return i(t, e),
                 t.prototype.render = function() {
-                    return u.createElement(c, s({}, this.props, {
+                    return c.createElement(u, s({}, this.props, {
                         childFactory: this._wrapChild
                     }))
                 }
                 ,
                 t
-        }(u.Component);
+        }(c.Component);
         p.displayName = "ReactCSSTransitionGroup",
             p.propTypes = {
                 transitionName: l.propTypes.name,
-                transitionAppear: u.PropTypes.bool,
-                transitionEnter: u.PropTypes.bool,
-                transitionLeave: u.PropTypes.bool,
+                transitionAppear: c.PropTypes.bool,
+                transitionEnter: c.PropTypes.bool,
+                transitionLeave: c.PropTypes.bool,
                 transitionAppearTimeout: a("Appear"),
                 transitionEnterTimeout: a("Enter"),
                 transitionLeaveTimeout: a("Leave")
@@ -1370,18 +1373,18 @@
         }
         var a = n(5)
             , s = n(4)
-            , u = (n(33),
+            , c = (n(33),
             n(171))
-            , c = n(13)
+            , u = n(13)
             , l = function(e) {
             function t() {
                 var n, i, s;
                 r(this, t);
-                for (var c = arguments.length, l = Array(c), p = 0; p < c; p++)
+                for (var u = arguments.length, l = Array(u), p = 0; p < u; p++)
                     l[p] = arguments[p];
                 return n = i = o(this, e.call.apply(e, [this].concat(l))),
                     i.state = {
-                        children: u.getChildMapping(i.props.children)
+                        children: c.getChildMapping(i.props.children)
                     },
                     i.performAppear = function(e) {
                         i.currentlyTransitioningKeys[e] = !0;
@@ -1394,7 +1397,7 @@
                         t.componentDidAppear && t.componentDidAppear(),
                             delete i.currentlyTransitioningKeys[e];
                         var n;
-                        n = u.getChildMapping(i.props.children),
+                        n = c.getChildMapping(i.props.children),
                         n && n.hasOwnProperty(e) || i.performLeave(e)
                     }
                     ,
@@ -1409,7 +1412,7 @@
                         t.componentDidEnter && t.componentDidEnter(),
                             delete i.currentlyTransitioningKeys[e];
                         var n;
-                        n = u.getChildMapping(i.props.children),
+                        n = c.getChildMapping(i.props.children),
                         n && n.hasOwnProperty(e) || i.performLeave(e)
                     }
                     ,
@@ -1424,7 +1427,7 @@
                         t.componentDidLeave && t.componentDidLeave(),
                             delete i.currentlyTransitioningKeys[e];
                         var n;
-                        n = u.getChildMapping(i.props.children),
+                        n = c.getChildMapping(i.props.children),
                             n && n.hasOwnProperty(e) ? i.performEnter(e) : i.setState(function(t) {
                                     var n = a({}, t.children);
                                     return delete n[e],
@@ -1452,10 +1455,10 @@
                 ,
                 t.prototype.componentWillReceiveProps = function(e) {
                     var t;
-                    t = u.getChildMapping(e.children);
+                    t = c.getChildMapping(e.children);
                     var n = this.state.children;
                     this.setState({
-                        children: u.mergeChildMappings(n, t)
+                        children: c.mergeChildMappings(n, t)
                     });
                     var r;
                     for (r in t) {
@@ -1508,7 +1511,7 @@
             },
             l.defaultProps = {
                 component: "span",
-                childFactory: c.thatReturnsArgument
+                childFactory: u.thatReturnsArgument
             },
             e.exports = l
     }
@@ -1531,17 +1534,17 @@
             , i = n(162)
             , a = n(60)
             , s = n(57)
-            , u = n(167)
-            , c = n(168)
+            , c = n(167)
+            , u = n(168)
             , l = n(169)
             , p = n(170);
         n(12);
         o.inject();
         var h = {
-            findDOMNode: c,
+            findDOMNode: u,
             render: i.render,
             unmountComponentAtNode: i.unmountComponentAtNode,
-            version: u,
+            version: c,
             unstable_batchedUpdates: s.batchedUpdates,
             unstable_renderSubtreeIntoContainer: p
         };
@@ -1582,14 +1585,14 @@
                 e: for (var a in n)
                     if (n.hasOwnProperty(a)) {
                         var s = n[a]
-                            , u = r(s)._domID;
-                        if (0 !== u) {
+                            , c = r(s)._domID;
+                        if (0 !== c) {
                             for (; null !== i; i = i.nextSibling)
-                                if (1 === i.nodeType && i.getAttribute(d) === String(u) || 8 === i.nodeType && i.nodeValue === " react-text: " + u + " " || 8 === i.nodeType && i.nodeValue === " react-empty: " + u + " ") {
+                                if (1 === i.nodeType && i.getAttribute(d) === String(c) || 8 === i.nodeType && i.nodeValue === " react-text: " + c + " " || 8 === i.nodeType && i.nodeValue === " react-empty: " + c + " ") {
                                     o(s, i);
                                     continue e
                                 }
-                            l("32", u)
+                            l("32", c)
                         }
                     }
                 e._flags |= f.hasCachedChildNodes
@@ -1609,11 +1612,11 @@
                 t.length && a(r, e);
             return n
         }
-        function u(e) {
+        function c(e) {
             var t = s(e);
             return null != t && t._hostNode === e ? t : null
         }
-        function c(e) {
+        function u(e) {
             if (void 0 === e._hostNode ? l("33") : void 0,
                     e._hostNode)
                 return e._hostNode;
@@ -1634,8 +1637,8 @@
             , m = "__reactInternalInstance$" + Math.random().toString(36).slice(2)
             , v = {
             getClosestInstanceFromNode: s,
-            getInstanceFromNode: u,
-            getNodeFromInstance: c,
+            getInstanceFromNode: c,
+            getNodeFromInstance: u,
             precacheChildNodes: a,
             precacheNode: o,
             uncacheNode: i
@@ -1659,8 +1662,8 @@
                     var t = i
                         , n = e.Properties || {}
                         , a = e.DOMAttributeNamespaces || {}
-                        , u = e.DOMAttributeNames || {}
-                        , c = e.DOMPropertyNames || {}
+                        , c = e.DOMAttributeNames || {}
+                        , u = e.DOMPropertyNames || {}
                         , l = e.DOMMutationMethods || {};
                     e.isCustomAttribute && s._isCustomAttributeFunctions.push(e.isCustomAttribute);
                     for (var p in n) {
@@ -1679,12 +1682,12 @@
                             hasOverloadedBooleanValue: r(d, t.HAS_OVERLOADED_BOOLEAN_VALUE)
                         };
                         if (f.hasBooleanValue + f.hasNumericValue + f.hasOverloadedBooleanValue <= 1 ? void 0 : o("50", p),
-                                u.hasOwnProperty(p)) {
-                            var m = u[p];
+                                c.hasOwnProperty(p)) {
+                            var m = c[p];
                             f.attributeName = m
                         }
                         a.hasOwnProperty(p) && (f.attributeNamespace = a[p]),
-                        c.hasOwnProperty(p) && (f.propertyName = c[p]),
+                        u.hasOwnProperty(p) && (f.propertyName = u[p]),
                         l.hasOwnProperty(p) && (f.mutationMethod = l[p]),
                             s.properties[p] = f
                     }
@@ -1728,7 +1731,7 @@
                 g.EventPluginUtils.injectTreeTraversal(f),
                 g.EventPluginHub.injectEventPluginsByName({
                     SimpleEventPlugin: E,
-                    EnterLeaveEventPlugin: u,
+                    EnterLeaveEventPlugin: c,
                     ChangeEventPlugin: a,
                     SelectEventPlugin: S,
                     BeforeInputEventPlugin: i
@@ -1736,7 +1739,7 @@
                 g.HostComponent.injectGenericComponentClass(p),
                 g.HostComponent.injectTextComponentClass(m),
                 g.DOMProperty.injectDOMPropertyConfig(o),
-                g.DOMProperty.injectDOMPropertyConfig(c),
+                g.DOMProperty.injectDOMPropertyConfig(u),
                 g.DOMProperty.injectDOMPropertyConfig(b),
                 g.EmptyComponent.injectEmptyComponentFactory(function(e) {
                     return new d(e)
@@ -1749,8 +1752,8 @@
             , i = n(41)
             , a = n(56)
             , s = n(68)
-            , u = n(69)
-            , c = n(74)
+            , c = n(69)
+            , u = n(74)
             , l = n(75)
             , p = n(88)
             , h = n(35)
@@ -1863,21 +1866,21 @@
                     return !1
             }
         }
-        function u(e) {
+        function c(e) {
             var t = e.detail;
             return "object" == typeof t && "data"in t ? t.data : null
         }
-        function c(e, t, n, r) {
-            var o, c;
+        function u(e, t, n, r) {
+            var o, u;
             if (b ? o = i(e) : w ? s(e, n) && (o = _.compositionEnd) : a(e, n) && (o = _.compositionStart),
                     !o)
                 return null;
-            A && (w || o !== _.compositionStart ? o === _.compositionEnd && w && (c = w.getData()) : w = m.getPooled(r));
+            A && (w || o !== _.compositionStart ? o === _.compositionEnd && w && (u = w.getData()) : w = m.getPooled(r));
             var l = v.getPooled(o, t, n, r);
-            if (c)
-                l.data = c;
+            if (u)
+                l.data = u;
             else {
-                var p = u(n);
+                var p = c(n);
                 null !== p && (l.data = p)
             }
             return d.accumulateTwoPhaseDispatches(l),
@@ -1886,7 +1889,7 @@
         function l(e, t) {
             switch (e) {
                 case "topCompositionEnd":
-                    return u(t);
+                    return c(t);
                 case "topKeyPress":
                     var n = t.which;
                     return n !== C ? null : (M = !0,
@@ -1978,7 +1981,7 @@
             , k = {
             eventTypes: _,
             extractEvents: function(e, t, n, r) {
-                return [c(e, t, n, r), h(e, t, n, r)]
+                return [u(e, t, n, r), h(e, t, n, r)]
             }
         };
         e.exports = k
@@ -2012,10 +2015,10 @@
                     n._dispatchInstances = m(n._dispatchInstances, e))
             }
         }
-        function u(e) {
+        function c(e) {
             e && e.dispatchConfig.registrationName && s(e._targetInst, null, e)
         }
-        function c(e) {
+        function u(e) {
             v(e, i)
         }
         function l(e) {
@@ -2025,7 +2028,7 @@
             f.traverseEnterLeave(n, r, s, e, t)
         }
         function h(e) {
-            v(e, u)
+            v(e, c)
         }
         var d = n(43)
             , f = n(45)
@@ -2034,7 +2037,7 @@
             , y = (n(12),
             d.getListener)
             , g = {
-            accumulateTwoPhaseDispatches: c,
+            accumulateTwoPhaseDispatches: u,
             accumulateTwoPhaseDispatchesSkipTarget: l,
             accumulateDirectDispatches: h,
             accumulateEnterLeaveDispatches: p
@@ -2066,8 +2069,8 @@
         var i = n(36)
             , a = n(44)
             , s = n(45)
-            , u = n(46)
-            , c = n(47)
+            , c = n(46)
+            , u = n(47)
             , l = n(48)
             , p = (n(9),
             {})
@@ -2125,23 +2128,23 @@
             },
             extractEvents: function(e, t, n, r) {
                 for (var o, i = a.plugins, s = 0; s < i.length; s++) {
-                    var u = i[s];
-                    if (u) {
-                        var l = u.extractEvents(e, t, n, r);
-                        l && (o = c(o, l))
+                    var c = i[s];
+                    if (c) {
+                        var l = c.extractEvents(e, t, n, r);
+                        l && (o = u(o, l))
                     }
                 }
                 return o
             },
             enqueueEvents: function(e) {
-                e && (h = c(h, e))
+                e && (h = u(h, e))
             },
             processEventQueue: function(e) {
                 var t = h;
                 h = null,
                     e ? l(t, f) : l(t, m),
                     h ? i("95") : void 0,
-                    u.rethrowCaughtError()
+                    c.rethrowCaughtError()
             },
             __purge: function() {
                 p = {}
@@ -2156,13 +2159,13 @@
         "use strict";
         function r() {
             if (s)
-                for (var e in u) {
-                    var t = u[e]
+                for (var e in c) {
+                    var t = c[e]
                         , n = s.indexOf(e);
                     if (n > -1 ? void 0 : a("96", e),
-                            !c.plugins[n]) {
+                            !u.plugins[n]) {
                         t.extractEvents ? void 0 : a("97", e),
-                            c.plugins[n] = t;
+                            u.plugins[n] = t;
                         var r = t.eventTypes;
                         for (var i in r)
                             o(r[i], t, i) ? void 0 : a("98", i, e)
@@ -2170,8 +2173,8 @@
                 }
         }
         function o(e, t, n) {
-            c.eventNameDispatchConfigs.hasOwnProperty(n) ? a("99", n) : void 0,
-                c.eventNameDispatchConfigs[n] = e;
+            u.eventNameDispatchConfigs.hasOwnProperty(n) ? a("99", n) : void 0,
+                u.eventNameDispatchConfigs[n] = e;
             var r = e.phasedRegistrationNames;
             if (r) {
                 for (var o in r)
@@ -2185,15 +2188,15 @@
                     !0)
         }
         function i(e, t, n) {
-            c.registrationNameModules[e] ? a("100", e) : void 0,
-                c.registrationNameModules[e] = t,
-                c.registrationNameDependencies[e] = t.eventTypes[n].dependencies
+            u.registrationNameModules[e] ? a("100", e) : void 0,
+                u.registrationNameModules[e] = t,
+                u.registrationNameDependencies[e] = t.eventTypes[n].dependencies
         }
         var a = n(36)
             , s = (n(9),
             null)
-            , u = {}
-            , c = {
+            , c = {}
+            , u = {
             plugins: [],
             eventNameDispatchConfigs: {},
             registrationNameModules: {},
@@ -2209,8 +2212,8 @@
                 for (var n in e)
                     if (e.hasOwnProperty(n)) {
                         var o = e[n];
-                        u.hasOwnProperty(n) && u[n] === o || (u[n] ? a("102", n) : void 0,
-                            u[n] = o,
+                        c.hasOwnProperty(n) && c[n] === o || (c[n] ? a("102", n) : void 0,
+                            c[n] = o,
                             t = !0)
                     }
                 t && r()
@@ -2218,12 +2221,12 @@
             getPluginModuleForEvent: function(e) {
                 var t = e.dispatchConfig;
                 if (t.registrationName)
-                    return c.registrationNameModules[t.registrationName] || null;
+                    return u.registrationNameModules[t.registrationName] || null;
                 if (void 0 !== t.phasedRegistrationNames) {
                     var n = t.phasedRegistrationNames;
                     for (var r in n)
                         if (n.hasOwnProperty(r)) {
-                            var o = c.registrationNameModules[n[r]];
+                            var o = u.registrationNameModules[n[r]];
                             if (o)
                                 return o
                         }
@@ -2232,18 +2235,18 @@
             },
             _resetEventPlugins: function() {
                 s = null;
-                for (var e in u)
-                    u.hasOwnProperty(e) && delete u[e];
-                c.plugins.length = 0;
-                var t = c.eventNameDispatchConfigs;
+                for (var e in c)
+                    c.hasOwnProperty(e) && delete c[e];
+                u.plugins.length = 0;
+                var t = u.eventNameDispatchConfigs;
                 for (var n in t)
                     t.hasOwnProperty(n) && delete t[n];
-                var r = c.registrationNameModules;
+                var r = u.registrationNameModules;
                 for (var o in r)
                     r.hasOwnProperty(o) && delete r[o]
             }
         };
-        e.exports = c
+        e.exports = u
     }
     , function(e, t, n) {
         "use strict";
@@ -2273,7 +2276,7 @@
             e._dispatchListeners = null,
                 e._dispatchInstances = null
         }
-        function u(e) {
+        function c(e) {
             var t = e._dispatchListeners
                 , n = e._dispatchInstances;
             if (Array.isArray(t)) {
@@ -2284,8 +2287,8 @@
                 return n;
             return null
         }
-        function c(e) {
-            var t = u(e);
+        function u(e) {
+            var t = c(e);
             return e._dispatchInstances = null,
                 e._dispatchListeners = null,
                 t
@@ -2319,7 +2322,7 @@
             isStartish: i,
             executeDirectDispatch: l,
             executeDispatchesInOrder: s,
-            executeDispatchesInOrderStopAtTrue: c,
+            executeDispatchesInOrderStopAtTrue: u,
             hasDispatches: p,
             getInstanceFromNode: function(e) {
                 return h.getInstanceFromNode(e)
@@ -2436,7 +2439,7 @@
             i.addPoolingTo(r),
             e.exports = r
     }
-    , [324, 36], function(e, t, n) {
+    , [326, 36], function(e, t, n) {
         "use strict";
         function r() {
             return !i && o.canUseDOM && (i = "textContent"in document.documentElement ? "textContent" : "innerText"),
@@ -2470,8 +2473,8 @@
                     var s = o[i];
                     s ? this[i] = s(n) : "target" === i ? this.target = r : this[i] = n[i]
                 }
-            var u = null != n.defaultPrevented ? n.defaultPrevented : n.returnValue === !1;
-            return u ? this.isDefaultPrevented = a.thatReturnsTrue : this.isDefaultPrevented = a.thatReturnsFalse,
+            var c = null != n.defaultPrevented ? n.defaultPrevented : n.returnValue === !1;
+            return c ? this.isDefaultPrevented = a.thatReturnsTrue : this.isDefaultPrevented = a.thatReturnsFalse,
                 this.isPropagationStopped = a.thatReturnsFalse,
                 this
         }
@@ -2481,7 +2484,7 @@
             , s = (n(12),
         "function" == typeof Proxy,
             ["dispatchConfig", "_targetInst", "nativeEvent", "isDefaultPrevented", "isPropagationStopped", "_dispatchListeners", "_dispatchInstances"])
-            , u = {
+            , c = {
             type: null,
             target: null,
             currentTarget: a.thatReturnsNull,
@@ -2518,7 +2521,7 @@
                     this[s[n]] = null
             }
         }),
-            r.Interface = u,
+            r.Interface = c,
             r.augmentClass = function(e, t) {
                 var n = this
                     , r = function() {};
@@ -2572,11 +2575,11 @@
                 w = null,
                 k = null)
         }
-        function u(e, t) {
+        function c(e, t) {
             if ("topChange" === e)
                 return t
         }
-        function c(e, t, n) {
+        function u(e, t, n) {
             "topFocus" === e ? (s(),
                     a(t, n)) : "topBlur" === e && s()
         }
@@ -2662,7 +2665,7 @@
             eventTypes: M,
             extractEvents: function(e, t, n, o) {
                 var i, a, s = t ? S.getNodeFromInstance(t) : window;
-                if (r(s) ? N ? i = u : a = c : _(s) ? O ? i = d : (i = m,
+                if (r(s) ? N ? i = c : a = u : _(s) ? O ? i = d : (i = m,
                                     a = f) : v(s) && (i = y),
                         i) {
                     var l = i(e, t);
@@ -2715,16 +2718,16 @@
                 if (m.performUpdateIfNecessary(r, e.reconcileTransaction, g),
                     i && console.timeEnd(i),
                         o)
-                    for (var u = 0; u < o.length; u++)
-                        e.callbackQueue.enqueue(o[u], r.getPublicInstance())
+                    for (var c = 0; c < o.length; c++)
+                        e.callbackQueue.enqueue(o[c], r.getPublicInstance())
             }
         }
-        function u(e) {
+        function c(e) {
             return r(),
                 S.isBatchingUpdates ? (y.push(e),
-                        void (null == e._updateBatchNumber && (e._updateBatchNumber = g + 1))) : void S.batchedUpdates(u, e)
+                        void (null == e._updateBatchNumber && (e._updateBatchNumber = g + 1))) : void S.batchedUpdates(c, e)
         }
-        function c(e, t) {
+        function u(e, t) {
             S.isBatchingUpdates ? void 0 : l("125"),
                 T.enqueue(e, t),
                 b = !0
@@ -2807,10 +2810,10 @@
             , M = {
             ReactReconcileTransaction: null,
             batchedUpdates: i,
-            enqueueUpdate: u,
+            enqueueUpdate: c,
             flushBatchedUpdates: P,
             injection: _,
-            asap: c
+            asap: u
         };
         e.exports = M
     }
@@ -2998,18 +3001,18 @@
             isInTransaction: function() {
                 return !!this._isInTransaction
             },
-            perform: function(e, t, n, o, i, a, s, u) {
+            perform: function(e, t, n, o, i, a, s, c) {
                 this.isInTransaction() ? r("27") : void 0;
-                var c, l;
+                var u, l;
                 try {
                     this._isInTransaction = !0,
-                        c = !0,
+                        u = !0,
                         this.initializeAll(0),
-                        l = e.call(t, n, o, i, a, s, u),
-                        c = !1
+                        l = e.call(t, n, o, i, a, s, c),
+                        u = !1
                 } finally {
                     try {
-                        if (c)
+                        if (u)
                             try {
                                 this.closeAll(0)
                             } catch (e) {}
@@ -3135,12 +3138,12 @@
                     return null;
                 if ("topMouseOut" !== e && "topMouseOver" !== e)
                     return null;
-                var u;
+                var c;
                 if (s.window === s)
-                    u = s;
+                    c = s;
                 else {
-                    var c = s.ownerDocument;
-                    u = c ? c.defaultView || c.parentWindow : window
+                    var u = s.ownerDocument;
+                    c = u ? u.defaultView || u.parentWindow : window
                 }
                 var l, p;
                 if ("topMouseOut" === e) {
@@ -3152,8 +3155,8 @@
                         p = t;
                 if (l === p)
                     return null;
-                var d = null == l ? u : o.getNodeFromInstance(l)
-                    , f = null == p ? u : o.getNodeFromInstance(p)
+                var d = null == l ? c : o.getNodeFromInstance(l)
+                    , f = null == p ? c : o.getNodeFromInstance(p)
                     , m = i.getPooled(a.mouseLeave, l, n, s);
                 m.type = "mouseleave",
                     m.target = d,
@@ -3268,8 +3271,8 @@
             , i = r.injection.HAS_BOOLEAN_VALUE
             , a = r.injection.HAS_NUMERIC_VALUE
             , s = r.injection.HAS_POSITIVE_NUMERIC_VALUE
-            , u = r.injection.HAS_OVERLOADED_BOOLEAN_VALUE
-            , c = {
+            , c = r.injection.HAS_OVERLOADED_BOOLEAN_VALUE
+            , u = {
             isCustomAttribute: RegExp.prototype.test.bind(new RegExp("^(data|aria)-[" + r.ATTRIBUTE_NAME_CHAR + "]*$")),
             Properties: {
                 accept: 0,
@@ -3306,7 +3309,7 @@
                 defer: i,
                 dir: 0,
                 disabled: i,
-                download: u,
+                download: c,
                 draggable: 0,
                 encType: 0,
                 form: 0,
@@ -3426,7 +3429,7 @@
             },
             DOMPropertyNames: {}
         };
-        e.exports = c
+        e.exports = u
     }
     , function(e, t, n) {
         "use strict";
@@ -3454,7 +3457,7 @@
             if (Array.isArray(t)) {
                 var n = t[1];
                 t = t[0],
-                    u(e, t, n),
+                    c(e, t, n),
                     e.removeChild(n)
             }
             e.removeChild(t)
@@ -3468,7 +3471,7 @@
                 o = i
             }
         }
-        function u(e, t, n) {
+        function c(e, t, n) {
             for (; ; ) {
                 var r = t.nextSibling;
                 if (r === n)
@@ -3476,11 +3479,11 @@
                 e.removeChild(r)
             }
         }
-        function c(e, t, n) {
+        function u(e, t, n) {
             var r = e.parentNode
                 , o = e.nextSibling;
             o === t ? n && m(r, document.createTextNode(n), o) : n ? (f(o, n),
-                        u(r, o, t)) : u(r, e, t)
+                        c(r, o, t)) : c(r, e, t)
         }
         var l = n(77)
             , p = n(83)
@@ -3495,7 +3498,7 @@
             , v = p.dangerouslyReplaceNodeWithMarkup
             , y = {
             dangerouslyReplaceNodeWithMarkup: v,
-            replaceDelimitedText: c,
+            replaceDelimitedText: u,
             processUpdates: function(e, t) {
                 for (var n = 0; n < t.length; n++) {
                     var s = t[n];
@@ -3546,16 +3549,16 @@
         function s(e, t) {
             v ? e.text = t : d(e.node, t)
         }
-        function u() {
+        function c() {
             return this.node.nodeName
         }
-        function c(e) {
+        function u(e) {
             return {
                 node: e,
                 children: [],
                 html: null,
                 text: null,
-                toString: u
+                toString: c
             }
         }
         var l = n(78)
@@ -3570,12 +3573,12 @@
                     e.insertBefore(t.node, n)) : (e.insertBefore(t.node, n),
                     r(t))
         });
-        c.insertTreeBefore = y,
-            c.replaceChildWithTree = o,
-            c.queueChild = i,
-            c.queueHTML = a,
-            c.queueText = s,
-            e.exports = c
+        u.insertTreeBefore = y,
+            u.replaceChildWithTree = o,
+            u.queueChild = i,
+            u.queueHTML = a,
+            u.queueText = s,
+            e.exports = u
     }
     , function(e, t) {
         "use strict";
@@ -3588,7 +3591,7 @@
     }
     , function(e, t, n) {
         "use strict";
-        var r, o = n(49), i = n(78), a = /^[ \r\n\t\f]/, s = /<(!--|link|noscript|meta|script|style)[ \r\n\t\f\/>]/, u = n(80), c = u(function(e, t) {
+        var r, o = n(49), i = n(78), a = /^[ \r\n\t\f]/, s = /<(!--|link|noscript|meta|script|style)[ \r\n\t\f\/>]/, c = n(80), u = c(function(e, t) {
             if (e.namespaceURI !== i.svg || "innerHTML"in e)
                 e.innerHTML = t;
             else {
@@ -3601,7 +3604,7 @@
         if (o.canUseDOM) {
             var l = document.createElement("div");
             l.innerHTML = " ",
-            "" === l.innerHTML && (c = function(e, t) {
+            "" === l.innerHTML && (u = function(e, t) {
                     if (e.parentNode && e.parentNode.replaceChild(e, e),
                         a.test(t) || "<" === t[0] && s.test(t)) {
                         e.innerHTML = String.fromCharCode(65279) + t;
@@ -3613,7 +3616,7 @@
             ),
                 l = null
         }
-        e.exports = c
+        e.exports = u
     }
     , function(e, t) {
         "use strict";
@@ -3693,7 +3696,7 @@
             , i = n(49)
             , a = n(84)
             , s = n(13)
-            , u = (n(9),
+            , c = (n(9),
             {
                 dangerouslyReplaceNodeWithMarkup: function(e, t) {
                     if (i.canUseDOM ? void 0 : r("56"),
@@ -3706,7 +3709,7 @@
                         o.replaceChildWithTree(e, t)
                 }
             });
-        e.exports = u
+        e.exports = c
     }
     , function(e, t, n) {
         "use strict";
@@ -3715,8 +3718,8 @@
             return t && t[1].toLowerCase()
         }
         function o(e, t) {
-            var n = c;
-            c ? void 0 : u(!1);
+            var n = u;
+            u ? void 0 : c(!1);
             var o = r(e)
                 , i = o && s(o);
             if (i) {
@@ -3726,7 +3729,7 @@
             } else
                 n.innerHTML = e;
             var p = n.getElementsByTagName("script");
-            p.length && (t ? void 0 : u(!1),
+            p.length && (t ? void 0 : c(!1),
                 a(p).forEach(t));
             for (var h = Array.from(n.childNodes); n.lastChild; )
                 n.removeChild(n.lastChild);
@@ -3735,8 +3738,8 @@
         var i = n(49)
             , a = n(85)
             , s = n(86)
-            , u = n(9)
-            , c = i.canUseDOM ? document.createElement("div") : null
+            , c = n(9)
+            , u = i.canUseDOM ? document.createElement("div") : null
             , l = /^\s*<(\w+)/;
         e.exports = o
     }
@@ -3778,8 +3781,8 @@
             , i = n(9)
             , a = o.canUseDOM ? document.createElement("div") : null
             , s = {}
-            , u = [1, '<select multiple="true">', "</select>"]
-            , c = [1, "<table>", "</table>"]
+            , c = [1, '<select multiple="true">', "</select>"]
+            , u = [1, "<table>", "</table>"]
             , l = [3, "<table><tbody><tr>", "</tr></tbody></table>"]
             , p = [1, '<svg xmlns="http://www.w3.org/2000/svg">', "</svg>"]
             , h = {
@@ -3789,13 +3792,13 @@
             legend: [1, "<fieldset>", "</fieldset>"],
             param: [1, "<object>", "</object>"],
             tr: [2, "<table><tbody>", "</tbody></table>"],
-            optgroup: u,
-            option: u,
-            caption: c,
-            colgroup: c,
-            tbody: c,
-            tfoot: c,
-            thead: c,
+            optgroup: c,
+            option: c,
+            caption: u,
+            colgroup: u,
+            tbody: u,
+            tfoot: u,
+            thead: u,
             td: l,
             th: l
         }
@@ -3858,11 +3861,11 @@
             var e = this;
             w.postMountWrapper(e)
         }
-        function u() {
+        function c() {
             var e = this;
             I.postMountWrapper(e)
         }
-        function c() {
+        function u() {
             var e = this;
             k.postMountWrapper(e)
         }
@@ -3879,8 +3882,8 @@
                 case "video":
                 case "audio":
                     e._wrapperState.listeners = [];
-                    for (var n in K)
-                        K.hasOwnProperty(n) && e._wrapperState.listeners.push(P.trapBubbledEvent(n, K[n], t));
+                    for (var n in q)
+                        q.hasOwnProperty(n) && e._wrapperState.listeners.push(P.trapBubbledEvent(n, q[n], t));
                     break;
                 case "source":
                     e._wrapperState.listeners = [P.trapBubbledEvent("topError", "error", t)];
@@ -3969,7 +3972,7 @@
             suppressContentEditableWarning: null
         }
             , W = 11
-            , K = {
+            , q = {
             topAbort: "abort",
             topCanPlay: "canplay",
             topCanPlayThrough: "canplaythrough",
@@ -3994,7 +3997,7 @@
             topVolumeChange: "volumechange",
             topWaiting: "waiting"
         }
-            , q = {
+            , K = {
             area: !0,
             base: !0,
             br: !0,
@@ -4018,7 +4021,7 @@
         }
             , Y = v({
             menuitem: !0
-        }, q)
+        }, K)
             , z = /^[a-zA-Z][a-zA-Z:_\.\-\d]*$/
             , Q = {}
             , J = {}.hasOwnProperty
@@ -4095,7 +4098,7 @@
                     } else {
                         var S = this._createOpenTagMarkupAndPutListeners(e, i)
                             , A = this._createContentMarkup(e, i, r);
-                        h = !A && q[this._tag] ? S + "/>" : S + ">" + A + "</" + this._currentElement.type + ">"
+                        h = !A && K[this._tag] ? S + "/>" : S + ">" + A + "</" + this._currentElement.type + ">"
                     }
                     switch (this._tag) {
                         case "input":
@@ -4103,7 +4106,7 @@
                             i.autoFocus && e.getReactMountReady().enqueue(y.focusDOMComponent, this);
                             break;
                         case "textarea":
-                            e.getReactMountReady().enqueue(u, this),
+                            e.getReactMountReady().enqueue(c, this),
                             i.autoFocus && e.getReactMountReady().enqueue(y.focusDOMComponent, this);
                             break;
                         case "select":
@@ -4113,7 +4116,7 @@
                             i.autoFocus && e.getReactMountReady().enqueue(y.focusDOMComponent, this);
                             break;
                         case "option":
-                            e.getReactMountReady().enqueue(c, this)
+                            e.getReactMountReady().enqueue(u, this)
                     }
                     return h
                 },
@@ -4163,8 +4166,8 @@
                         if (null != i)
                             T.queueText(r, i);
                         else if (null != a)
-                            for (var s = this.mountChildren(a, e, n), u = 0; u < s.length; u++)
-                                T.queueChild(r, s[u])
+                            for (var s = this.mountChildren(a, e, n), c = 0; c < s.length; c++)
+                                T.queueChild(r, s[c])
                     }
                 },
                 receiveComponent: function(e, t, n) {
@@ -4219,27 +4222,27 @@
                             } else
                                 H.hasOwnProperty(r) ? e[r] && B(this, r) : d(this._tag, e) ? j.hasOwnProperty(r) || E.deleteValueForAttribute(G(this), r) : (S.properties[r] || S.isCustomAttribute(r)) && E.deleteValueForProperty(G(this), r);
                     for (r in t) {
-                        var u = t[r]
-                            , c = r === F ? this._previousStyleCopy : null != e ? e[r] : void 0;
-                        if (t.hasOwnProperty(r) && u !== c && (null != u || null != c))
+                        var c = t[r]
+                            , u = r === F ? this._previousStyleCopy : null != e ? e[r] : void 0;
+                        if (t.hasOwnProperty(r) && c !== u && (null != c || null != u))
                             if (r === F)
-                                if (u ? u = this._previousStyleCopy = v({}, u) : this._previousStyleCopy = null,
-                                        c) {
-                                    for (o in c)
-                                        !c.hasOwnProperty(o) || u && u.hasOwnProperty(o) || (a = a || {},
-                                            a[o] = "");
+                                if (c ? c = this._previousStyleCopy = v({}, c) : this._previousStyleCopy = null,
+                                        u) {
                                     for (o in u)
-                                        u.hasOwnProperty(o) && c[o] !== u[o] && (a = a || {},
-                                            a[o] = u[o])
+                                        !u.hasOwnProperty(o) || c && c.hasOwnProperty(o) || (a = a || {},
+                                            a[o] = "");
+                                    for (o in c)
+                                        c.hasOwnProperty(o) && u[o] !== c[o] && (a = a || {},
+                                            a[o] = c[o])
                                 } else
-                                    a = u;
+                                    a = c;
                             else if (H.hasOwnProperty(r))
-                                u ? i(this, r, u, n) : c && B(this, r);
+                                c ? i(this, r, c, n) : u && B(this, r);
                             else if (d(this._tag, t))
-                                j.hasOwnProperty(r) || E.setValueForAttribute(G(this), r, u);
+                                j.hasOwnProperty(r) || E.setValueForAttribute(G(this), r, c);
                             else if (S.properties[r] || S.isCustomAttribute(r)) {
                                 var l = G(this);
-                                null != u ? E.setValueForProperty(l, r, u) : E.deleteValueForProperty(l, r)
+                                null != c ? E.setValueForProperty(l, r, c) : E.deleteValueForProperty(l, r)
                             }
                     }
                     a && g.setValueForStyles(G(this), a, this)
@@ -4249,12 +4252,12 @@
                         , i = U[typeof t.children] ? t.children : null
                         , a = e.dangerouslySetInnerHTML && e.dangerouslySetInnerHTML.__html
                         , s = t.dangerouslySetInnerHTML && t.dangerouslySetInnerHTML.__html
-                        , u = null != o ? null : e.children
-                        , c = null != i ? null : t.children
+                        , c = null != o ? null : e.children
+                        , u = null != i ? null : t.children
                         , l = null != o || null != a
                         , p = null != i || null != s;
-                    null != u && null == c ? this.updateChildren(null, n, r) : l && !p && this.updateTextContent(""),
-                        null != i ? o !== i && this.updateTextContent("" + i) : null != s ? a !== s && this.updateMarkup("" + s) : null != c && this.updateChildren(c, n, r)
+                    null != c && null == u ? this.updateChildren(null, n, r) : l && !p && this.updateTextContent(""),
+                        null != i ? o !== i && this.updateTextContent("" + i) : null != s ? a !== s && this.updateMarkup("" + s) : null != u && this.updateChildren(u, n, r)
                 },
                 getHostNode: function() {
                     return G(this)
@@ -4322,18 +4325,18 @@
             n(95))
             , a = n(96)
             , s = n(98)
-            , u = (n(12),
+            , c = (n(12),
             s(function(e) {
                 return a(e)
             }))
-            , c = !1
+            , u = !1
             , l = "cssFloat";
         if (o.canUseDOM) {
             var p = document.createElement("div").style;
             try {
                 p.font = ""
             } catch (e) {
-                c = !0
+                u = !0
             }
             void 0 === document.documentElement.style.cssFloat && (l = "styleFloat")
         }
@@ -4343,7 +4346,7 @@
                 for (var r in e)
                     if (e.hasOwnProperty(r)) {
                         var o = e[r];
-                        null != o && (n += u(r) + ":",
+                        null != o && (n += c(r) + ":",
                             n += i(r, o, t) + ";")
                     }
                 return n || null
@@ -4357,9 +4360,9 @@
                                 s)
                             o[a] = s;
                         else {
-                            var u = c && r.shorthandPropertyExpansions[a];
-                            if (u)
-                                for (var p in u)
+                            var c = u && r.shorthandPropertyExpansions[a];
+                            if (c)
+                                for (var p in c)
                                     o[p] = "";
                             else
                                 o[a] = ""
@@ -4543,8 +4546,8 @@
     , function(e, t, n) {
         "use strict";
         function r(e) {
-            return !!c.hasOwnProperty(e) || !u.hasOwnProperty(e) && (s.test(e) ? (c[e] = !0,
-                        !0) : (u[e] = !0,
+            return !!u.hasOwnProperty(e) || !c.hasOwnProperty(e) && (s.test(e) ? (u[e] = !0,
+                        !0) : (c[e] = !0,
                         !1))
         }
         function o(e, t) {
@@ -4556,8 +4559,8 @@
             n(100))
             , s = (n(12),
             new RegExp("^[" + i.ATTRIBUTE_NAME_START_CHAR + "][" + i.ATTRIBUTE_NAME_CHAR + "]*$"))
-            , u = {}
             , c = {}
+            , u = {}
             , l = {
             createMarkupForID: function(e) {
                 return i.ID_ATTRIBUTE_NAME + "=" + a(e)
@@ -4597,8 +4600,8 @@
                             e[r.propertyName] = n;
                         else {
                             var s = r.attributeName
-                                , u = r.attributeNamespace;
-                            u ? e.setAttributeNS(u, s, "" + n) : r.hasBooleanValue || r.hasOverloadedBooleanValue && n === !0 ? e.setAttribute(s, "") : e.setAttribute(s, "" + n)
+                                , c = r.attributeNamespace;
+                            c ? e.setAttributeNS(c, s, "" + n) : r.hasBooleanValue || r.hasOverloadedBooleanValue && n === !0 ? e.setAttribute(s, "") : e.setAttribute(s, "" + n)
                         }
                     }
                 } else if (i.isCustomAttribute(t))
@@ -4644,11 +4647,11 @@
                 p[e[m]] = {}),
                 p[e[m]]
         }
-        var o, i = n(5), a = n(44), s = n(102), u = n(72), c = n(103), l = n(66), p = {}, h = !1, d = 0, f = {
+        var o, i = n(5), a = n(44), s = n(102), c = n(72), u = n(103), l = n(66), p = {}, h = !1, d = 0, f = {
             topAbort: "abort",
-            topAnimationEnd: c("animationend") || "animationend",
-            topAnimationIteration: c("animationiteration") || "animationiteration",
-            topAnimationStart: c("animationstart") || "animationstart",
+            topAnimationEnd: u("animationend") || "animationend",
+            topAnimationIteration: u("animationiteration") || "animationiteration",
+            topAnimationStart: u("animationstart") || "animationstart",
             topBlur: "blur",
             topCanPlay: "canplay",
             topCanPlayThrough: "canplaythrough",
@@ -4705,7 +4708,7 @@
             topTouchEnd: "touchend",
             topTouchMove: "touchmove",
             topTouchStart: "touchstart",
-            topTransitionEnd: c("transitionend") || "transitionend",
+            topTransitionEnd: u("transitionend") || "transitionend",
             topVolumeChange: "volumechange",
             topWaiting: "waiting",
             topWheel: "wheel"
@@ -4725,13 +4728,13 @@
             },
             listenTo: function(e, t) {
                 for (var n = t, o = r(n), i = a.registrationNameDependencies[e], s = 0; s < i.length; s++) {
-                    var u = i[s];
-                    o.hasOwnProperty(u) && o[u] || ("topWheel" === u ? l("wheel") ? v.ReactEventListener.trapBubbledEvent("topWheel", "wheel", n) : l("mousewheel") ? v.ReactEventListener.trapBubbledEvent("topWheel", "mousewheel", n) : v.ReactEventListener.trapBubbledEvent("topWheel", "DOMMouseScroll", n) : "topScroll" === u ? l("scroll", !0) ? v.ReactEventListener.trapCapturedEvent("topScroll", "scroll", n) : v.ReactEventListener.trapBubbledEvent("topScroll", "scroll", v.ReactEventListener.WINDOW_HANDLE) : "topFocus" === u || "topBlur" === u ? (l("focus", !0) ? (v.ReactEventListener.trapCapturedEvent("topFocus", "focus", n),
+                    var c = i[s];
+                    o.hasOwnProperty(c) && o[c] || ("topWheel" === c ? l("wheel") ? v.ReactEventListener.trapBubbledEvent("topWheel", "wheel", n) : l("mousewheel") ? v.ReactEventListener.trapBubbledEvent("topWheel", "mousewheel", n) : v.ReactEventListener.trapBubbledEvent("topWheel", "DOMMouseScroll", n) : "topScroll" === c ? l("scroll", !0) ? v.ReactEventListener.trapCapturedEvent("topScroll", "scroll", n) : v.ReactEventListener.trapBubbledEvent("topScroll", "scroll", v.ReactEventListener.WINDOW_HANDLE) : "topFocus" === c || "topBlur" === c ? (l("focus", !0) ? (v.ReactEventListener.trapCapturedEvent("topFocus", "focus", n),
                                         v.ReactEventListener.trapCapturedEvent("topBlur", "blur", n)) : l("focusin") && (v.ReactEventListener.trapBubbledEvent("topFocus", "focusin", n),
                                         v.ReactEventListener.trapBubbledEvent("topBlur", "focusout", n)),
                                     o.topBlur = !0,
-                                    o.topFocus = !0) : f.hasOwnProperty(u) && v.ReactEventListener.trapBubbledEvent(u, f[u], n),
-                        o[u] = !0)
+                                    o.topFocus = !0) : f.hasOwnProperty(c) && v.ReactEventListener.trapBubbledEvent(c, f[c], n),
+                        o[c] = !0)
                 }
             },
             trapBubbledEvent: function(e, t, n) {
@@ -4749,7 +4752,7 @@
             ensureScrollValueMonitoring: function() {
                 if (void 0 === o && (o = v.supportsEventPageXY()),
                     !o && !h) {
-                    var e = u.refreshScrollValues;
+                    var e = c.refreshScrollValues;
                     v.ReactEventListener.monitorScrollValue(e),
                         h = !0
                 }
@@ -4790,7 +4793,7 @@
                 return e;
             var t = a[e];
             for (var n in t)
-                if (t.hasOwnProperty(n) && n in u)
+                if (t.hasOwnProperty(n) && n in c)
                     return s[e] = t[n];
             return ""
         }
@@ -4802,8 +4805,8 @@
             transitionend: r("Transition", "TransitionEnd")
         }
             , s = {}
-            , u = {};
-        i.canUseDOM && (u = document.createElement("div").style,
+            , c = {};
+        i.canUseDOM && (c = document.createElement("div").style,
         "AnimationEvent"in window || (delete a.animationend.animation,
             delete a.animationiteration.animation,
             delete a.animationstart.animation),
@@ -4817,16 +4820,16 @@
         }
         function o(e) {
             var t = this._currentElement.props
-                , n = u.executeOnChange(t, e);
+                , n = c.executeOnChange(t, e);
             l.asap(r, this);
             var o = t.name;
             if ("radio" === t.type && null != o) {
-                for (var a = c.getNodeFromInstance(this), s = a; s.parentNode; )
+                for (var a = u.getNodeFromInstance(this), s = a; s.parentNode; )
                     s = s.parentNode;
                 for (var p = s.querySelectorAll("input[name=" + JSON.stringify("" + o) + '][type="radio"]'), h = 0; h < p.length; h++) {
                     var d = p[h];
                     if (d !== a && d.form === a.form) {
-                        var f = c.getInstanceFromNode(d);
+                        var f = u.getInstanceFromNode(d);
                         f ? void 0 : i("90"),
                             l.asap(r, f)
                     }
@@ -4837,15 +4840,15 @@
         var i = n(36)
             , a = n(5)
             , s = n(99)
-            , u = n(105)
-            , c = n(35)
+            , c = n(105)
+            , u = n(35)
             , l = n(57)
             , p = (n(9),
             n(12),
             {
                 getHostProps: function(e, t) {
-                    var n = u.getValue(t)
-                        , r = u.getChecked(t)
+                    var n = c.getValue(t)
+                        , r = c.getChecked(t)
                         , o = a({
                         type: void 0,
                         step: void 0,
@@ -4872,9 +4875,9 @@
                 updateWrapper: function(e) {
                     var t = e._currentElement.props
                         , n = t.checked;
-                    null != n && s.setValueForProperty(c.getNodeFromInstance(e), "checked", n || !1);
-                    var r = c.getNodeFromInstance(e)
-                        , o = u.getValue(t);
+                    null != n && s.setValueForProperty(u.getNodeFromInstance(e), "checked", n || !1);
+                    var r = u.getNodeFromInstance(e)
+                        , o = c.getValue(t);
                     if (null != o) {
                         var i = "" + o;
                         i !== r.value && (r.value = i)
@@ -4884,7 +4887,7 @@
                 },
                 postMountWrapper: function(e) {
                     var t = e._currentElement.props
-                        , n = c.getNodeFromInstance(e);
+                        , n = u.getNodeFromInstance(e);
                     switch (t.type) {
                         case "submit":
                         case "reset":
@@ -4933,8 +4936,8 @@
             return ""
         }
         var s = n(36)
-            , u = n(4)
-            , c = n(106)
+            , c = n(4)
+            , u = n(106)
             , l = (n(9),
             n(12),
             {
@@ -4953,14 +4956,14 @@
             checked: function(e, t, n) {
                 return !e[t] || e.onChange || e.readOnly || e.disabled ? null : new Error("You provided a `checked` prop to a form field without an `onChange` handler. This will render a read-only field. If the field should be mutable use `defaultChecked`. Otherwise, set either `onChange` or `readOnly`.")
             },
-            onChange: u.PropTypes.func
+            onChange: c.PropTypes.func
         }
             , h = {}
             , d = {
             checkPropTypes: function(e, t, n) {
                 for (var r in p) {
                     if (p.hasOwnProperty(r))
-                        var o = p[r](t, r, e, "prop", null, c);
+                        var o = p[r](t, r, e, "prop", null, u);
                     if (o instanceof Error && !(o.message in h)) {
                         h[o.message] = !0;
                         a(n)
@@ -4988,7 +4991,7 @@
         function r(e) {
             var t = "";
             return i.Children.forEach(e, function(e) {
-                null != e && ("string" == typeof e || "number" == typeof e ? t += e : u || (u = !0))
+                null != e && ("string" == typeof e || "number" == typeof e ? t += e : c || (c = !0))
             }),
                 t
         }
@@ -4996,9 +4999,9 @@
             , i = n(4)
             , a = n(35)
             , s = n(108)
-            , u = (n(12),
+            , c = (n(12),
             !1)
-            , c = {
+            , u = {
             mountWrapper: function(e, t, n) {
                 var o = null;
                 if (null != n) {
@@ -5008,17 +5011,17 @@
                 }
                 var a = null;
                 if (null != o) {
-                    var u;
-                    if (u = null != t.value ? t.value + "" : r(t.children),
+                    var c;
+                    if (c = null != t.value ? t.value + "" : r(t.children),
                             a = !1,
                             Array.isArray(o)) {
-                        for (var c = 0; c < o.length; c++)
-                            if ("" + o[c] === u) {
+                        for (var u = 0; u < o.length; u++)
+                            if ("" + o[u] === c) {
                                 a = !0;
                                 break
                             }
                     } else
-                        a = "" + o === u
+                        a = "" + o === c
                 }
                 e._wrapperState = {
                     selected: a
@@ -5042,7 +5045,7 @@
                     n
             }
         };
-        e.exports = c
+        e.exports = u
     }
     , function(e, t, n) {
         "use strict";
@@ -5055,7 +5058,7 @@
             }
         }
         function o(e, t, n) {
-            var r, o, i = u.getNodeFromInstance(e).options;
+            var r, o, i = c.getNodeFromInstance(e).options;
             if (t) {
                 for (r = {},
                          o = 0; o < n.length; o++)
@@ -5076,13 +5079,13 @@
             var t = this._currentElement.props
                 , n = s.executeOnChange(t, e);
             return this._rootNodeID && (this._wrapperState.pendingUpdate = !0),
-                c.asap(r, this),
+                u.asap(r, this),
                 n
         }
         var a = n(5)
             , s = n(105)
-            , u = n(35)
-            , c = n(57)
+            , c = n(35)
+            , u = n(57)
             , l = (n(12),
             !1)
             , p = {
@@ -5126,14 +5129,14 @@
         function o(e) {
             var t = this._currentElement.props
                 , n = s.executeOnChange(t, e);
-            return c.asap(r, this),
+            return u.asap(r, this),
                 n
         }
         var i = n(36)
             , a = n(5)
             , s = n(105)
-            , u = n(35)
-            , c = n(57)
+            , c = n(35)
+            , u = n(57)
             , l = (n(9),
             n(12),
             {
@@ -5152,11 +5155,11 @@
                         , r = n;
                     if (null == n) {
                         var a = t.defaultValue
-                            , u = t.children;
-                        null != u && (null != a ? i("92") : void 0,
-                        Array.isArray(u) && (u.length <= 1 ? void 0 : i("93"),
-                            u = u[0]),
-                            a = "" + u),
+                            , c = t.children;
+                        null != c && (null != a ? i("92") : void 0,
+                        Array.isArray(c) && (c.length <= 1 ? void 0 : i("93"),
+                            c = c[0]),
+                            a = "" + c),
                         null == a && (a = ""),
                             r = a
                     }
@@ -5168,7 +5171,7 @@
                 },
                 updateWrapper: function(e) {
                     var t = e._currentElement.props
-                        , n = u.getNodeFromInstance(e)
+                        , n = c.getNodeFromInstance(e)
                         , r = s.getValue(t);
                     if (null != r) {
                         var o = "" + r;
@@ -5178,7 +5181,7 @@
                     null != t.defaultValue && (n.defaultValue = t.defaultValue)
                 },
                 postMountWrapper: function(e) {
-                    var t = u.getNodeFromInstance(e);
+                    var t = c.getNodeFromInstance(e);
                     t.value = t.textContent
                 }
             });
@@ -5236,12 +5239,12 @@
                 afterNode: null
             }
         }
-        function u(e, t) {
+        function c(e, t) {
             return t && (e = e || [],
                 e.push(t)),
                 e
         }
-        function c(e, t) {
+        function u(e, t) {
             p.processChildrenUpdates(e, t)
         }
         var l = n(36)
@@ -5273,10 +5276,10 @@
                         for (var a in r)
                             if (r.hasOwnProperty(a)) {
                                 var s = r[a]
-                                    , u = 0
-                                    , c = h.mountComponent(s, t, this, this._hostContainerInfo, n, u);
+                                    , c = 0
+                                    , u = h.mountComponent(s, t, this, this._hostContainerInfo, n, c);
                                 s._mountIndex = i++,
-                                    o.push(c)
+                                    o.push(u)
                             }
                         return o
                     },
@@ -5286,7 +5289,7 @@
                         for (var n in t)
                             t.hasOwnProperty(n) && l("118");
                         var r = [s(e)];
-                        c(this, r)
+                        u(this, r)
                     },
                     updateMarkup: function(e) {
                         var t = this._renderedChildren;
@@ -5294,7 +5297,7 @@
                         for (var n in t)
                             t.hasOwnProperty(n) && l("118");
                         var r = [a(e)];
-                        c(this, r)
+                        u(this, r)
                     },
                     updateChildren: function(e, t, n) {
                         this._updateChildren(e, t, n)
@@ -5310,17 +5313,17 @@
                                 if (a.hasOwnProperty(s)) {
                                     var v = r && r[s]
                                         , y = a[s];
-                                    v === y ? (l = u(l, this.moveChild(v, m, p, d)),
+                                    v === y ? (l = c(l, this.moveChild(v, m, p, d)),
                                             d = Math.max(v._mountIndex, d),
                                             v._mountIndex = p) : (v && (d = Math.max(v._mountIndex, d)),
-                                            l = u(l, this._mountChildAtIndex(y, i[f], m, p, t, n)),
+                                            l = c(l, this._mountChildAtIndex(y, i[f], m, p, t, n)),
                                             f++),
                                         p++,
                                         m = h.getHostNode(y)
                                 }
                             for (s in o)
-                                o.hasOwnProperty(s) && (l = u(l, this._unmountChild(r[s], o[s])));
-                            l && c(this, l),
+                                o.hasOwnProperty(s) && (l = c(l, this._unmountChild(r[s], o[s])));
+                            l && u(this, l),
                                 this._renderedChildren = a
                         }
                     },
@@ -5401,7 +5404,7 @@
                     , a = (n(123),
                     n(119))
                     , s = n(124)
-                    , u = (n(12),
+                    , c = (n(12),
                     {
                         instantiateChildren: function(e, t, n, o) {
                             if (null == e)
@@ -5410,7 +5413,7 @@
                             return s(e, r, i),
                                 i
                         },
-                        updateChildren: function(e, t, n, r, s, u, c, l, p) {
+                        updateChildren: function(e, t, n, r, s, c, u, l, p) {
                             if (t || e) {
                                 var h, d;
                                 for (h in t)
@@ -5426,7 +5429,7 @@
                                                 o.unmountComponent(d, !1));
                                             var v = i(m, !0);
                                             t[h] = v;
-                                            var y = o.mountComponent(v, s, u, c, l, p);
+                                            var y = o.mountComponent(v, s, c, u, l, p);
                                             n.push(y)
                                         }
                                     }
@@ -5444,7 +5447,7 @@
                                 }
                         }
                     });
-                e.exports = u
+                e.exports = c
             }
         ).call(t, n(114))
     }
@@ -5508,11 +5511,11 @@
                     i(e)
             }
         }
-        function u(e, t) {
+        function c(e, t) {
             this.fun = e,
                 this.array = t
         }
-        function c() {}
+        function u() {}
         var l, p, h = e.exports = {};
         !function() {
             try {
@@ -5532,11 +5535,11 @@
             if (arguments.length > 1)
                 for (var n = 1; n < arguments.length; n++)
                     t[n - 1] = arguments[n];
-            f.push(new u(e,t)),
+            f.push(new c(e,t)),
             1 !== f.length || m || o(s)
         }
             ,
-            u.prototype.run = function() {
+            c.prototype.run = function() {
                 this.fun.apply(null, this.array)
             }
             ,
@@ -5546,13 +5549,13 @@
             h.argv = [],
             h.version = "",
             h.versions = {},
-            h.on = c,
-            h.addListener = c,
-            h.once = c,
-            h.off = c,
-            h.removeListener = c,
-            h.removeAllListeners = c,
-            h.emit = c,
+            h.on = u,
+            h.addListener = u,
+            h.once = u,
+            h.off = u,
+            h.removeListener = u,
+            h.removeAllListeners = u,
+            h.emit = u,
             h.binding = function(e) {
                 throw new Error("process.binding is not supported")
             }
@@ -5585,7 +5588,7 @@
         function i(e, t) {
             var n;
             if (null === e || e === !1)
-                n = c.create(i);
+                n = u.create(i);
             else if ("object" == typeof e) {
                 var s = e;
                 !s || "function" != typeof s.type && "string" != typeof s.type ? a("130", null == s.type ? s.type : typeof s.type, r(s._owner)) : void 0,
@@ -5599,8 +5602,8 @@
         }
         var a = n(36)
             , s = n(5)
-            , u = n(116)
-            , c = n(120)
+            , c = n(116)
+            , u = n(120)
             , l = n(121)
             , p = (n(122),
                 n(9),
@@ -5609,7 +5612,7 @@
                     this.construct(e)
                 }
         );
-        s(p.prototype, u, {
+        s(p.prototype, c, {
             _instantiateReactComponent: i
         }),
             e.exports = i
@@ -5625,8 +5628,8 @@
             return !(!e.prototype || !e.prototype.isPureReactComponent)
         }
         var s = n(36)
-            , u = n(5)
-            , c = n(4)
+            , c = n(5)
+            , u = n(4)
             , l = n(111)
             , p = n(11)
             , h = n(46)
@@ -5673,15 +5676,15 @@
                     this._pendingCallbacks = null,
                     this._calledComponentWillUnmount = !1
             },
-            mountComponent: function(e, t, n, u) {
-                this._context = u,
+            mountComponent: function(e, t, n, c) {
+                this._context = c,
                     this._mountOrder = b++,
                     this._hostParent = t,
                     this._hostContainerInfo = n;
-                var l, p = this._currentElement.props, h = this._processContext(u), f = this._currentElement.type, m = e.getUpdateQueue(), y = i(f), g = this._constructComponent(y, p, h, m);
+                var l, p = this._currentElement.props, h = this._processContext(c), f = this._currentElement.type, m = e.getUpdateQueue(), y = i(f), g = this._constructComponent(y, p, h, m);
                 y || null != g && null != g.render ? a(f) ? this._compositeType = T.PureClass : this._compositeType = T.ImpureClass : (l = g,
                         o(f, l),
-                        null === g || g === !1 || c.isValidElement(g) ? void 0 : s("105", f.displayName || f.name || "Component"),
+                        null === g || g === !1 || u.isValidElement(g) ? void 0 : s("105", f.displayName || f.name || "Component"),
                         g = new r(f),
                         this._compositeType = T.StatelessFunctional);
                 g.props = p,
@@ -5697,7 +5700,7 @@
                     this._pendingReplaceState = !1,
                     this._pendingForceUpdate = !1;
                 var E;
-                return E = g.unstable_handleError ? this.performInitialMountWithErrorHandling(l, t, n, e, u) : this.performInitialMount(l, t, n, e, u),
+                return E = g.unstable_handleError ? this.performInitialMountWithErrorHandling(l, t, n, e, c) : this.performInitialMount(l, t, n, e, c),
                 g.componentDidMount && e.getReactMountReady().enqueue(g.componentDidMount, g),
                     E
             },
@@ -5731,10 +5734,10 @@
                 void 0 === e && (e = this._renderValidatedComponent());
                 var s = f.getType(e);
                 this._renderedNodeType = s;
-                var u = this._instantiateReactComponent(e, s !== f.EMPTY);
-                this._renderedComponent = u;
-                var c = m.mountComponent(u, r, t, n, this._processChildContext(o), a);
-                return c
+                var c = this._instantiateReactComponent(e, s !== f.EMPTY);
+                this._renderedComponent = c;
+                var u = m.mountComponent(c, r, t, n, this._processChildContext(o), a);
+                return u
             },
             getHostNode: function() {
                 return m.getHostNode(this._renderedComponent)
@@ -5785,7 +5788,7 @@
                     "object" != typeof n.childContextTypes ? s("107", this.getName() || "ReactCompositeComponent") : void 0;
                     for (var o in t)
                         o in n.childContextTypes ? void 0 : s("108", this.getName() || "ReactCompositeComponent", o);
-                    return u({}, e, t)
+                    return c({}, e, t)
                 }
                 return e
             },
@@ -5802,16 +5805,16 @@
             updateComponent: function(e, t, n, r, o) {
                 var i = this._instance;
                 null == i ? s("136", this.getName() || "ReactCompositeComponent") : void 0;
-                var a, u = !1;
+                var a, c = !1;
                 this._context === o ? a = i.context : (a = this._processContext(o),
-                        u = !0);
-                var c = t.props
+                        c = !0);
+                var u = t.props
                     , l = n.props;
-                t !== n && (u = !0),
-                u && i.componentWillReceiveProps && i.componentWillReceiveProps(l, a);
+                t !== n && (c = !0),
+                c && i.componentWillReceiveProps && i.componentWillReceiveProps(l, a);
                 var p = this._processPendingState(l, a)
                     , h = !0;
-                this._pendingForceUpdate || (i.shouldComponentUpdate ? h = i.shouldComponentUpdate(l, p, a) : this._compositeType === T.PureClass && (h = !y(c, l) || !y(i.state, p))),
+                this._pendingForceUpdate || (i.shouldComponentUpdate ? h = i.shouldComponentUpdate(l, p, a) : this._compositeType === T.PureClass && (h = !y(u, l) || !y(i.state, p))),
                     this._updateBatchNumber = null,
                     h ? (this._pendingForceUpdate = !1,
                             this._performComponentUpdate(n, l, p, a, e, o)) : (this._currentElement = n,
@@ -5830,25 +5833,25 @@
                     return n.state;
                 if (o && 1 === r.length)
                     return r[0];
-                for (var i = u({}, o ? r[0] : n.state), a = o ? 1 : 0; a < r.length; a++) {
+                for (var i = c({}, o ? r[0] : n.state), a = o ? 1 : 0; a < r.length; a++) {
                     var s = r[a];
-                    u(i, "function" == typeof s ? s.call(n, i, e, t) : s)
+                    c(i, "function" == typeof s ? s.call(n, i, e, t) : s)
                 }
                 return i
             },
             _performComponentUpdate: function(e, t, n, r, o, i) {
-                var a, s, u, c = this._instance, l = Boolean(c.componentDidUpdate);
-                l && (a = c.props,
-                    s = c.state,
-                    u = c.context),
-                c.componentWillUpdate && c.componentWillUpdate(t, n, r),
+                var a, s, c, u = this._instance, l = Boolean(u.componentDidUpdate);
+                l && (a = u.props,
+                    s = u.state,
+                    c = u.context),
+                u.componentWillUpdate && u.componentWillUpdate(t, n, r),
                     this._currentElement = e,
                     this._context = i,
-                    c.props = t,
-                    c.state = n,
-                    c.context = r,
+                    u.props = t,
+                    u.state = n,
+                    u.context = r,
                     this._updateRenderedComponent(o, i),
-                l && o.getReactMountReady().enqueue(c.componentDidUpdate.bind(c, a, s, u), c)
+                l && o.getReactMountReady().enqueue(u.componentDidUpdate.bind(u, a, s, c), u)
             },
             _updateRenderedComponent: function(e, t) {
                 var n = this._renderedComponent
@@ -5862,10 +5865,10 @@
                     m.unmountComponent(n, !1);
                     var s = f.getType(o);
                     this._renderedNodeType = s;
-                    var u = this._instantiateReactComponent(o, s !== f.EMPTY);
-                    this._renderedComponent = u;
-                    var c = m.mountComponent(u, e, this._hostParent, this._hostContainerInfo, this._processChildContext(t), i);
-                    this._replaceNodeWithMarkup(a, c, n)
+                    var c = this._instantiateReactComponent(o, s !== f.EMPTY);
+                    this._renderedComponent = c;
+                    var u = m.mountComponent(c, e, this._hostParent, this._hostContainerInfo, this._processChildContext(t), i);
+                    this._replaceNodeWithMarkup(a, u, n)
                 }
             },
             _replaceNodeWithMarkup: function(e, t, n) {
@@ -5886,7 +5889,7 @@
                     }
                 } else
                     e = this._renderValidatedComponentWithoutOwnerOrContext();
-                return null === e || e === !1 || c.isValidElement(e) ? void 0 : s("109", this.getName() || "ReactCompositeComponent"),
+                return null === e || e === !1 || u.isValidElement(e) ? void 0 : s("109", this.getName() || "ReactCompositeComponent"),
                     e
             },
             attachRef: function(e, t) {
@@ -5980,8 +5983,8 @@
     , function(e, t, n) {
         "use strict";
         function r(e) {
-            return u ? void 0 : a("111", e.type),
-                new u(e)
+            return c ? void 0 : a("111", e.type),
+                new c(e)
         }
         function o(e) {
             return new l(e)
@@ -5991,19 +5994,19 @@
         }
         var a = n(36)
             , s = n(5)
-            , u = (n(9),
+            , c = (n(9),
             null)
-            , c = {}
+            , u = {}
             , l = null
             , p = {
             injectGenericComponentClass: function(e) {
-                u = e
+                c = e
             },
             injectTextComponentClass: function(e) {
                 l = e
             },
             injectComponentClasses: function(e) {
-                s(c, e)
+                s(u, e)
             }
         }
             , h = {
@@ -6025,7 +6028,7 @@
     , 18, function(e, t, n) {
         "use strict";
         function r(e, t) {
-            return e && "object" == typeof e && null != e.key ? c.escape(e.key) : t.toString(36)
+            return e && "object" == typeof e && null != e.key ? u.escape(e.key) : t.toString(36)
         }
         function o(e, t, n, i) {
             var h = typeof e;
@@ -6040,7 +6043,7 @@
                         f = v + r(d, y),
                         m += o(d, f, n, i);
             else {
-                var g = u(e);
+                var g = c(e);
                 if (g) {
                     var T, b = g.call(e);
                     if (g !== e.entries)
@@ -6052,7 +6055,7 @@
                         for (; !(T = b.next()).done; ) {
                             var E = T.value;
                             E && (d = E[1],
-                                f = v + c.escape(E[0]) + p + r(d, 0),
+                                f = v + u.escape(E[0]) + p + r(d, 0),
                                 m += o(d, f, n, i))
                         }
                 } else if ("object" === h) {
@@ -6069,8 +6072,8 @@
         var a = n(36)
             , s = (n(11),
             n(125))
-            , u = n(126)
-            , c = (n(9),
+            , c = n(126)
+            , u = (n(9),
             n(123))
             , l = (n(12),
             ".")
@@ -6091,7 +6094,7 @@
             }
         }
         function o(e) {
-            var t = c(e);
+            var t = u(e);
             if (t) {
                 var n = t.childIDs;
                 l(e),
@@ -6109,17 +6112,17 @@
             return o && (t = P.getDisplayName(o)),
                 i(n, r && r._source, t)
         }
-        var u, c, l, p, h, d, f, m = n(8), v = n(11), y = (n(9),
+        var c, u, l, p, h, d, f, m = n(8), v = n(11), y = (n(9),
             n(12),
         "function" == typeof Array.from && "function" == typeof Map && r(Map) && null != Map.prototype && "function" == typeof Map.prototype.keys && r(Map.prototype.keys) && "function" == typeof Set && r(Set) && null != Set.prototype && "function" == typeof Set.prototype.keys && r(Set.prototype.keys));
         if (y) {
             var g = new Map
                 , T = new Set;
-            u = function(e, t) {
+            c = function(e, t) {
                 g.set(e, t)
             }
                 ,
-                c = function(e) {
+                u = function(e) {
                     return g.get(e)
                 }
                 ,
@@ -6151,12 +6154,12 @@
                 , A = function(e) {
                 return parseInt(e.substr(1), 10)
             };
-            u = function(e, t) {
+            c = function(e, t) {
                 var n = E(e);
                 b[n] = t
             }
                 ,
-                c = function(e) {
+                u = function(e) {
                     var t = E(e);
                     return b[t]
                 }
@@ -6187,12 +6190,12 @@
         var C = []
             , P = {
             onSetChildren: function(e, t) {
-                var n = c(e);
+                var n = u(e);
                 n ? void 0 : m("144"),
                     n.childIDs = t;
                 for (var r = 0; r < t.length; r++) {
                     var o = t[r]
-                        , i = c(o);
+                        , i = u(o);
                     i ? void 0 : m("140"),
                         null == i.childIDs && "object" == typeof i.element && null != i.element ? m("141") : void 0,
                         i.isMounted ? void 0 : m("71"),
@@ -6209,25 +6212,25 @@
                     isMounted: !1,
                     updateCount: 0
                 };
-                u(e, r)
+                c(e, r)
             },
             onBeforeUpdateComponent: function(e, t) {
-                var n = c(e);
+                var n = u(e);
                 n && n.isMounted && (n.element = t)
             },
             onMountComponent: function(e) {
-                var t = c(e);
+                var t = u(e);
                 t ? void 0 : m("144"),
                     t.isMounted = !0;
                 var n = 0 === t.parentID;
                 n && h(e)
             },
             onUpdateComponent: function(e) {
-                var t = c(e);
+                var t = u(e);
                 t && t.isMounted && t.updateCount++
             },
             onUnmountComponent: function(e) {
-                var t = c(e);
+                var t = u(e);
                 if (t) {
                     t.isMounted = !1;
                     var n = 0 === t.parentID;
@@ -6245,7 +6248,7 @@
                 }
             },
             isMounted: function(e) {
-                var t = c(e);
+                var t = u(e);
                 return !!t && t.isMounted
             },
             getCurrentStackAddendum: function(e) {
@@ -6266,7 +6269,7 @@
                 return t
             },
             getChildIDs: function(e) {
-                var t = c(e);
+                var t = u(e);
                 return t ? t.childIDs : []
             },
             getDisplayName: function(e) {
@@ -6274,7 +6277,7 @@
                 return t ? a(t) : null
             },
             getElement: function(e) {
-                var t = c(e);
+                var t = u(e);
                 return t ? t.element : null
             },
             getOwnerID: function(e) {
@@ -6282,11 +6285,11 @@
                 return t && t._owner ? t._owner._debugID : null
             },
             getParentID: function(e) {
-                var t = c(e);
+                var t = u(e);
                 return t ? t.parentID : null
             },
             getSource: function(e) {
-                var t = c(e)
+                var t = u(e)
                     , n = t ? t.element : null
                     , r = null != n ? n._source : null;
                 return r
@@ -6296,7 +6299,7 @@
                 return "string" == typeof t ? t : "number" == typeof t ? "" + t : null
             },
             getUpdateCount: function(e) {
-                var t = c(e);
+                var t = u(e);
                 return t ? t.updateCount : 0
             },
             getRootIDs: f,
@@ -6341,16 +6344,16 @@
             , a = n(64)
             , s = (n(63),
             n(130))
-            , u = []
-            , c = {
+            , c = []
+            , u = {
             enqueue: function() {}
         }
             , l = {
             getTransactionWrappers: function() {
-                return u
+                return c
             },
             getReactMountReady: function() {
-                return c
+                return u
             },
             getUpdateQueue: function() {
                 return this.updateQueue
@@ -6404,7 +6407,7 @@
     , function(e, t, n) {
         "use strict";
         function r(e) {
-            u.enqueueUpdate(e)
+            c.enqueueUpdate(e)
         }
         function o(e) {
             var t = typeof e;
@@ -6424,9 +6427,9 @@
         var a = n(36)
             , s = (n(11),
             n(112))
-            , u = (n(63),
+            , c = (n(63),
             n(57))
-            , c = (n(9),
+            , u = (n(9),
             n(12),
             {
                 isMounted: function(e) {
@@ -6434,7 +6437,7 @@
                     return !!t && !!t._renderedComponent
                 },
                 enqueueCallback: function(e, t, n) {
-                    c.validateCallback(t, n);
+                    u.validateCallback(t, n);
                     var o = i(e);
                     return o ? (o._pendingCallbacks ? o._pendingCallbacks.push(t) : o._pendingCallbacks = [t],
                             void r(o)) : null
@@ -6471,7 +6474,7 @@
                     e && "function" != typeof e ? a("122", t, o(e)) : void 0
                 }
             });
-        e.exports = c
+        e.exports = u
     }
     , function(e, t, n) {
         "use strict";
@@ -6501,10 +6504,10 @@
                     this._hostContainerInfo = n;
                 var s = " react-empty: " + this._domID + " ";
                 if (e.useCreateElement) {
-                    var u = n._ownerDocument
-                        , c = u.createComment(s);
-                    return i.precacheNode(this, c),
-                        o(c)
+                    var c = n._ownerDocument
+                        , u = c.createComment(s);
+                    return i.precacheNode(this, u),
+                        o(u)
                 }
                 return e.renderToStaticMarkup ? "" : "<!--" + s + "-->"
             },
@@ -6521,8 +6524,8 @@
     , function(e, t, n) {
         "use strict";
         function r(e, t) {
-            "_hostNode"in e ? void 0 : u("33"),
-                "_hostNode"in t ? void 0 : u("33");
+            "_hostNode"in e ? void 0 : c("33"),
+                "_hostNode"in t ? void 0 : c("33");
             for (var n = 0, r = e; r; r = r._hostParent)
                 n++;
             for (var o = 0, i = t; i; i = i._hostParent)
@@ -6542,8 +6545,8 @@
             return null
         }
         function o(e, t) {
-            "_hostNode"in e ? void 0 : u("35"),
-                "_hostNode"in t ? void 0 : u("35");
+            "_hostNode"in e ? void 0 : c("35"),
+                "_hostNode"in t ? void 0 : c("35");
             for (; t; ) {
                 if (t === e)
                     return !0;
@@ -6552,7 +6555,7 @@
             return !1
         }
         function i(e) {
-            return "_hostNode"in e ? void 0 : u("36"),
+            return "_hostNode"in e ? void 0 : c("36"),
                 e._hostParent
         }
         function a(e, t, n) {
@@ -6569,16 +6572,16 @@
             for (var a = e && t ? r(e, t) : null, s = []; e && e !== a; )
                 s.push(e),
                     e = e._hostParent;
-            for (var u = []; t && t !== a; )
-                u.push(t),
+            for (var c = []; t && t !== a; )
+                c.push(t),
                     t = t._hostParent;
-            var c;
-            for (c = 0; c < s.length; c++)
-                n(s[c], "bubbled", o);
-            for (c = u.length; c-- > 0; )
-                n(u[c], "captured", i)
+            var u;
+            for (u = 0; u < s.length; u++)
+                n(s[u], "bubbled", o);
+            for (u = c.length; u-- > 0; )
+                n(c[u], "captured", i)
         }
-        var u = n(36);
+        var c = n(36);
         n(9);
         e.exports = {
             isAncestor: o,
@@ -6595,8 +6598,8 @@
             , i = n(76)
             , a = n(77)
             , s = n(35)
-            , u = n(82)
-            , c = (n(9),
+            , c = n(82)
+            , u = (n(9),
                 n(132),
                 function(e) {
                     this._currentElement = e,
@@ -6609,17 +6612,17 @@
                         this._commentNodes = null
                 }
         );
-        o(c.prototype, {
+        o(u.prototype, {
             mountComponent: function(e, t, n, r) {
                 var o = n._idCounter++
                     , i = " react-text: " + o + " "
-                    , c = " /react-text ";
+                    , u = " /react-text ";
                 if (this._domID = o,
                         this._hostParent = t,
                         e.useCreateElement) {
                     var l = n._ownerDocument
                         , p = l.createComment(i)
-                        , h = l.createComment(c)
+                        , h = l.createComment(u)
                         , d = a(l.createDocumentFragment());
                     return a.queueChild(d, a(p)),
                     this._stringText && a.queueChild(d, a(l.createTextNode(this._stringText))),
@@ -6628,8 +6631,8 @@
                         this._closingComment = h,
                         d
                 }
-                var f = u(this._stringText);
-                return e.renderToStaticMarkup ? f : "<!--" + i + "-->" + f + "<!--" + c + "-->"
+                var f = c(this._stringText);
+                return e.renderToStaticMarkup ? f : "<!--" + i + "-->" + f + "<!--" + u + "-->"
             },
             receiveComponent: function(e, t) {
                 if (e !== this._currentElement) {
@@ -6665,7 +6668,7 @@
                     s.uncacheNode(this)
             }
         }),
-            e.exports = c
+            e.exports = u
     }
     , function(e, t, n) {
         "use strict";
@@ -6676,17 +6679,17 @@
             , i = n(57)
             , a = n(64)
             , s = n(13)
-            , u = {
+            , c = {
             initialize: s,
             close: function() {
                 h.isBatchingUpdates = !1
             }
         }
-            , c = {
+            , u = {
             initialize: s,
             close: i.flushBatchedUpdates.bind(i)
         }
-            , l = [c, u];
+            , l = [u, c];
         o(r.prototype, a, {
             getTransactionWrappers: function() {
                 return l
@@ -6733,8 +6736,8 @@
             e(t)
         }
         var s = n(5)
-            , u = n(138)
-            , c = n(49)
+            , c = n(138)
+            , u = n(49)
             , l = n(51)
             , p = n(35)
             , h = n(57)
@@ -6751,7 +6754,7 @@
         var m = {
             _enabled: !0,
             _handleTopLevel: null,
-            WINDOW_HANDLE: c.canUseDOM ? window : null,
+            WINDOW_HANDLE: u.canUseDOM ? window : null,
             setHandleTopLevel: function(e) {
                 m._handleTopLevel = e
             },
@@ -6762,14 +6765,14 @@
                 return m._enabled
             },
             trapBubbledEvent: function(e, t, n) {
-                return n ? u.listen(n, t, m.dispatchEvent.bind(null, e)) : null
+                return n ? c.listen(n, t, m.dispatchEvent.bind(null, e)) : null
             },
             trapCapturedEvent: function(e, t, n) {
-                return n ? u.capture(n, t, m.dispatchEvent.bind(null, e)) : null
+                return n ? c.capture(n, t, m.dispatchEvent.bind(null, e)) : null
             },
             monitorScrollValue: function(e) {
                 var t = a.bind(null, e);
-                u.listen(window, "scroll", t)
+                c.listen(window, "scroll", t)
             },
             dispatchEvent: function(e, t) {
                 if (m._enabled) {
@@ -6835,8 +6838,8 @@
             , i = n(45)
             , a = n(111)
             , s = n(120)
-            , u = n(101)
-            , c = n(121)
+            , c = n(101)
+            , u = n(121)
             , l = n(57)
             , p = {
             Component: a.injection,
@@ -6844,8 +6847,8 @@
             EmptyComponent: s.injection,
             EventPluginHub: o.injection,
             EventPluginUtils: i.injection,
-            EventEmitter: u.injection,
-            HostComponent: c.injection,
+            EventEmitter: c.injection,
+            HostComponent: u.injection,
             Updates: l.injection
         };
         e.exports = p
@@ -6862,13 +6865,13 @@
             , i = n(58)
             , a = n(51)
             , s = n(101)
-            , u = n(142)
-            , c = (n(63),
+            , c = n(142)
+            , u = (n(63),
             n(64))
             , l = n(131)
             , p = {
-            initialize: u.getSelectionInformation,
-            close: u.restoreSelection
+            initialize: c.getSelectionInformation,
+            close: c.restoreSelection
         }
             , h = {
             initialize: function() {
@@ -6910,7 +6913,7 @@
                     this.reactMountReady = null
             }
         };
-        o(r.prototype, c, m),
+        o(r.prototype, u, m),
             a.addPoolingTo(r),
             e.exports = r
     }
@@ -6923,7 +6926,7 @@
             , i = n(145)
             , a = n(90)
             , s = n(148)
-            , u = {
+            , c = {
             hasSelectionCapabilities: function(e) {
                 var t = e && e.nodeName && e.nodeName.toLowerCase();
                 return t && ("input" === t && "text" === e.type || "textarea" === t || "true" === e.contentEditable)
@@ -6932,14 +6935,14 @@
                 var e = s();
                 return {
                     focusedElem: e,
-                    selectionRange: u.hasSelectionCapabilities(e) ? u.getSelection(e) : null
+                    selectionRange: c.hasSelectionCapabilities(e) ? c.getSelection(e) : null
                 }
             },
             restoreSelection: function(e) {
                 var t = s()
                     , n = e.focusedElem
                     , o = e.selectionRange;
-                t !== n && r(n) && (u.hasSelectionCapabilities(n) && u.setSelection(n, o),
+                t !== n && r(n) && (c.hasSelectionCapabilities(n) && c.setSelection(n, o),
                     a(n))
             },
             getSelection: function(e) {
@@ -6979,7 +6982,7 @@
                     o.setOffsets(e, t)
             }
         };
-        e.exports = u
+        e.exports = c
     }
     , function(e, t, n) {
         "use strict";
@@ -7015,14 +7018,14 @@
             } catch (e) {
                 return null
             }
-            var u = r(t.anchorNode, t.anchorOffset, t.focusNode, t.focusOffset)
-                , c = u ? 0 : s.toString().length
+            var c = r(t.anchorNode, t.anchorOffset, t.focusNode, t.focusOffset)
+                , u = c ? 0 : s.toString().length
                 , l = s.cloneRange();
             l.selectNodeContents(e),
                 l.setEnd(s.startContainer, s.startOffset);
             var p = r(l.startContainer, l.startOffset, l.endContainer, l.endOffset)
                 , h = p ? 0 : l.toString().length
-                , d = h + c
+                , d = h + u
                 , f = document.createRange();
             f.setStart(n, o),
                 f.setEnd(i, a);
@@ -7055,22 +7058,22 @@
                     i = o,
                         o = a
                 }
-                var s = c(e, o)
-                    , u = c(e, i);
-                if (s && u) {
+                var s = u(e, o)
+                    , c = u(e, i);
+                if (s && c) {
                     var p = document.createRange();
                     p.setStart(s.node, s.offset),
                         n.removeAllRanges(),
                         o > i ? (n.addRange(p),
-                                n.extend(u.node, u.offset)) : (p.setEnd(u.node, u.offset),
+                                n.extend(c.node, c.offset)) : (p.setEnd(c.node, c.offset),
                                 n.addRange(p))
                 }
             }
         }
-        var u = n(49)
-            , c = n(144)
+        var c = n(49)
+            , u = n(144)
             , l = n(52)
-            , p = u.canUseDOM && "selection"in document && !("getSelection"in window)
+            , p = c.canUseDOM && "selection"in document && !("getSelection"in window)
             , h = {
             getOffsets: p ? o : i,
             setOffsets: p ? a : s
@@ -7415,7 +7418,7 @@
     , function(e, t, n) {
         "use strict";
         function r(e) {
-            if ("selectionStart"in e && u.hasSelectionCapabilities(e))
+            if ("selectionStart"in e && c.hasSelectionCapabilities(e))
                 return {
                     start: e.selectionStart,
                     end: e.selectionEnd
@@ -7445,7 +7448,7 @@
             var n = r(m);
             if (!y || !h(y, n)) {
                 y = n;
-                var o = c.getPooled(f.select, v, e, t);
+                var o = u.getPooled(f.select, v, e, t);
                 return o.type = "select",
                     o.target = m,
                     i.accumulateTwoPhaseDispatches(o),
@@ -7456,8 +7459,8 @@
         var i = n(42)
             , a = n(49)
             , s = n(35)
-            , u = n(142)
-            , c = n(54)
+            , c = n(142)
+            , u = n(54)
             , l = n(148)
             , p = n(67)
             , h = n(118)
@@ -7526,8 +7529,8 @@
         var i = n(36)
             , a = n(138)
             , s = n(42)
-            , u = n(35)
-            , c = n(152)
+            , c = n(35)
+            , u = n(152)
             , l = n(153)
             , p = n(54)
             , h = n(154)
@@ -7638,7 +7641,7 @@
                     case "topAnimationEnd":
                     case "topAnimationIteration":
                     case "topAnimationStart":
-                        a = c;
+                        a = u;
                         break;
                     case "topTransitionEnd":
                         a = y;
@@ -7655,14 +7658,14 @@
                         a = l
                 }
                 a ? void 0 : i("86", e);
-                var u = a.getPooled(o, t, n, r);
-                return s.accumulateTwoPhaseDispatches(u),
-                    u
+                var c = a.getPooled(o, t, n, r);
+                return s.accumulateTwoPhaseDispatches(c),
+                    c
             },
             didPutListener: function(e, t, n) {
                 if ("onClick" === t && !o(e._tag)) {
                     var i = r(e)
-                        , s = u.getNodeFromInstance(e);
+                        , s = c.getNodeFromInstance(e);
                     C[i] || (C[i] = a.listen(s, "click", b))
                 }
             },
@@ -7725,7 +7728,7 @@
             , i = n(156)
             , a = n(157)
             , s = n(73)
-            , u = {
+            , c = {
             key: a,
             location: null,
             ctrlKey: null,
@@ -7745,7 +7748,7 @@
                 return "keypress" === e.type ? i(e) : "keydown" === e.type || "keyup" === e.type ? e.keyCode : 0
             }
         };
-        o.augmentClass(r, u),
+        o.augmentClass(r, c),
             e.exports = r
     }
     , function(e, t) {
@@ -7914,22 +7917,22 @@
                 i = "React mount: " + ("string" == typeof s ? s : s.displayName || s.name),
                     console.time(i)
             }
-            var u = C.mountComponent(e, n, null, T(e, t), o, 0);
+            var c = C.mountComponent(e, n, null, T(e, t), o, 0);
             i && console.timeEnd(i),
                 e._renderedComponent._topLevelWrapper = e,
-                H._mountImageIntoNode(u, t, e, r, n)
+                H._mountImageIntoNode(c, t, e, r, n)
         }
         function s(e, t, n, r) {
             var o = _.ReactReconcileTransaction.getPooled(!n && b.useCreateElement);
             o.perform(a, null, e, t, o, n, r),
                 _.ReactReconcileTransaction.release(o)
         }
-        function u(e, t, n) {
+        function c(e, t, n) {
             for (C.unmountComponent(e, n),
                  t.nodeType === R && (t = t.documentElement); t.lastChild; )
                 t.removeChild(t.lastChild)
         }
-        function c(e) {
+        function u(e) {
             var t = o(e);
             if (t) {
                 var n = g.getInstanceFromNode(t);
@@ -8019,8 +8022,8 @@
                     child: t
                 });
                 if (e) {
-                    var u = E.get(e);
-                    a = u._processChildContext(u._context)
+                    var c = E.get(e);
+                    a = c._processChildContext(c._context)
                 } else
                     a = M;
                 var l = h(n);
@@ -8040,7 +8043,7 @@
                 }
                 var g = o(n)
                     , T = g && !!i(g)
-                    , b = c(n)
+                    , b = u(n)
                     , S = T && !l && !b
                     , A = H._renderNewRootComponent(s, n, S, a)._renderedComponent.getPublicInstance();
                 return r && r.call(A),
@@ -8053,12 +8056,12 @@
                 l(e) ? void 0 : d("40");
                 var t = h(e);
                 if (!t) {
-                    c(e),
+                    u(e),
                     1 === e.nodeType && e.hasAttribute(N);
                     return !1
                 }
                 return delete B[t._instance.rootID],
-                    _.batchedUpdates(u, t, e, !1),
+                    _.batchedUpdates(c, t, e, !1),
                     !0
             },
             _mountImageIntoNode: function(e, t, n, i, a) {
@@ -8067,13 +8070,13 @@
                     var s = o(t);
                     if (A.canReuseMarkup(e, s))
                         return void g.precacheNode(n, s);
-                    var u = s.getAttribute(A.CHECKSUM_ATTR_NAME);
+                    var c = s.getAttribute(A.CHECKSUM_ATTR_NAME);
                     s.removeAttribute(A.CHECKSUM_ATTR_NAME);
-                    var c = s.outerHTML;
-                    s.setAttribute(A.CHECKSUM_ATTR_NAME, u);
+                    var u = s.outerHTML;
+                    s.setAttribute(A.CHECKSUM_ATTR_NAME, c);
                     var p = e
-                        , h = r(p, c)
-                        , m = " (client) " + p.substring(h - 20, h + 20) + "\n (server) " + c.substring(h - 20, h + 20);
+                        , h = r(p, u)
+                        , m = " (client) " + p.substring(h - 20, h + 20) + "\n (server) " + u.substring(h - 20, h + 20);
                     t.nodeType === R ? d("42", m) : void 0
                 }
                 if (t.nodeType === R ? d("43") : void 0,
@@ -8205,13 +8208,13 @@
                     t.hasOwnProperty(i) ? o.length && (r[i] = o,
                             o = []) : o.push(i);
                 var a, s = {};
-                for (var u in t) {
-                    if (r.hasOwnProperty(u))
-                        for (a = 0; a < r[u].length; a++) {
-                            var c = r[u][a];
-                            s[r[u][a]] = n(c)
+                for (var c in t) {
+                    if (r.hasOwnProperty(c))
+                        for (a = 0; a < r[c].length; a++) {
+                            var u = r[c][a];
+                            s[r[c][a]] = n(u)
                         }
-                    s[u] = n(u)
+                    s[c] = n(c)
                 }
                 for (a = 0; a < o.length; a++)
                     s[o[a]] = n(o[a]);
@@ -8251,8 +8254,8 @@
             , i = n(174)
             , a = n(175)
             , s = n(29)
-            , u = 17
-            , c = r.createClass({
+            , c = 17
+            , u = r.createClass({
             displayName: "ReactCSSTransitionGroupChild",
             propTypes: {
                 name: r.PropTypes.oneOfType([r.PropTypes.string, r.PropTypes.shape({
@@ -8279,26 +8282,26 @@
                 if (!r)
                     return void (t && t());
                 var s = this.props.name[e] || this.props.name + "-" + e
-                    , u = this.props.name[e + "Active"] || s + "-active"
-                    , c = null
+                    , c = this.props.name[e + "Active"] || s + "-active"
+                    , u = null
                     , l = function(e) {
-                    e && e.target !== r || (clearTimeout(c),
+                    e && e.target !== r || (clearTimeout(u),
                         i.removeClass(r, s),
-                        i.removeClass(r, u),
+                        i.removeClass(r, c),
                         a.removeEndEventListener(r, l),
                     t && t())
                 };
                 i.addClass(r, s),
-                    this.queueClassAndNode(u, r),
-                    n ? (c = setTimeout(l, n),
-                            this.transitionTimeouts.push(c)) : a.addEndEventListener(r, l)
+                    this.queueClassAndNode(c, r),
+                    n ? (u = setTimeout(l, n),
+                            this.transitionTimeouts.push(u)) : a.addEndEventListener(r, l)
             },
             queueClassAndNode: function(e, t) {
                 this.classNameAndNodeQueue.push({
                     className: e,
                     node: t
                 }),
-                this.timeout || (this.timeout = setTimeout(this.flushClassNameAndNodeQueue, u))
+                this.timeout || (this.timeout = setTimeout(this.flushClassNameAndNodeQueue, c))
             },
             flushClassNameAndNodeQueue: function() {
                 this.isMounted() && this.classNameAndNodeQueue.forEach(function(e) {
@@ -8331,7 +8334,7 @@
                 return s(this.props.children)
             }
         });
-        e.exports = c
+        e.exports = u
     }
     , function(e, t, n) {
         "use strict";
@@ -8375,8 +8378,8 @@
         function r() {
             var e = s("animationend")
                 , t = s("transitionend");
-            e && u.push(e),
-            t && u.push(t)
+            e && c.push(e),
+            t && c.push(t)
         }
         function o(e, t, n) {
             e.addEventListener(t, n, !1)
@@ -8386,21 +8389,21 @@
         }
         var a = n(49)
             , s = n(103)
-            , u = [];
+            , c = [];
         a.canUseDOM && r();
-        var c = {
+        var u = {
             addEndEventListener: function(e, t) {
-                return 0 === u.length ? void window.setTimeout(t, 0) : void u.forEach(function(n) {
+                return 0 === c.length ? void window.setTimeout(t, 0) : void c.forEach(function(n) {
                         o(e, n, t)
                     })
             },
             removeEndEventListener: function(e, t) {
-                0 !== u.length && u.forEach(function(n) {
+                0 !== c.length && c.forEach(function(n) {
                     i(e, n, t)
                 })
             }
         };
-        e.exports = c
+        e.exports = u
     }
     , function(e, t) {
         "use strict";
@@ -8417,12 +8420,13 @@
     }
     , function(e, t) {
         "use strict";
+        var n = "__2v2__";
         e.exports = {
             isCustomGame: function(e) {
                 return e && "1v1" !== e && "2v2" !== e && "main" !== e
             },
             chatRoomForCustomGame: function(e) {
-                return "chat_custom_queue_" + e;
+                return "chat_custom_queue_" + e
             },
             randomString: function(e) {
                 return (Math.random().toString(36) + "00000").slice(2, e + 2)
@@ -8431,6 +8435,22 @@
                 return e && e.some(function(t, n) {
                         return e.indexOf(t) !== n
                     })
+            },
+            chatRoomForTeam: function(e, t) {
+                return e.chat_room + "_team_" + t
+            },
+            originalFromTeamChatRoom: function(e) {
+                var t = e.indexOf("_team_");
+                if (!(t < 0))
+                    return e.substring(0, t)
+            },
+            idFor2v2Team: function(e, t) {
+                return e < t ? e + n + t : t + n + e
+            },
+            userIdsFrom2v2Id: function(e) {
+                var t = e.indexOf(n);
+                if (!(t < 0))
+                    return [e.substring(0, t), e.substring(t + n.length)]
             }
         }
     }
@@ -8441,20 +8461,23 @@
             , i = n(209)
             , a = n(210)
             , s = n(211)
-            , u = n(287)
-            , c = n(1)
+            , c = n(288)
+            , u = n(1)
             , l = n(177)
-            , p = n(297)
-            , h = n(298)
-            , d = n(299)
-            , f = n(288)
-            , m = n(265)
-            , v = n(300)
-            , y = n(301)
-            , g = n(303)
-            , T = n(306)
+            , p = n(298)
+            , h = n(299)
+            , d = n(300)
+            , f = n(301)
+            , m = n(289)
+            , v = n(265)
+            , y = n(275)
+            , g = n(302)
+            , T = n(304)
             , b = n(307)
-            , S = r.createClass({
+            , S = n(308)
+            , E = n(310)
+            , A = n(312)
+            , C = r.createClass({
             displayName: "RankItem",
             render: function() {
                 return this.props.stars || this.props.rank ? r.createElement("div", {
@@ -8477,7 +8500,7 @@
                         }, "Rank #", this.props.rank || 0) : null) : null
             }
         })
-            , E = r.createClass({
+            , P = r.createClass({
             displayName: "MainMenu",
             getInitialState: function() {
                 return {
@@ -8485,24 +8508,24 @@
                 }
             },
             componentDidMount: function() {
-                u && u.username ? (this.state.username = u.username,
+                c && c.username ? (this.state.username = c.username,
                         this.setState({
-                            username: u.username
-                        })) : i.findDOMNode(this.refs.username).focus(),
+                            username: c.username
+                        })) : i.findDOMNode(this.refs.username).focus();
+                var e = this;
+                setTimeout(function() {
                     h.doWhenVisible(function() {
-                        v.isPrivateURL() ? this.props.joinPrivateGame.bind(this)(v.getPrivateID()) : v.isReplayURL() ? s.getReplay(v.getReplayID(), f.startReplay) : v.isTeamURL() && this.props.joinTeam.bind(this)(v.getTeamID())
+                        y.isPrivateURL() ? this.props.joinPrivateGame.bind(this)(y.getPrivateID()) : y.isReplayURL() ? s.getReplay(y.getReplayID(), m.startReplay) : y.isTeamURL() && this.props.joinTeam.bind(this)(y.getTeamID())
                     }
-                        .bind(this)),
-                    googletag.cmd.push(function() {
-                        googletag.display("div-gpt-ad-1479698638527-0")
-                    })
+                        .bind(e))
+                }, v.getState().game.playAgainUrl ? 400 : 0)
             },
             onPlayClicked: function() {
-                return u.completed_tutorial ? s.isConnected() ? void (u.completed_tutorial ? this.setState({
-                                showGameModes: !0
-                            }) : this.props.onPlayFFA.call(this)) : void this.setState({
+                return c && !c.completed_tutorial ? void m.startLocalTutorial(this.state.username) : s.isConnected() ? void this.setState({
+                            showGameModes: !0
+                        }) : void this.setState({
                             showNotConnected: !0
-                        }) : void f.startLocalTutorial(this.state.username)
+                        })
             },
             closeGameModes: function() {
                 this.setState({
@@ -8514,30 +8537,44 @@
                     e.stopPropagation()
             },
             onUsernameChange: function(e) {
-                var t = e.target.value.substring(0, c.MAX_USERNAME_LENGTH);
+                var t = e.target.value.substring(0, u.MAX_USERNAME_LENGTH);
                 this.setState({
                     username: t
                 }),
-                u && (u.username = t)
+                c && (c.username = t)
             },
             onLeaderboardClicked: function() {
                 this.setState({
                     showLeaderboard: !0,
-                    showReplayList: !1
+                    showReplayList: !1,
+                    showOption: !1
                 }),
                     s.updateStarsAndRank(),
                     s.getLeaderboard("duel"),
                     s.getLeaderboard("ffa")
+            },
+            onOptionClicked: function() {
+                this.setState({
+                    showLeaderboard: !1,
+                    showReplayList: !1,
+                    showOption: !0
+                })
             },
             hideLeaderboards: function() {
                 this.setState({
                     showLeaderboard: !1
                 })
             },
+            hideOptions: function() {
+                this.setState({
+                    showOption: !1
+                })
+            },
             onReplayListClicked: function() {
                 this.setState({
                     showReplayList: !0,
-                    showLeaderboard: !1
+                    showLeaderboard: !1,
+                    showOption: !1
                 }),
                     this.loadMoreReplays()
             },
@@ -8548,18 +8585,20 @@
             },
             loadMoreReplays: function() {
                 var e = void 0
-                    , t = m.getState().menu.replays;
+                    , t = v.getState().menu.replays;
                 t && t.length > 0 && (e = t[t.length - 1].started - .1),
                     s.getReplayList(e)
             },
             replayRows: function() {
-                var e = m.getState().menu.replays || [];
+                var e = v.getState().menu.replays || [];
                 return e.map(function(e, t) {
                     for (var n = [], o = 0; o < e.ranking.length; o++) {
                         var i = e.ranking[o];
                         n.push(r.createElement("span", {
                             key: "replay-list-p-" + o
-                        }, i.name, Number.isFinite(i.stars) ? " (★" + i.stars + ")" : "")),
+                        }, i.name + " (", r.createElement(p, {
+                            stars: i.stars
+                        }), ")")),
                             n.push(r.createElement("br", {
                                 key: "replay-list-br-" + o
                             }))
@@ -8574,10 +8613,10 @@
                 })
             },
             onPrivateClicked: function() {
-                this.props.joinPrivateGame.bind(this)(l.randomString(c.CUSTOM_GAME_URL_LENGTH))
+                this.props.joinPrivateGame.bind(this)(l.randomString(u.CUSTOM_GAME_URL_LENGTH))
             },
             on2v2Clicked: function() {
-                this.props.joinTeam.bind(this)(l.randomString(c.CUSTOM_GAME_URL_LENGTH))
+                this.props.joinTeam.bind(this)(l.randomString(u.CUSTOM_GAME_URL_LENGTH))
             },
             onServerChange: function(e) {
                 switch (e.target.value) {
@@ -8611,14 +8650,18 @@
                     className: "main-title"
                 }, "generals.io"), r.createElement("div", {
                     className: "rank-list"
-                }, r.createElement(S, {
+                }, r.createElement(C, {
                     name: "1v1",
                     stars: this.props.stars ? this.props.stars.duel : void 0,
                     rank: this.props.rank ? this.props.rank.duel : void 0
-                }), r.createElement(S, {
+                }), r.createElement(C, {
                     name: "FFA",
                     stars: this.props.stars ? this.props.stars.ffa : void 0,
                     rank: this.props.rank ? this.props.rank.ffa : void 0
+                }), r.createElement(C, {
+                    name: "2v2",
+                    stars: this.props.stars ? this.props.stars["2v2"] : void 0,
+                    rank: this.props.rank ? this.props.rank["2v2"] : void 0
                 })), r.createElement("input", {
                     style: {
                         border: "none"
@@ -8662,11 +8705,11 @@
                     className: "bold"
                 }, "Click"), " or use ", r.createElement("span", {
                     className: "bold"
-                }, "WASD"), " to move armies."), g ? null : r.createElement("p", {
+                }, "WASD"), " to move armies."), T ? null : r.createElement("p", {
                         style: {
                             fontSize: "14px"
                         }
-                    }, "[Spacebar] to deselect, [Q] to clear moves, [E] to undo moves."), g ? null : r.createElement("p", {
+                    }, "[Spacebar] to deselect, [Q] to clear moves, [E] to undo moves."), T ? null : r.createElement("p", {
                         style: {
                             fontSize: "14px"
                         }
@@ -8678,9 +8721,11 @@
                     style: {
                         fontSize: "14px"
                     }
-                }, "2 clicks = move 50%")), r.createElement("div", {
+                }, "2 clicks = move 50%")), r.createElement(d, {
                     id: "main-menu-reddit-button"
-                }, r.createElement(d, null)), r.createElement("div", {
+                }), r.createElement(f, {
+                    id: "main-menu-discord-button"
+                }), r.createElement("div", {
                     id: "leaderboard-button",
                     onClick: this.onLeaderboardClicked
                 }, r.createElement("img", {
@@ -8690,34 +8735,37 @@
                     onClick: this.onReplayListClicked
                 }, r.createElement("img", {
                     src: "/crown.png"
-                })), r.createElement("a", {
+                })), r.createElement("div", {
+                    className: "option-button",
+                    onClick: this.onOptionClicked,
                     style: {
                         position: "fixed",
                         left: 0,
-                        bottom: 0,
-                        margin: "5px",
-                        fontSize: "14px"
+                        bottom: 0
+                    }
+                }), r.createElement("a", {
+                    className: "main-menu-bottom-link",
+                    style: {
+                        bottom: "20px"
                     },
                     href: "mailto:generalsiogame@gmail.com"
                 }, "Contact Us"), r.createElement("a", {
+                    className: "main-menu-bottom-link",
                     style: {
-                        position: "fixed",
-                        right: 0,
-                        bottom: 0,
-                        margin: "5px",
-                        fontSize: "14px"
+                        bottom: 0
                     },
                     target: "_blank",
                     href: "/versions"
-                }, "v", c.VERSION, " (Changelog)"), r.createElement("div", {
+                }, "v", u.VERSION, " (Changelog)"), r.createElement("div", {
                     id: "main-menu-leaderboard-ad",
-                    className: "center-horizontal"
-                }, r.createElement("div", {
-                    id: "div-gpt-ad-1479698638527-0",
+                    className: "center-horizontal",
                     style: {
-                        height: "90px",
-                        width: "728px"
+                        transform: "translateX(-55%)"
                     }
+                }, r.createElement(A, {
+                    id: "div-gpt-ad-1484365524244-0",
+                    width: 728,
+                    height: 90
                 })), this.state.showGameModes ? r.createElement("div", {
                         className: "popup-background",
                         onClick: this.closeGameModes
@@ -8725,7 +8773,7 @@
                         id: "game-modes",
                         className: "alert center",
                         onClick: this.ignoreClick
-                    }, r.createElement("center", null, y.adBlockEnabled() ? r.createElement("p", {
+                    }, r.createElement("center", null, g.adBlockEnabled() ? r.createElement("p", {
                             style: {
                                 padding: "5px 0",
                                 marginBottom: "15px",
@@ -8742,7 +8790,7 @@
                         style: {
                             marginBottom: "10px"
                         }
-                    }, "Up to ", c.PLAYER_CAP, " players battle until only 1 remains."), r.createElement("button", {
+                    }, "Up to ", u.PLAYER_CAP, " players battle until only 1 remains."), r.createElement("button", {
                         className: "inverted",
                         onClick: this.props.onPlay1v1.bind(this)
                     }, "1v1"), r.createElement("p", {
@@ -8759,13 +8807,19 @@
                     }, "Team up with a friend to take down 2 opponents."), r.createElement("button", {
                         className: "inverted",
                         onClick: this.onPrivateClicked
-                    }, "Custom"), r.createElement("p", null, "Create a private game.")))) : null, this.state.showLeaderboard ? r.createElement(b, {
-                        allLeaderboards: m.getState().menu.leaderboards,
+                    }, "Custom"), r.createElement("p", null, "Create a private game.")))) : null, this.state.showLeaderboard ? r.createElement(S, {
+                        allLeaderboards: v.getState().menu.leaderboards,
+                        data2v2Teammates: v.getState().menu.data2v2Teammates,
                         playerRanks: this.props.rank,
                         playerUsername: this.state.username,
                         getLeaderboard: s.getLeaderboard,
+                        get2v2Teammates: s.get2v2Teammates,
                         hideLeaderboards: this.hideLeaderboards
+                    }) : null, this.state.showOption ? r.createElement(E, {
+                        hideOptions: this.hideOptions
                     }) : null, this.state.showReplayList ? r.createElement("div", {
+                        className: "popup-background"
+                    }, r.createElement("div", {
                         className: "popup-replays"
                     }, r.createElement("div", {
                         id: "replays",
@@ -8783,13 +8837,13 @@
                         style: {
                             width: "12em"
                         }
-                    }, "Time"), r.createElement("th", null, "Turns"), r.createElement("th", null, "Result"))), r.createElement("tbody", null, this.replayRows())), m.getState().menu.replaysFinished ? null : r.createElement("button", {
+                    }, "Time"), r.createElement("th", null, "Turns"), r.createElement("th", null, "Result"))), r.createElement("tbody", null, this.replayRows())), v.getState().menu.replaysFinished ? null : r.createElement("button", {
                             className: "small inverted center-horizontal",
                             onClick: this.loadMoreReplays
                         }, "Load More")), r.createElement("button", {
                         className: "small inverted center-horizontal",
                         onClick: this.hideReplayList
-                    }, "Exit"))) : null, this.state.showChangingServers ? r.createElement("div", {
+                    }, "Exit")))) : null, this.state.showChangingServers ? r.createElement("div", {
                         className: "popup-background"
                     }, r.createElement("div", {
                         className: "alert center"
@@ -8801,14 +8855,19 @@
                         }
                     }, "Changing Servers..."))) : null, this.props.showRemovedFrom2v2 ? r.createElement("div", {
                         className: "popup-background"
-                    }, r.createElement(T, {
+                    }, r.createElement(b, {
                         title: "Removed from 2v2",
                         body: r.createElement("span", null, "Your teammate left, so you were removed from the 2v2 queue."),
                         button: "Close",
                         onClick: this.props.closeRemovedFrom2v2
+                    })) : null, this.props.showNotifyServerRestart ? r.createElement("div", {
+                        className: "popup-background"
+                    }, r.createElement(b, {
+                        title: "Server updating!",
+                        body: r.createElement("span", null, "The server is restarting to include new updates to generals.io!", r.createElement("br", null), "If you were just in a game, it will be invalidated - nobody will gain or lose any stars.", r.createElement("br", null), r.createElement("br", null), "Refresh the page in a few seconds to continue playing.")
                     })) : null, this.state.showNotConnected ? r.createElement("div", {
                         className: "popup-background"
-                    }, r.createElement(T, {
+                    }, r.createElement(b, {
                         title: "Connecting...",
                         body: r.createElement("span", null, r.createElement("span", null, "We're still trying to establish a websocket connection to the server. Wait a few seconds and try again."), r.createElement("br", null), r.createElement("br", null), r.createElement("span", null, "If you still can't connect, make sure your firewall isn't blocking websockets and refresh the page. If that doesn't work, try disabling any adblockers or other extensions you have that may be interfering with the connection."), r.createElement("br", null), r.createElement("br", null), r.createElement("span", null, "If all else fails, contact us to let us know.")),
                         button: "Close",
@@ -8844,7 +8903,7 @@
                     e(a.closeRemovedFrom2v2())
                 }
             }
-        })(E)
+        })(P)
     }
     , function(e, t, n) {
         "use strict";
@@ -8894,8 +8953,8 @@
         t.__esModule = !0,
             t.default = void 0;
         var s = n(3)
-            , u = n(181)
-            , c = r(u)
+            , c = n(181)
+            , u = r(c)
             , l = n(182)
             , p = (r(l),
             function(e) {
@@ -8920,11 +8979,11 @@
             }(s.Component));
         t.default = p,
             p.propTypes = {
-                store: c.default.isRequired,
+                store: u.default.isRequired,
                 children: s.PropTypes.element.isRequired
             },
             p.childContextTypes = {
-                store: c.default.isRequired
+                store: u.default.isRequired
             }
     }
     , function(e, t, n) {
@@ -8980,7 +9039,7 @@
         function s(e) {
             return e.displayName || e.name || "Component"
         }
-        function u(e, t) {
+        function c(e, t) {
             try {
                 return e.apply(t)
             } catch (e) {
@@ -8988,9 +9047,9 @@
                     M
             }
         }
-        function c(e, t, n) {
+        function u(e, t, n) {
             var r = arguments.length > 3 && void 0 !== arguments[3] ? arguments[3] : {}
-                , c = Boolean(e)
+                , u = Boolean(e)
                 , h = e || C
                 , f = void 0;
             f = "function" == typeof t ? t : t ? (0,
@@ -9016,9 +9075,9 @@
                             a.store = e.store || t.store,
                             (0,
                                 A.default)(a.store, 'Could not find "store" in either the context or ' + ('props of "' + n + '". ') + "Either wrap the root component in a <Provider>, " + ('or explicitly pass "store" as a prop to "' + n + '".'));
-                        var u = a.store.getState();
+                        var c = a.store.getState();
                         return a.state = {
-                            storeState: u
+                            storeState: c
                         },
                             a.clearCache(),
                             a
@@ -9086,7 +9145,7 @@
                         }
                         ,
                         s.prototype.trySubscribe = function() {
-                            c && !this.unsubscribe && (this.unsubscribe = this.store.subscribe(this.handleChange.bind(this)),
+                            u && !this.unsubscribe && (this.unsubscribe = this.store.subscribe(this.handleChange.bind(this)),
                                 this.handleChange())
                         }
                         ,
@@ -9128,7 +9187,7 @@
                                     , t = this.state.storeState;
                                 if (!T || t !== e) {
                                     if (T && !this.doStatePropsDependOnOwnProps) {
-                                        var n = u(this.updateStatePropsIfNeeded, this);
+                                        var n = c(this.updateStatePropsIfNeeded, this);
                                         if (!n)
                                             return;
                                         n === M && (this.statePropsPrecalculationError = M.value),
@@ -9164,12 +9223,12 @@
                                 , s = !0;
                             T && i && (a = n || t && this.doStatePropsDependOnOwnProps,
                                 s = t && this.doDispatchPropsDependOnOwnProps);
-                            var u = !1
-                                , c = !1;
-                            r ? u = !0 : a && (u = this.updateStatePropsIfNeeded()),
-                            s && (c = this.updateDispatchPropsIfNeeded());
+                            var c = !1
+                                , u = !1;
+                            r ? c = !0 : a && (c = this.updateStatePropsIfNeeded()),
+                            s && (u = this.updateDispatchPropsIfNeeded());
                             var h = !0;
-                            return h = !!(u || c || t) && this.updateMergedPropsIfNeeded(),
+                            return h = !!(c || u || t) && this.updateMergedPropsIfNeeded(),
                                 !h && i ? i : (E ? this.renderedElement = (0,
                                             p.createElement)(e, l({}, this.mergedProps, {
                                             ref: "wrappedInstance"
@@ -9202,7 +9261,7 @@
                     return e
                 }
             ;
-        t.default = c;
+        t.default = u;
         var p = n(3)
             , h = n(181)
             , d = r(h)
@@ -9276,8 +9335,8 @@
             , i = r(o)
             , a = n(202)
             , s = r(a)
-            , u = n(204)
-            , c = r(u)
+            , c = n(204)
+            , u = r(c)
             , l = n(205)
             , p = r(l)
             , h = n(206)
@@ -9286,7 +9345,7 @@
         r(f);
         t.createStore = i.default,
             t.combineReducers = s.default,
-            t.bindActionCreators = c.default,
+            t.bindActionCreators = u.default,
             t.applyMiddleware = p.default,
             t.compose = d.default
     }
@@ -9342,7 +9401,7 @@
                     throw new Error("Expected the nextReducer to be a function.");
                 f = e,
                     l({
-                        type: c.INIT
+                        type: u.INIT
                     })
             }
             function h() {
@@ -9361,7 +9420,7 @@
                         }
                     }
                 },
-                    e[u.default] = function() {
+                    e[c.default] = function() {
                         return this
                     }
                     ,
@@ -9383,7 +9442,7 @@
                 , y = v
                 , g = !1;
             return l({
-                type: c.INIT
+                type: u.INIT
             }),
                 d = {
                     dispatch: l,
@@ -9391,7 +9450,7 @@
                     getState: i,
                     replaceReducer: p
                 },
-                d[u.default] = h,
+                d[c.default] = h,
                 d
         }
         t.__esModule = !0,
@@ -9400,8 +9459,8 @@
         var i = n(188)
             , a = r(i)
             , s = n(198)
-            , u = r(s)
-            , c = t.ActionTypes = {
+            , c = r(s)
+            , u = t.ActionTypes = {
             INIT: "@@redux/INIT"
         }
     }
@@ -9419,24 +9478,24 @@
             , i = n(195)
             , a = n(197)
             , s = "[object Object]"
-            , u = Function.prototype
-            , c = Object.prototype
-            , l = u.toString
-            , p = c.hasOwnProperty
+            , c = Function.prototype
+            , u = Object.prototype
+            , l = c.toString
+            , p = u.hasOwnProperty
             , h = l.call(Object);
         e.exports = r
     }
     , function(e, t, n) {
         function r(e) {
-            return null == e ? void 0 === e ? u : s : (e = Object(e),
-                    c && c in e ? i(e) : a(e))
+            return null == e ? void 0 === e ? c : s : (e = Object(e),
+                    u && u in e ? i(e) : a(e))
         }
         var o = n(190)
             , i = n(193)
             , a = n(194)
             , s = "[object Null]"
-            , u = "[object Undefined]"
-            , c = o ? o.toStringTag : void 0;
+            , c = "[object Undefined]"
+            , u = o ? o.toStringTag : void 0;
         e.exports = r
     }
     , function(e, t, n) {
@@ -9461,21 +9520,21 @@
     }
     , function(e, t, n) {
         function r(e) {
-            var t = a.call(e, u)
-                , n = e[u];
+            var t = a.call(e, c)
+                , n = e[c];
             try {
-                e[u] = void 0;
+                e[c] = void 0;
                 var r = !0
             } catch (e) {}
             var o = s.call(e);
-            return r && (t ? e[u] = n : delete e[u]),
+            return r && (t ? e[c] = n : delete e[c]),
                 o
         }
         var o = n(190)
             , i = Object.prototype
             , a = i.hasOwnProperty
             , s = i.toString
-            , u = o ? o.toStringTag : void 0;
+            , c = o ? o.toStringTag : void 0;
         e.exports = r
     }
     , function(e, t) {
@@ -9521,9 +9580,9 @@
                 });
                 var i, a = n(201), s = o(a);
                 i = "undefined" != typeof self ? self : "undefined" != typeof window ? window : "undefined" != typeof e ? e : r;
-                var u = (0,
+                var c = (0,
                     s.default)(i);
-                t.default = u
+                t.default = c
             }
         ).call(t, function() {
             return this
@@ -9584,7 +9643,7 @@
                 var a = t[r];
                 "function" == typeof e[a] && (n[a] = e[a])
             }
-            var s, u = Object.keys(n);
+            var s, c = Object.keys(n);
             try {
                 i(n)
             } catch (e) {
@@ -9595,16 +9654,16 @@
                     , t = arguments[1];
                 if (s)
                     throw s;
-                for (var r = !1, i = {}, a = 0; a < u.length; a++) {
-                    var c = u[a]
-                        , l = n[c]
-                        , p = e[c]
+                for (var r = !1, i = {}, a = 0; a < c.length; a++) {
+                    var u = c[a]
+                        , l = n[u]
+                        , p = e[u]
                         , h = l(p, t);
                     if ("undefined" == typeof h) {
-                        var d = o(c, t);
+                        var d = o(u, t);
                         throw new Error(d)
                     }
-                    i[c] = h,
+                    i[u] = h,
                         r = r || h !== p
                 }
                 return r ? i : e
@@ -9613,10 +9672,10 @@
         t.__esModule = !0,
             t.default = a;
         var s = n(187)
-            , u = n(188)
-            , c = (r(u),
+            , c = n(188)
+            , u = (r(c),
             n(203));
-        r(c)
+        r(u)
     }
     , function(e, t) {
         "use strict";
@@ -9664,20 +9723,20 @@
             return function(e) {
                 return function(n, r, o) {
                     var a = e(n, r, o)
-                        , u = a.dispatch
-                        , c = []
+                        , c = a.dispatch
+                        , u = []
                         , l = {
                         getState: a.getState,
                         dispatch: function(e) {
-                            return u(e)
+                            return c(e)
                         }
                     };
-                    return c = t.map(function(e) {
+                    return u = t.map(function(e) {
                         return e(l)
                     }),
-                        u = s.default.apply(void 0, c)(a.dispatch),
+                        c = s.default.apply(void 0, u)(a.dispatch),
                         i({}, a, {
-                            dispatch: u
+                            dispatch: c
                         })
                 }
             }
@@ -9757,19 +9816,19 @@
         "use strict";
         var r = function(e, t, n, r, o, i, a, s) {
             if (!e) {
-                var u;
+                var c;
                 if (void 0 === t)
-                    u = new Error("Minified exception occurred; use the non-minified dev environment for the full error message and additional helpful warnings.");
+                    c = new Error("Minified exception occurred; use the non-minified dev environment for the full error message and additional helpful warnings.");
                 else {
-                    var c = [n, r, o, i, a, s]
+                    var u = [n, r, o, i, a, s]
                         , l = 0;
-                    u = new Error(t.replace(/%s/g, function() {
-                        return c[l++]
+                    c = new Error(t.replace(/%s/g, function() {
+                        return u[l++]
                     })),
-                        u.name = "Invariant Violation"
+                        c.name = "Invariant Violation"
                 }
-                throw u.framesToPop = 1,
-                    u
+                throw c.framesToPop = 1,
+                    c
             }
         };
         e.exports = r
@@ -9782,116 +9841,139 @@
         "use strict";
         function n(e) {
             return {
-                type: c,
+                type: p,
                 queue_id: e
             }
         }
         function r(e) {
             return {
-                type: l,
+                type: h,
                 stars: e
             }
         }
         function o(e) {
             return {
-                type: p,
+                type: d,
                 rank: e
             }
         }
         function i(e) {
             return {
-                type: h,
+                type: f,
                 data: e
             }
         }
         function a(e) {
             return {
-                type: d,
+                type: m,
                 team_id: e
             }
         }
         function s(e) {
             return {
-                type: f,
+                type: v,
+                data: e
+            }
+        }
+        function c(e) {
+            return {
+                type: y,
                 data: e
             }
         }
         function u() {
             return {
-                type: m
+                type: g
             }
         }
-        var c = "MainMenu_play"
-            , l = "MainMenu_stars"
-            , p = "MainMenu_rank"
-            , h = "MainMenu_replaylist"
-            , d = "MainMenu_joinTeam"
-            , f = "MainMenu_leaderboard"
-            , m = "MainMenu_closeRemovedFrom2v2";
+        function l() {
+            return {
+                type: T
+            }
+        }
+        var p = "MainMenu_play"
+            , h = "MainMenu_stars"
+            , d = "MainMenu_rank"
+            , f = "MainMenu_replaylist"
+            , m = "MainMenu_joinTeam"
+            , v = "MainMenu_leaderboard"
+            , y = "MainMenu_2v2teammates"
+            , g = "MainMenu_closeRemovedFrom2v2"
+            , T = "MainMenu_notifyServerRestart";
         e.exports = {
-            ACTION_PLAY: c,
-            ACTION_STARS: l,
-            ACTION_RANK: p,
-            ACTION_REPLAYLIST: h,
-            ACTION_JOIN_TEAM: d,
-            ACTION_LEADERBOARD: f,
-            ACTION_CLOSE_REMOVED_FROM_2V2: m,
+            ACTION_PLAY: p,
+            ACTION_STARS: h,
+            ACTION_RANK: d,
+            ACTION_REPLAYLIST: f,
+            ACTION_JOIN_TEAM: m,
+            ACTION_LEADERBOARD: v,
+            ACTION_SET_2V2_TEAMMATES: y,
+            ACTION_CLOSE_REMOVED_FROM_2V2: g,
+            ACTION_NOTIFY_SERVER_RESTART: T,
             play: n,
             stars: r,
             rank: o,
             receiveReplayList: i,
             joinTeam: a,
             leaderboard: s,
-            closeRemovedFrom2v2: u
+            set2v2Teammates: c,
+            closeRemovedFrom2v2: u,
+            notifyServerRestart: l
         }
     }
     , function(e, t, n) {
         "use strict";
         function r() {
-            return B.connected
+            return L.connected
         }
         function o() {
-            B.emit("stars_and_rank", S)
+            L.emit("stars_and_rank", A)
         }
         function i(e) {
-            B.emit("play", e, S),
-                B.emit("set_username", S, e)
+            L.emit("play", e, A)
         }
         function a(e) {
-            B.emit("join_1v1", e, S)
+            L.emit("join_1v1", e, A)
         }
         function s(e, t) {
-            B.emit("join_private", e, t, S),
-                B.emit("set_username", S, t)
+            L.emit("join_private", e, t, A)
         }
-        function u(e, t) {
-            B.emit("set_custom_team", e, t)
+        function c(e, t) {
+            L.emit("set_custom_team", e, t)
         }
-        function c(e, t, n, r) {
-            A.getState().game.isLocalGame ? I.handleAttack(e, t, n, r) : B.emit("attack", e, t, n, r)
+        function u(e, t, n, r) {
+            P.getState().game.isLocalGame ? O.handleAttack(e, t, n, r) : L.emit("attack", e, t, n, r)
         }
-        function l() {
-            B.emit("cancel", A.getState().queue.queue_id)
+        function l(e) {
+            L.emit("ping_tile", e),
+                P.dispatch(M.cleanPings(e)),
+                P.dispatch(M.pingTile(e))
         }
-        function p(e) {
-            B.emit("set_force_start", A.getState().queue.queue_id, e)
+        function p() {
+            L.emit("cancel", P.getState().queue.queue_id)
         }
-        function h(e, t, n) {
-            B.emit("chat_message", e, t, n)
+        function h(e) {
+            L.emit("set_force_start", P.getState().queue.queue_id, e)
         }
-        function d(e) {
-            B.emit("leaderboard", e)
+        function d(e, t, n, r) {
+            L.emit("chat_message", e, t, n, r)
         }
-        function f() {
-            B.emit("leave_game")
+        function f(e) {
+            L.emit("leaderboard", e)
         }
         function m() {
-            A.getState().game.isLocalGame ? I.handleUndoMove() : B.emit("undo_move")
+            L.emit("get_2v2_teammates", A)
         }
         function v() {
-            A.getState().game.isLocalGame ? I.handleClearMoves() : B.emit("clear_moves")
+            L.emit("leave_game")
         }
-        function y(e, t) {
+        function y() {
+            P.getState().game.isLocalGame ? O.handleUndoMove() : L.emit("undo_move")
+        }
+        function g() {
+            P.getState().game.isLocalGame ? O.handleClearMoves() : L.emit("clear_moves")
+        }
+        function T(e, t) {
             var n = new XMLHttpRequest;
             n.open("GET", "/" + e + ".gior"),
                 n.responseType = "arraybuffer",
@@ -9901,113 +9983,131 @@
                 ,
                 n.send()
         }
-        function g(e) {
-            B.emit("replay_list", {
-                user_id: S,
+        function b(e) {
+            L.emit("replay_list", {
+                user_id: A,
                 max_time: e
             })
         }
-        function T(e, t) {
-            B.emit("join_team", e, t, S)
+        function S(e, t) {
+            L.emit("join_team", e, t, A)
         }
-        function b(e) {
-            B.emit("leave_team", e)
+        function E(e) {
+            L.emit("leave_team", e)
         }
-        var S, E = n(212), A = n(265), C = n(210), P = n(269), _ = n(267), M = n(277), w = n(278), k = n(287), x = n(176), I = n(288), N = n(271);
-        if (k && k.user_id ? S = k.user_id : (S = w(),
-                k && (k.user_id = S)),
-                console.log("user_id: " + S),
-                k)
+        var A, C = n(212), P = n(265), _ = n(210), M = n(269), w = n(267), k = n(278), x = n(279), I = n(288), N = n(176), O = n(289), R = n(271);
+        if (I && I.user_id ? A = I.user_id : (A = x(),
+                I && (I.user_id = A)),
+                console.log("user_id: " + A),
+                I)
             try {
-                if (k.hasOwnProperty("stars")) {
-                    console.log("cached stars: " + k.stars);
-                    var O = JSON.parse(k.stars);
-                    A.dispatch(C.stars(O))
+                if (I.hasOwnProperty("stars")) {
+                    console.log("cached stars: " + I.stars);
+                    var D = JSON.parse(I.stars);
+                    P.dispatch(_.stars(D))
                 }
-                if (k.hasOwnProperty("rank")) {
-                    console.log("cached rank: " + k.rank);
-                    var R = JSON.parse(k.rank);
-                    A.dispatch(C.rank(R))
+                if (I.hasOwnProperty("rank")) {
+                    console.log("cached rank: " + I.rank);
+                    var B = JSON.parse(I.rank);
+                    P.dispatch(_.rank(B))
                 }
             } catch (e) {
-                A.dispatch(C.stars({})),
-                    A.dispatch(C.rank({}))
+                P.dispatch(_.stars({})),
+                    P.dispatch(_.rank({}))
             }
-        var D = "http://ws.generals.io";
-        "localhost" === window.location.hostname && (D = "http://localhost:8080"),
-        window.location.hostname.indexOf("ngrok") >= 0 && (D = window.location.toString()),
-        "eu." === window.location.hostname.substring(0, 3) && (D = "http://euws.generals.io");
-        var B = E(D, {
-            transports: ["websocket"]
-        })
-            , G = !1;
-        B.on("connect", function() {
-            G ? console.log("Reconnected to server.") : console.log("Connected to server."),
-                G = !0,
+        var G = window.location.hostname;
+        switch (G) {
+            case "localhost":
+                G = "//localhost:8080";
+                break;
+            case "generals.io":
+                G = "//ws.generals.io";
+                break;
+            case "eu.generals.io":
+                G = "//euws.generals.io"
+        }
+        var L = C(G)
+            , H = !1;
+        L.on("connect", function() {
+            H ? console.log("Reconnected to server.") : console.log("Connected to server."),
+                H = !0,
                 o()
         }),
-            B.on("disconnect", function() {
+            L.on("disconnect", function() {
                 console.log("Disconnected from server."),
-                A.getState().page !== x.PAGE_GAME || A.getState().game.isLocalGame || alert("Disconnected from server. Please refresh the page.")
+                P.getState().page !== N.PAGE_GAME || P.getState().game.isLocalGame || alert("Disconnected from server. Please refresh the page.")
             }),
-            B.on("pre_game_start", function() {
-                A.dispatch(P.prestart())
+            L.on("pre_game_start", function() {
+                P.dispatch(M.prestart())
             }),
-            B.on("game_start", function(e) {
-                A.dispatch(P.start(e))
+            L.on("game_start", function(e) {
+                P.dispatch(M.start(e))
             }),
-            B.on("game_update", function(e) {
-                A.dispatch(P.update(e))
+            L.on("game_update", function(e) {
+                P.dispatch(M.update(e))
             }),
-            B.on("queue_update", function(e) {
-                A.dispatch(_.update(e))
+            L.on("game_over", function() {
+                P.dispatch(M.end())
             }),
-            B.on("team_update", function(e) {
-                A.dispatch(_.update({
+            L.on("ping_tile", function(e) {
+                P.dispatch(M.pingTile(e))
+            }),
+            L.on("queue_update", function(e) {
+                P.dispatch(w.update(e))
+            }),
+            L.on("team_update", function(e) {
+                P.dispatch(w.update({
                     numPlayers: e
                 }))
             }),
-            B.on("team_joined_queue", function() {
-                N.changeURL("/"),
-                    A.dispatch(C.play("2v2"))
+            L.on("team_joined_queue", function() {
+                R.changeURL("/"),
+                    P.dispatch(_.play("2v2"))
             }),
-            B.on("removed_from_queue", function() {
-                A.dispatch(_.removeFrom2v2())
+            L.on("removed_from_queue", function() {
+                P.dispatch(w.removeFrom2v2())
             }),
-            B.on("chat_message", function(e, t) {
-                A.dispatch(M.receiveMessage(e, t))
+            L.on("chat_message", function(e, t) {
+                P.dispatch(k.receiveMessage(e, t))
             }),
-            B.on("game_lost", function(e) {
-                A.dispatch(P.lose(e))
+            L.on("game_lost", function(e) {
+                P.dispatch(M.lose(e))
             }),
-            B.on("game_won", function(e) {
-                A.dispatch(P.win(e))
+            L.on("game_won", function(e) {
+                P.dispatch(M.win(e))
             }),
-            B.on("replay_list", function(e) {
-                A.dispatch(C.receiveReplayList(e))
+            L.on("replay_list", function(e) {
+                P.dispatch(_.receiveReplayList(e))
             }),
-            B.on("server_down", function() {
+            L.on("server_down", function() {
                 window.location.reload(!1)
             }),
-            B.on("leaderboard", function(e) {
-                k && (k["leaderboard:" + e.ladder] = JSON.stringify(e)),
-                    A.dispatch(C.leaderboard(e))
+            L.on("leaderboard", function(e) {
+                I && (I["leaderboard:" + e.ladder] = JSON.stringify(e)),
+                    P.dispatch(_.leaderboard(e))
             }),
-            B.on("stars", function(e) {
+            L.on("2v2_teammates", function(e) {
+                I && (I["2v2_teammates"] = JSON.stringify(e)),
+                    P.dispatch(_.set2v2Teammates(e))
+            }),
+            L.on("stars", function(e) {
                 console.log("stars: " + JSON.stringify(e)),
-                    A.dispatch(C.stars(e))
+                    P.dispatch(_.stars(e))
             }),
-            B.on("rank", function(e) {
+            L.on("rank", function(e) {
                 console.log("rank: " + JSON.stringify(e)),
-                    A.dispatch(C.rank(e))
+                    P.dispatch(_.rank(e))
             }),
-            B.on("error_user_id", function() {
-                A.dispatch(_.cancel()),
+            L.on("error_user_id", function() {
+                P.dispatch(w.cancel()),
                     alert("You are already using this account! Make sure you don't have multiple tabs with generals.io open.\n\nIf you believe you are seeing this message in error, please email us at generalsiogame@gmail.com.")
             }),
-            B.on("error_queue_full", function() {
-                A.dispatch(_.cancel()),
+            L.on("error_queue_full", function() {
+                P.dispatch(w.cancel()),
                     alert("This game is already full.")
+            }),
+            L.on("server_restart", function() {
+                P.dispatch(_.notifyServerRestart())
             }),
             e.exports = {
                 isConnected: r,
@@ -10015,19 +10115,21 @@
                 play: i,
                 play1v1: a,
                 playPrivate: s,
-                setCustomTeam: u,
-                attack: c,
-                cancel: l,
-                setForceStart: p,
-                sendChatMessage: h,
-                getLeaderboard: d,
-                leaveGame: f,
-                undoMove: m,
-                clearMoves: v,
-                getReplay: y,
-                getReplayList: g,
-                joinTeam: T,
-                leaveTeam: b
+                setCustomTeam: c,
+                attack: u,
+                pingTile: l,
+                cancel: p,
+                setForceStart: h,
+                sendChatMessage: d,
+                getLeaderboard: f,
+                get2v2Teammates: m,
+                leaveGame: v,
+                undoMove: y,
+                clearMoves: g,
+                getReplay: T,
+                getReplayList: b,
+                joinTeam: S,
+                leaveTeam: E
             }
         window.gameCtrl = e.exports;
     }
@@ -10036,11 +10138,11 @@
             "object" == typeof e && (t = e,
                 e = void 0),
                 t = t || {};
-            var n, r = i(e), a = r.source, l = r.id, p = r.path, h = c[l] && p in c[l].nsps, d = t.forceNew || t["force new connection"] || !1 === t.multiplex || h;
-            return d ? (u("ignoring socket cache for %s", a),
-                    n = s(a, t)) : (c[l] || (u("new io instance for %s", a),
-                    c[l] = s(a, t)),
-                    n = c[l]),
+            var n, r = i(e), a = r.source, l = r.id, p = r.path, h = u[l] && p in u[l].nsps, d = t.forceNew || t["force new connection"] || !1 === t.multiplex || h;
+            return d ? (c("ignoring socket cache for %s", a),
+                    n = s(a, t)) : (u[l] || (c("new io instance for %s", a),
+                    u[l] = s(a, t)),
+                    n = u[l]),
                 r.query && !t.query ? t.query = r.query : t && "object" == typeof t.query && (t.query = o(t.query)),
                 n.socket(r.path, t)
         }
@@ -10053,9 +10155,9 @@
         var i = n(213)
             , a = n(218)
             , s = n(228)
-            , u = n(215)("socket.io-client");
+            , c = n(215)("socket.io-client");
         e.exports = t = r;
-        var c = t.managers = {};
+        var u = t.managers = {};
         t.protocol = a.protocol,
             t.connect = r,
             t.Manager = n(228),
@@ -10096,8 +10198,8 @@
                 , o = e.indexOf("[")
                 , i = e.indexOf("]");
             o != -1 && i != -1 && (e = e.substring(0, o) + e.substring(o, i).replace(/:/g, ";") + e.substring(i, e.length));
-            for (var a = n.exec(e || ""), s = {}, u = 14; u--; )
-                s[r[u]] = a[u] || "";
+            for (var a = n.exec(e || ""), s = {}, c = 14; c--; )
+                s[r[c]] = a[c] || "";
             return o != -1 && i != -1 && (s.source = t,
                 s.host = s.host.substring(1, s.host.length - 1).replace(/;/g, ":"),
                 s.authority = s.authority.replace("[", "").replace("]", "").replace(/;/g, ":"),
@@ -10105,7 +10207,7 @@
                 s
         }
     }
-    , [325, 216], [326, 217], function(e, t) {
+    , [327, 216], [328, 217], function(e, t) {
         function n(e) {
             if (e = String(e),
                     !(e.length > 1e4)) {
@@ -10123,13 +10225,13 @@
                         case "days":
                         case "day":
                         case "d":
-                            return n * c;
+                            return n * u;
                         case "hours":
                         case "hour":
                         case "hrs":
                         case "hr":
                         case "h":
-                            return n * u;
+                            return n * c;
                         case "minutes":
                         case "minute":
                         case "mins":
@@ -10155,10 +10257,10 @@
             }
         }
         function r(e) {
-            return e >= c ? Math.round(e / c) + "d" : e >= u ? Math.round(e / u) + "h" : e >= s ? Math.round(e / s) + "m" : e >= a ? Math.round(e / a) + "s" : e + "ms"
+            return e >= u ? Math.round(e / u) + "d" : e >= c ? Math.round(e / c) + "h" : e >= s ? Math.round(e / s) + "m" : e >= a ? Math.round(e / a) + "s" : e + "ms"
         }
         function o(e) {
-            return i(e, c, "day") || i(e, u, "hour") || i(e, s, "minute") || i(e, a, "second") || e + " ms"
+            return i(e, u, "day") || i(e, c, "hour") || i(e, s, "minute") || i(e, a, "second") || e + " ms"
         }
         function i(e, t, n) {
             if (!(e < t))
@@ -10166,9 +10268,9 @@
         }
         var a = 1e3
             , s = 60 * a
-            , u = 60 * s
-            , c = 24 * u
-            , l = 365.25 * c;
+            , c = 60 * s
+            , u = 24 * c
+            , l = 365.25 * u;
         e.exports = function(e, t) {
             t = t || {};
             var i = typeof e;
@@ -10249,11 +10351,11 @@
                 }
                 n.id = Number(n.id)
             }
-            return e.charAt(++r) && (n = u(n, e.substr(r))),
+            return e.charAt(++r) && (n = c(n, e.substr(r))),
                 p("decoded %s as %j", e, n),
                 n
         }
-        function u(e, t) {
+        function c(e, t) {
             try {
                 e.data = h.parse(t)
             } catch (e) {
@@ -10261,7 +10363,7 @@
             }
             return e
         }
-        function c(e) {
+        function u(e) {
             this.reconPack = e,
                 this.buffers = []
         }
@@ -10302,7 +10404,7 @@
                 var n;
                 if ("string" == typeof e)
                     n = s(e),
-                        t.BINARY_EVENT == n.type || t.BINARY_ACK == n.type ? (this.reconstructor = new c(n),
+                        t.BINARY_EVENT == n.type || t.BINARY_ACK == n.type ? (this.reconstructor = new u(n),
                             0 === this.reconstructor.reconPack.attachments && this.emit("decoded", n)) : this.emit("decoded", n);
                 else {
                     if (!m(e) && !e.base64)
@@ -10319,7 +10421,7 @@
                 this.reconstructor && this.reconstructor.finishedReconstruction()
             }
             ,
-            c.prototype.takeBinaryData = function(e) {
+            u.prototype.takeBinaryData = function(e) {
                 if (this.buffers.push(e),
                     this.buffers.length == this.reconPack.attachments) {
                     var t = f.reconstructPacket(this.reconPack, this.buffers);
@@ -10329,7 +10431,7 @@
                 return null
             }
             ,
-            c.prototype.finishedReconstruction = function() {
+            u.prototype.finishedReconstruction = function() {
                 this.reconPack = null,
                     this.buffers = []
             }
@@ -10370,7 +10472,7 @@
             } catch (e) {}
             return e
         }
-        function u() {
+        function c() {
             try {
                 return window.localStorage
             } catch (e) {}
@@ -10381,7 +10483,7 @@
             t.save = a,
             t.load = s,
             t.useColors = r,
-            t.storage = "undefined" != typeof chrome && "undefined" != typeof chrome.storage ? chrome.storage.local : u(),
+            t.storage = "undefined" != typeof chrome && "undefined" != typeof chrome.storage ? chrome.storage.local : c(),
             t.colors = ["lightseagreen", "forestgreen", "goldenrod", "dodgerblue", "darkorchid", "crimson"],
             t.formatters.j = function(e) {
                 return JSON.stringify(e)
@@ -10398,11 +10500,11 @@
             function o() {
                 var e = o
                     , n = +new Date
-                    , i = n - (c || n);
+                    , i = n - (u || n);
                 e.diff = i,
-                    e.prev = c,
+                    e.prev = u,
                     e.curr = n,
-                    c = n,
+                    u = n,
                 null == e.useColors && (e.useColors = t.useColors()),
                 null == e.color && e.useColors && (e.color = r());
                 var a = Array.prototype.slice.call(arguments);
@@ -10423,8 +10525,8 @@
                     return n
                 }),
                 "function" == typeof t.formatArgs && (a = t.formatArgs.apply(e, a));
-                var u = o.log || t.log || console.log.bind(console);
-                u.apply(e, a)
+                var c = o.log || t.log || console.log.bind(console);
+                c.apply(e, a)
             }
             n.enabled = !1,
                 o.enabled = !0;
@@ -10453,11 +10555,11 @@
                     return !0;
             return !1
         }
-        function u(e) {
+        function c(e) {
             return e instanceof Error ? e.stack || e.message : e
         }
         t = e.exports = o,
-            t.coerce = u,
+            t.coerce = c,
             t.disable = a,
             t.enable = i,
             t.enabled = s,
@@ -10465,7 +10567,7 @@
             t.names = [],
             t.skips = [],
             t.formatters = {};
-        var c, l = 0
+        var u, l = 0
     }
     , function(e, t) {
         function n(e) {
@@ -10485,13 +10587,13 @@
                         case "days":
                         case "day":
                         case "d":
-                            return n * c;
+                            return n * u;
                         case "hours":
                         case "hour":
                         case "hrs":
                         case "hr":
                         case "h":
-                            return n * u;
+                            return n * c;
                         case "minutes":
                         case "minute":
                         case "mins":
@@ -10515,10 +10617,10 @@
             }
         }
         function r(e) {
-            return e >= c ? Math.round(e / c) + "d" : e >= u ? Math.round(e / u) + "h" : e >= s ? Math.round(e / s) + "m" : e >= a ? Math.round(e / a) + "s" : e + "ms"
+            return e >= u ? Math.round(e / u) + "d" : e >= c ? Math.round(e / c) + "h" : e >= s ? Math.round(e / s) + "m" : e >= a ? Math.round(e / a) + "s" : e + "ms"
         }
         function o(e) {
-            return i(e, c, "day") || i(e, u, "hour") || i(e, s, "minute") || i(e, a, "second") || e + " ms"
+            return i(e, u, "day") || i(e, c, "hour") || i(e, s, "minute") || i(e, a, "second") || e + " ms"
         }
         function i(e, t, n) {
             if (!(e < t))
@@ -10526,9 +10628,9 @@
         }
         var a = 1e3
             , s = 60 * a
-            , u = 60 * s
-            , c = 24 * u
-            , l = 365.25 * c;
+            , c = 60 * s
+            , u = 24 * c
+            , l = 365.25 * u;
         e.exports = function(e, t) {
             return t = t || {},
                 "string" == typeof e ? n(e) : t.long ? o(e) : r(e)
@@ -10550,17 +10652,17 @@
                                 else {
                                     var a, s = '{"a":[1,true,false,null,"\\u0000\\b\\n\\f\\r\\t"]}';
                                     if ("json-stringify" == e) {
-                                        var c = t.stringify
-                                            , l = "function" == typeof c && T;
+                                        var u = t.stringify
+                                            , l = "function" == typeof u && T;
                                         if (l) {
                                             (a = function() {
                                                     return 1
                                                 }
                                             ).toJSON = a;
                                             try {
-                                                l = "0" === c(0) && "0" === c(new r) && '""' == c(new o) && c(g) === v && c(v) === v && c() === v && "1" === c(a) && "[1]" == c([a]) && "[null]" == c([v]) && "null" == c(null) && "[null,null,null]" == c([v, g, null]) && c({
+                                                l = "0" === u(0) && "0" === u(new r) && '""' == u(new o) && u(g) === v && u(v) === v && u() === v && "1" === u(a) && "[1]" == u([a]) && "[null]" == u([v]) && "null" == u(null) && "[null,null,null]" == u([v, g, null]) && u({
                                                         a: [a, !0, !1, null, "\0\b\n\f\r\t"]
-                                                    }) == s && "1" === c(null, a) && "[\n 1,\n 2\n]" == c([1, 2], null, 1) && '"-271821-04-20T00:00:00.000Z"' == c(new u(-864e13)) && '"+275760-09-13T00:00:00.000Z"' == c(new u(864e13)) && '"-000001-01-01T00:00:00.000Z"' == c(new u(-621987552e5)) && '"1969-12-31T23:59:59.999Z"' == c(new u(-1))
+                                                    }) == s && "1" === u(null, a) && "[\n 1,\n 2\n]" == u([1, 2], null, 1) && '"-271821-04-20T00:00:00.000Z"' == u(new c(-864e13)) && '"+275760-09-13T00:00:00.000Z"' == u(new c(864e13)) && '"-000001-01-01T00:00:00.000Z"' == u(new c(-621987552e5)) && '"1969-12-31T23:59:59.999Z"' == u(new c(-1))
                                             } catch (e) {
                                                 l = !1
                                             }
@@ -10596,19 +10698,19 @@
                                 }
                                 return n[e] = !!i
                             }
-                            e || (e = c.Object()),
-                            t || (t = c.Object());
-                            var r = e.Number || c.Number
-                                , o = e.String || c.String
-                                , a = e.Object || c.Object
-                                , u = e.Date || c.Date
-                                , l = e.SyntaxError || c.SyntaxError
-                                , p = e.TypeError || c.TypeError
-                                , h = e.Math || c.Math
-                                , d = e.JSON || c.JSON;
+                            e || (e = u.Object()),
+                            t || (t = u.Object());
+                            var r = e.Number || u.Number
+                                , o = e.String || u.String
+                                , a = e.Object || u.Object
+                                , c = e.Date || u.Date
+                                , l = e.SyntaxError || u.SyntaxError
+                                , p = e.TypeError || u.TypeError
+                                , h = e.Math || u.Math
+                                , d = e.JSON || u.JSON;
                             "object" == typeof d && d && (t.stringify = d.stringify,
                                 t.parse = d.parse);
-                            var f, m, v, y = a.prototype, g = y.toString, T = new u(-0xc782b5b800cec);
+                            var f, m, v, y = a.prototype, g = y.toString, T = new c(-0xc782b5b800cec);
                             try {
                                 T = T.getUTCFullYear() == -109252 && 0 === T.getUTCMonth() && 1 === T.getUTCDate() && 10 == T.getUTCHours() && 37 == T.getUTCMinutes() && 6 == T.getUTCSeconds() && 708 == T.getUTCMilliseconds()
                             } catch (e) {}
@@ -10721,47 +10823,47 @@
                                         return t + '"'
                                     }
                                         , D = function(e, t, n, r, o, i, a) {
-                                        var s, u, c, l, h, d, y, T, b, _, w, x, I, O, B, G;
+                                        var s, c, u, l, h, d, y, T, b, _, w, x, I, O, B, G;
                                         try {
                                             s = t[e]
                                         } catch (e) {}
                                         if ("object" == typeof s && s)
-                                            if (u = g.call(s),
-                                                u != S || f.call(s, "toJSON"))
-                                                "function" == typeof s.toJSON && (u != E && u != A && u != C || f.call(s, "toJSON")) && (s = s.toJSON(e));
+                                            if (c = g.call(s),
+                                                c != S || f.call(s, "toJSON"))
+                                                "function" == typeof s.toJSON && (c != E && c != A && c != C || f.call(s, "toJSON")) && (s = s.toJSON(e));
                                             else if (s > -1 / 0 && s < 1 / 0) {
                                                 if (k) {
                                                     for (h = M(s / 864e5),
-                                                             c = M(h / 365.2425) + 1970 - 1; k(c + 1, 0) <= h; c++)
+                                                             u = M(h / 365.2425) + 1970 - 1; k(u + 1, 0) <= h; u++)
                                                         ;
-                                                    for (l = M((h - k(c, 0)) / 30.42); k(c, l + 1) <= h; l++)
+                                                    for (l = M((h - k(u, 0)) / 30.42); k(u, l + 1) <= h; l++)
                                                         ;
-                                                    h = 1 + h - k(c, l),
+                                                    h = 1 + h - k(u, l),
                                                         d = (s % 864e5 + 864e5) % 864e5,
                                                         y = M(d / 36e5) % 24,
                                                         T = M(d / 6e4) % 60,
                                                         b = M(d / 1e3) % 60,
                                                         _ = d % 1e3
                                                 } else
-                                                    c = s.getUTCFullYear(),
+                                                    u = s.getUTCFullYear(),
                                                         l = s.getUTCMonth(),
                                                         h = s.getUTCDate(),
                                                         y = s.getUTCHours(),
                                                         T = s.getUTCMinutes(),
                                                         b = s.getUTCSeconds(),
                                                         _ = s.getUTCMilliseconds();
-                                                s = (c <= 0 || c >= 1e4 ? (c < 0 ? "-" : "+") + N(6, c < 0 ? -c : c) : N(4, c)) + "-" + N(2, l + 1) + "-" + N(2, h) + "T" + N(2, y) + ":" + N(2, T) + ":" + N(2, b) + "." + N(3, _) + "Z"
+                                                s = (u <= 0 || u >= 1e4 ? (u < 0 ? "-" : "+") + N(6, u < 0 ? -u : u) : N(4, u)) + "-" + N(2, l + 1) + "-" + N(2, h) + "T" + N(2, y) + ":" + N(2, T) + ":" + N(2, b) + "." + N(3, _) + "Z"
                                             } else
                                                 s = null;
                                         if (n && (s = n.call(t, e, s)),
                                             null === s)
                                             return "null";
-                                        if (u = g.call(s),
-                                            u == P)
+                                        if (c = g.call(s),
+                                            c == P)
                                             return "" + s;
-                                        if (u == E)
+                                        if (c == E)
                                             return s > -1 / 0 && s < 1 / 0 ? "" + s : "null";
-                                        if (u == A)
+                                        if (c == A)
                                             return R("" + s);
                                         if ("object" == typeof s) {
                                             for (O = a.length; O--; )
@@ -10771,7 +10873,7 @@
                                                     w = [],
                                                     B = i,
                                                     i += o,
-                                                u == C) {
+                                                c == C) {
                                                 for (I = 0,
                                                          O = s.length; I < O; I++)
                                                     x = D(I, s, n, r, o, i, a),
@@ -10794,9 +10896,9 @@
                                                 o = t;
                                             else if (a == C) {
                                                 i = {};
-                                                for (var u, c = 0, l = t.length; c < l; u = t[c++],
-                                                    a = g.call(u),
-                                                (a == A || a == E) && (i[u] = 1))
+                                                for (var c, u = 0, l = t.length; u < l; c = t[u++],
+                                                    a = g.call(c),
+                                                (a == A || a == E) && (i[c] = 1))
                                                     ;
                                             }
                                         if (n)
@@ -10807,9 +10909,9 @@
                                                         ;
                                             } else
                                                 a == A && (r = n.length <= 10 ? n : n.slice(0, 10));
-                                        return D("", (u = {},
-                                            u[""] = e,
-                                            u), o, i, r, "", [])
+                                        return D("", (c = {},
+                                            c[""] = e,
+                                            c), o, i, r, "", [])
                                     }
                                 }
                                 if (!n("json-parse")) {
@@ -10989,26 +11091,26 @@
                             function: !0,
                             object: !0
                         }
-                            , u = s[typeof t] && t && !t.nodeType && t
-                            , c = s[typeof window] && window || this
-                            , l = u && s[typeof e] && e && !e.nodeType && "object" == typeof o && o;
-                        if (!l || l.global !== l && l.window !== l && l.self !== l || (c = l),
-                            u && !a)
-                            i(c, u);
+                            , c = s[typeof t] && t && !t.nodeType && t
+                            , u = s[typeof window] && window || this
+                            , l = c && s[typeof e] && e && !e.nodeType && "object" == typeof o && o;
+                        if (!l || l.global !== l && l.window !== l && l.self !== l || (u = l),
+                            c && !a)
+                            i(u, c);
                         else {
-                            var p = c.JSON
-                                , h = c.JSON3
+                            var p = u.JSON
+                                , h = u.JSON3
                                 , d = !1
-                                , f = i(c, c.JSON3 = {
+                                , f = i(u, u.JSON3 = {
                                 noConflict: function() {
                                     return d || (d = !0,
-                                        c.JSON = p,
-                                        c.JSON3 = h,
+                                        u.JSON = p,
+                                        u.JSON3 = h,
                                         p = h = null),
                                         f
                                 }
                             });
-                            c.JSON = {
+                            u.JSON = {
                                 parse: f.parse,
                                 stringify: f.stringify
                             }
@@ -11124,8 +11226,8 @@
                         }
                         if ("object" == typeof e && !(e instanceof Date)) {
                             var a = {};
-                            for (var u in e)
-                                a[u] = t(e[u]);
+                            for (var c in e)
+                                a[c] = t(e[c]);
                             return a
                         }
                         return e
@@ -11165,14 +11267,14 @@
                     }
                     ,
                     t.removeBlobs = function(t, n) {
-                        function i(t, u, c) {
+                        function i(t, c, u) {
                             if (!t)
                                 return t;
                             if (e.Blob && t instanceof Blob || e.File && t instanceof File) {
                                 a++;
                                 var l = new FileReader;
                                 l.onload = function() {
-                                    c ? c[u] = this.result : s = this.result,
+                                    u ? u[c] = this.result : s = this.result,
                                     --a || n(s)
                                 }
                                     ,
@@ -11245,8 +11347,8 @@
             , i = n(258)
             , a = n(259)
             , s = n(218)
-            , u = n(261)
-            , c = n(262)
+            , c = n(261)
+            , u = n(262)
             , l = n(215)("socket.io-client:manager")
             , p = n(256)
             , h = n(264)
@@ -11311,11 +11413,11 @@
                     , r = this;
                 this.readyState = "opening",
                     this.skipReconnect = !1;
-                var i = u(n, "open", function() {
+                var i = c(n, "open", function() {
                     r.onopen(),
                     e && e()
                 })
-                    , a = u(n, "error", function(t) {
+                    , a = c(n, "error", function(t) {
                     if (l("connect_error"),
                             r.cleanup(),
                             r.readyState = "closed",
@@ -11330,7 +11432,7 @@
                 if (!1 !== this._timeout) {
                     var s = this._timeout;
                     l("connect attempt will timeout after %d", s);
-                    var c = setTimeout(function() {
+                    var u = setTimeout(function() {
                         l("connect attempt timed out after %d", s),
                             i.destroy(),
                             n.close(),
@@ -11339,7 +11441,7 @@
                     }, s);
                     this.subs.push({
                         destroy: function() {
-                            clearTimeout(c)
+                            clearTimeout(u)
                         }
                     })
                 }
@@ -11354,12 +11456,12 @@
                     this.readyState = "open",
                     this.emit("open");
                 var e = this.engine;
-                this.subs.push(u(e, "data", c(this, "ondata"))),
-                    this.subs.push(u(e, "ping", c(this, "onping"))),
-                    this.subs.push(u(e, "pong", c(this, "onpong"))),
-                    this.subs.push(u(e, "error", c(this, "onerror"))),
-                    this.subs.push(u(e, "close", c(this, "onclose"))),
-                    this.subs.push(u(this.decoder, "decoded", c(this, "ondecoded")))
+                this.subs.push(c(e, "data", u(this, "ondata"))),
+                    this.subs.push(c(e, "ping", u(this, "onping"))),
+                    this.subs.push(c(e, "pong", u(this, "onpong"))),
+                    this.subs.push(c(e, "error", u(this, "onerror"))),
+                    this.subs.push(c(e, "close", u(this, "onclose"))),
+                    this.subs.push(c(this.decoder, "decoded", u(this, "ondecoded")))
             }
             ,
             r.prototype.onping = function() {
@@ -11574,15 +11676,15 @@
                 var i = n(232)
                     , a = n(246)
                     , s = n(250)("engine.io-client:socket")
-                    , u = n(256)
-                    , c = n(238)
+                    , c = n(256)
+                    , u = n(238)
                     , l = n(214)
                     , p = n(257)
                     , h = n(247);
                 e.exports = r,
                     r.priorWebsocketSuccess = !1,
                     a(r.prototype),
-                    r.protocol = c.protocol,
+                    r.protocol = u.protocol,
                     r.Socket = r,
                     r.Transport = n(237),
                     r.transports = n(232),
@@ -11590,7 +11692,7 @@
                     r.prototype.createTransport = function(e) {
                         s('creating transport "%s"', e);
                         var t = o(this.query);
-                        t.EIO = c.protocol,
+                        t.EIO = u.protocol,
                             t.transport = e,
                         this.id && (t.sid = this.id);
                         var n = new i[e]({
@@ -11687,7 +11789,7 @@
                                                 s('pausing current transport "%s"', h.transport.name),
                                                 h.transport.pause(function() {
                                                     p || "closed" !== h.readyState && (s("changing transport and sending upgrade packet"),
-                                                        c(),
+                                                        u(),
                                                         h.setTransport(l),
                                                         l.send([{
                                                             type: "upgrade"
@@ -11707,7 +11809,7 @@
                         }
                         function n() {
                             p || (p = !0,
-                                c(),
+                                u(),
                                 l.close(),
                                 l = null)
                         }
@@ -11724,16 +11826,16 @@
                         function a() {
                             o("socket closed")
                         }
-                        function u(e) {
+                        function c(e) {
                             l && e.name !== l.name && (s('"%s" works - aborting "%s"', e.name, l.name),
                                 n())
                         }
-                        function c() {
+                        function u() {
                             l.removeListener("open", t),
                                 l.removeListener("error", o),
                                 l.removeListener("close", i),
                                 h.removeListener("close", a),
-                                h.removeListener("upgrading", u)
+                                h.removeListener("upgrading", c)
                         }
                         s('probing transport "%s"', e);
                         var l = this.createTransport(e, {
@@ -11746,7 +11848,7 @@
                             l.once("error", o),
                             l.once("close", i),
                             this.once("close", a),
-                            this.once("upgrading", u),
+                            this.once("upgrading", c),
                             l.open()
                     }
                     ,
@@ -11916,7 +12018,7 @@
                     ,
                     r.prototype.filterUpgrades = function(e) {
                         for (var t = [], n = 0, r = e.length; n < r; n++)
-                            ~u(this.transports, e[n]) && t.push(e[n]);
+                            ~c(this.transports, e[n]) && t.push(e[n]);
                         return t
                     }
             }
@@ -11927,20 +12029,20 @@
     , function(e, t, n) {
         (function(e) {
                 function r(t) {
-                    var n, r = !1, s = !1, u = !1 !== t.jsonp;
+                    var n, r = !1, s = !1, c = !1 !== t.jsonp;
                     if (e.location) {
-                        var c = "https:" === location.protocol
+                        var u = "https:" === location.protocol
                             , l = location.port;
-                        l || (l = c ? 443 : 80),
+                        l || (l = u ? 443 : 80),
                             r = t.hostname !== location.hostname || l !== t.port,
-                            s = t.secure !== c
+                            s = t.secure !== u
                     }
                     if (t.xdomain = r,
                             t.xscheme = s,
                             n = new o(t),
                         "open"in n && !t.forceJSONP)
                         return new i(t);
-                    if (!u)
+                    if (!c)
                         throw new Error("JSONP disabled");
                     return new a(t)
                 }
@@ -11991,7 +12093,7 @@
         (function(t) {
                 function r() {}
                 function o(e) {
-                    if (u.call(this, e),
+                    if (c.call(this, e),
                             this.requestTimeout = e.requestTimeout,
                             t.location) {
                         var n = "https:" === location.protocol
@@ -12029,13 +12131,13 @@
                         i.requests.hasOwnProperty(e) && i.requests[e].abort()
                 }
                 var s = n(233)
-                    , u = n(236)
-                    , c = n(246)
+                    , c = n(236)
+                    , u = n(246)
                     , l = n(248)
                     , p = n(250)("engine.io-client:polling-xhr");
                 e.exports = o,
                     e.exports.Request = i,
-                    l(o, u),
+                    l(o, c),
                     o.prototype.supportsBinary = !0,
                     o.prototype.request = function(e) {
                         return e = e || {},
@@ -12085,7 +12187,7 @@
                             this.pollXhr = e
                     }
                     ,
-                    c(i.prototype),
+                    u(i.prototype),
                     i.prototype.create = function() {
                         var e = {
                             agent: this.agent,
@@ -12224,8 +12326,8 @@
             , i = n(247)
             , a = n(238)
             , s = n(248)
-            , u = n(249)
-            , c = n(250)("engine.io-client:polling");
+            , c = n(249)
+            , u = n(250)("engine.io-client:polling");
         e.exports = r;
         var l = function() {
             var e = n(233)
@@ -12242,7 +12344,7 @@
             ,
             r.prototype.pause = function(e) {
                 function t() {
-                    c("paused"),
+                    u("paused"),
                         n.readyState = "paused",
                         e()
                 }
@@ -12250,16 +12352,16 @@
                 if (this.readyState = "pausing",
                     this.polling || !this.writable) {
                     var r = 0;
-                    this.polling && (c("we are currently polling - waiting to pause"),
+                    this.polling && (u("we are currently polling - waiting to pause"),
                         r++,
                         this.once("pollComplete", function() {
-                            c("pre-pause polling complete"),
+                            u("pre-pause polling complete"),
                             --r || t()
                         })),
-                    this.writable || (c("we are currently writing - waiting to pause"),
+                    this.writable || (u("we are currently writing - waiting to pause"),
                         r++,
                         this.once("drain", function() {
-                            c("pre-pause writing complete"),
+                            u("pre-pause writing complete"),
                             --r || t()
                         }))
                 } else
@@ -12267,7 +12369,7 @@
             }
             ,
             r.prototype.poll = function() {
-                c("polling"),
+                u("polling"),
                     this.polling = !0,
                     this.doPoll(),
                     this.emit("poll")
@@ -12275,7 +12377,7 @@
             ,
             r.prototype.onData = function(e) {
                 var t = this;
-                c("polling got data %s", e);
+                u("polling got data %s", e);
                 var n = function(e, n, r) {
                     return "opening" === t.readyState && t.onOpen(),
                         "close" === e.type ? (t.onClose(),
@@ -12284,19 +12386,19 @@
                 a.decodePayload(e, this.socket.binaryType, n),
                 "closed" !== this.readyState && (this.polling = !1,
                     this.emit("pollComplete"),
-                    "open" === this.readyState ? this.poll() : c('ignoring poll - transport state "%s"', this.readyState))
+                    "open" === this.readyState ? this.poll() : u('ignoring poll - transport state "%s"', this.readyState))
             }
             ,
             r.prototype.doClose = function() {
                 function e() {
-                    c("writing close packet"),
+                    u("writing close packet"),
                         t.write([{
                             type: "close"
                         }])
                 }
                 var t = this;
-                "open" === this.readyState ? (c("transport open - closing"),
-                        e()) : (c("transport not open - deferring close"),
+                "open" === this.readyState ? (u("transport open - closing"),
+                        e()) : (u("transport not open - deferring close"),
                         this.once("open", e))
             }
             ,
@@ -12316,7 +12418,7 @@
                 var e = this.query || {}
                     , t = this.secure ? "https" : "http"
                     , n = "";
-                !1 !== this.timestampRequests && (e[this.timestampParam] = u()),
+                !1 !== this.timestampRequests && (e[this.timestampParam] = c()),
                 this.supportsBinary || e.sid || (e.b64 = 1),
                     e = i.encode(e),
                 this.port && ("https" === t && 443 !== Number(this.port) || "http" === t && 80 !== Number(this.port)) && (n = ":" + this.port),
@@ -12445,7 +12547,7 @@
                     }
                     return e
                 }
-                function u(e, t, n) {
+                function c(e, t, n) {
                     for (var r = new Array(e.length), o = d(e.length, n), i = function(e, n, o) {
                         t(n, function(t, n) {
                             r[e] = n,
@@ -12454,8 +12556,8 @@
                     }, a = 0; a < e.length; a++)
                         i(a, e[a], o)
                 }
-                var c, l = n(239), p = n(240), h = n(241), d = n(242), f = n(243);
-                e && e.ArrayBuffer && (c = n(244));
+                var u, l = n(239), p = n(240), h = n(241), d = n(242), f = n(243);
+                e && e.ArrayBuffer && (u = n(244));
                 var m = "undefined" != typeof navigator && /Android/i.test(navigator.userAgent)
                     , v = "undefined" != typeof navigator && /PhantomJS/i.test(navigator.userAgent)
                     , y = m || v;
@@ -12480,16 +12582,16 @@
                         n = !1),
                     "function" == typeof i && (s = i,
                         i = null);
-                    var u = void 0 === t.data ? void 0 : t.data.buffer || t.data;
-                    if (e.ArrayBuffer && u instanceof ArrayBuffer)
+                    var c = void 0 === t.data ? void 0 : t.data.buffer || t.data;
+                    if (e.ArrayBuffer && c instanceof ArrayBuffer)
                         return o(t, n, s);
-                    if (S && u instanceof e.Blob)
+                    if (S && c instanceof e.Blob)
                         return a(t, n, s);
-                    if (u && u.base64)
+                    if (c && c.base64)
                         return r(t, s);
-                    var c = g[t.type];
-                    return void 0 !== t.data && (c += i ? f.encode(String(t.data)) : String(t.data)),
-                        s("" + c)
+                    var u = g[t.type];
+                    return void 0 !== t.data && (u += i ? f.encode(String(t.data)) : String(t.data)),
+                        s("" + u)
                 }
                     ,
                     t.encodeBase64Packet = function(n, r) {
@@ -12507,9 +12609,9 @@
                         try {
                             a = String.fromCharCode.apply(null, new Uint8Array(n.data))
                         } catch (e) {
-                            for (var s = new Uint8Array(n.data), u = new Array(s.length), c = 0; c < s.length; c++)
-                                u[c] = s[c];
-                            a = String.fromCharCode.apply(null, u)
+                            for (var s = new Uint8Array(n.data), c = new Array(s.length), u = 0; u < s.length; u++)
+                                c[u] = s[u];
+                            a = String.fromCharCode.apply(null, c)
                         }
                         return o += e.btoa(a),
                             r(o)
@@ -12544,7 +12646,7 @@
                     ,
                     t.decodeBase64Packet = function(e, t) {
                         var n = T[e.charAt(0)];
-                        if (!c)
+                        if (!u)
                             return {
                                 type: n,
                                 data: {
@@ -12552,7 +12654,7 @@
                                     data: e.substr(1)
                                 }
                             };
-                        var r = c.decode(e.substr(1));
+                        var r = u.decode(e.substr(1));
                         return "blob" === t && S && (r = new S([r])),
                             {
                                 type: n,
@@ -12572,7 +12674,7 @@
                         "function" == typeof n && (r = n,
                             n = null);
                         var a = p(e);
-                        return n && a ? S && !y ? t.encodePayloadAsBlob(e, r) : t.encodePayloadAsArrayBuffer(e, r) : e.length ? void u(e, i, function(e, t) {
+                        return n && a ? S && !y ? t.encodePayloadAsBlob(e, r) : t.encodePayloadAsArrayBuffer(e, r) : e.length ? void c(e, i, function(e, t) {
                                     return r(t.join(""))
                                 }) : r("0:")
                     }
@@ -12585,25 +12687,25 @@
                         var o;
                         if ("" == e)
                             return r(b, 0, 1);
-                        for (var i, a, s = "", u = 0, c = e.length; u < c; u++) {
-                            var l = e.charAt(u);
+                        for (var i, a, s = "", c = 0, u = e.length; c < u; c++) {
+                            var l = e.charAt(c);
                             if (":" != l)
                                 s += l;
                             else {
                                 if ("" == s || s != (i = Number(s)))
                                     return r(b, 0, 1);
-                                if (a = e.substr(u + 1, i),
+                                if (a = e.substr(c + 1, i),
                                     s != a.length)
                                     return r(b, 0, 1);
                                 if (a.length) {
                                     if (o = t.decodePacket(a, n, !0),
                                         b.type == o.type && b.data == o.data)
                                         return r(b, 0, 1);
-                                    var p = r(o, u + i, c);
+                                    var p = r(o, c + i, u);
                                     if (!1 === p)
                                         return
                                 }
-                                u += i,
+                                c += i,
                                     s = ""
                             }
                         }
@@ -12616,7 +12718,7 @@
                                 return n(null, e)
                             })
                         }
-                        return e.length ? void u(e, r, function(e, t) {
+                        return e.length ? void c(e, r, function(e, t) {
                                 var r = t.reduce(function(e, t) {
                                     var n;
                                     return n = "string" == typeof t ? t.length : t.byteLength,
@@ -12658,12 +12760,12 @@
                                     s[o] = parseInt(a[o]);
                                 if (s[a.length] = 255,
                                         S) {
-                                    var u = new S([t.buffer, s.buffer, e]);
-                                    n(null, u)
+                                    var c = new S([t.buffer, s.buffer, e]);
+                                    n(null, c)
                                 }
                             })
                         }
-                        u(e, r, function(e, t) {
+                        c(e, r, function(e, t) {
                             return n(new S(t))
                         })
                     }
@@ -12672,19 +12774,19 @@
                         "function" == typeof n && (r = n,
                             n = null);
                         for (var o = e, i = [], a = !1; o.byteLength > 0; ) {
-                            for (var s = new Uint8Array(o), u = 0 === s[0], c = "", l = 1; 255 != s[l]; l++) {
-                                if (c.length > 310) {
+                            for (var s = new Uint8Array(o), c = 0 === s[0], u = "", l = 1; 255 != s[l]; l++) {
+                                if (u.length > 310) {
                                     a = !0;
                                     break
                                 }
-                                c += s[l]
+                                u += s[l]
                             }
                             if (a)
                                 return r(b, 0, 1);
-                            o = h(o, 2 + c.length),
-                                c = parseInt(c);
-                            var p = h(o, 0, c);
-                            if (u)
+                            o = h(o, 2 + u.length),
+                                u = parseInt(u);
+                            var p = h(o, 0, u);
+                            if (c)
                                 try {
                                     p = String.fromCharCode.apply(null, new Uint8Array(p))
                                 } catch (e) {
@@ -12694,7 +12796,7 @@
                                         p += String.fromCharCode(d[l])
                                 }
                             i.push(p),
-                                o = h(o, c)
+                                o = h(o, u)
                         }
                         var f = i.length;
                         i.forEach(function(e, o) {
@@ -12801,23 +12903,23 @@
                                 o += T(t);
                         return o
                     }
-                    function u(e, t) {
+                    function c(e, t) {
                         return T(e >> t & 63 | 128)
                     }
-                    function c(e) {
+                    function u(e) {
                         if (0 == (4294967168 & e))
                             return T(e);
                         var t = "";
                         return 0 == (4294965248 & e) ? t = T(e >> 6 & 31 | 192) : 0 == (4294901760 & e) ? (t = T(e >> 12 & 15 | 224),
-                                    t += u(e, 6)) : 0 == (4292870144 & e) && (t = T(e >> 18 & 7 | 240),
-                                    t += u(e, 12),
-                                    t += u(e, 6)),
+                                    t += c(e, 6)) : 0 == (4292870144 & e) && (t = T(e >> 18 & 7 | 240),
+                                    t += c(e, 12),
+                                    t += c(e, 6)),
                             t += T(63 & e | 128)
                     }
                     function l(e) {
                         for (var t, n = a(e), r = n.length, o = -1, i = ""; ++o < r; )
                             t = n[o],
-                                i += c(t);
+                                i += u(t);
                         return i
                     }
                     function p() {
@@ -12907,19 +13009,19 @@
             }
                 ,
                 t.decode = function(e) {
-                    var t, r, o, i, a, s = .75 * e.length, u = e.length, c = 0;
+                    var t, r, o, i, a, s = .75 * e.length, c = e.length, u = 0;
                     "=" === e[e.length - 1] && (s--,
                     "=" === e[e.length - 2] && s--);
                     var l = new ArrayBuffer(s)
                         , p = new Uint8Array(l);
-                    for (t = 0; t < u; t += 4)
+                    for (t = 0; t < c; t += 4)
                         r = n[e.charCodeAt(t)],
                             o = n[e.charCodeAt(t + 1)],
                             i = n[e.charCodeAt(t + 2)],
                             a = n[e.charCodeAt(t + 3)],
-                            p[c++] = r << 2 | o >> 4,
-                            p[c++] = (15 & o) << 4 | i >> 2,
-                            p[c++] = (3 & i) << 6 | 63 & a;
+                            p[u++] = r << 2 | o >> 4,
+                            p[u++] = (15 & o) << 4 | i >> 2,
+                            p[u++] = (3 & i) << 6 | 63 & a;
                     return l
                 }
         }()
@@ -12969,9 +13071,9 @@
                             return !1
                         }
                     }()
-                    , u = i && i.prototype.append && i.prototype.getBlob;
+                    , c = i && i.prototype.append && i.prototype.getBlob;
                 e.exports = function() {
-                    return a ? s ? t.Blob : o : u ? r : void 0
+                    return a ? s ? t.Blob : o : c ? r : void 0
                 }()
             }
         ).call(t, function() {
@@ -13083,21 +13185,21 @@
         function r(e) {
             var t = 0;
             for (l = 0; l < e.length; l++)
-                t = t * s + u[e.charAt(l)];
+                t = t * s + c[e.charAt(l)];
             return t
         }
         function o() {
             var e = n(+new Date);
-            return e !== i ? (c = 0,
-                    i = e) : e + "." + n(c++)
+            return e !== i ? (u = 0,
+                    i = e) : e + "." + n(u++)
         }
-        for (var i, a = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-_".split(""), s = 64, u = {}, c = 0, l = 0; l < s; l++)
-            u[a[l]] = l;
+        for (var i, a = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-_".split(""), s = 64, c = {}, u = 0, l = 0; l < s; l++)
+            c[a[l]] = l;
         o.encode = n,
             o.decode = r,
             e.exports = o
     }
-    , [325, 251], [326, 252], 217, function(e, t, n) {
+    , [327, 251], [328, 252], 217, function(e, t, n) {
         (function(t) {
                 function r() {}
                 function o(e) {
@@ -13118,7 +13220,7 @@
                 var i = n(236)
                     , a = n(248);
                 e.exports = o;
-                var s, u = /\n/g, c = /\\n/g;
+                var s, c = /\n/g, u = /\\n/g;
                 a(o, i),
                     o.prototype.supportsBinary = !1,
                     o.prototype.doClose = function() {
@@ -13194,8 +13296,8 @@
                         }
                         this.form.action = this.uri(),
                             r(),
-                            e = e.replace(c, "\\\n"),
-                            this.area.value = e.replace(u, "\\n");
+                            e = e.replace(u, "\\\n"),
+                            this.area.value = e.replace(c, "\\n");
                         try {
                             this.form.submit()
                         } catch (e) {}
@@ -13219,7 +13321,7 @@
                     this.usingBrowserWebSocket || (h = o),
                         i.call(this, e)
                 }
-                var o, i = n(237), a = n(238), s = n(247), u = n(248), c = n(249), l = n(250)("engine.io-client:websocket"), p = t.WebSocket || t.MozWebSocket;
+                var o, i = n(237), a = n(238), s = n(247), c = n(248), u = n(249), l = n(250)("engine.io-client:websocket"), p = t.WebSocket || t.MozWebSocket;
                 if ("undefined" == typeof window)
                     try {
                         o = n(255)
@@ -13227,7 +13329,7 @@
                 var h = p;
                 h || "undefined" != typeof window || (h = o),
                     e.exports = r,
-                    u(r, i),
+                    c(r, i),
                     r.prototype.name = "websocket",
                     r.prototype.supportsBinary = !0,
                     r.prototype.doOpen = function() {
@@ -13322,7 +13424,7 @@
                             , t = this.secure ? "wss" : "ws"
                             , n = "";
                         this.port && ("wss" === t && 443 !== Number(this.port) || "ws" === t && 80 !== Number(this.port)) && (n = ":" + this.port),
-                        this.timestampRequests && (e[this.timestampParam] = c()),
+                        this.timestampRequests && (e[this.timestampParam] = u()),
                         this.supportsBinary || (e.b64 = 1),
                             e = s.encode(e),
                         e.length && (e = "?" + e);
@@ -13385,8 +13487,8 @@
             , i = n(259)
             , a = n(260)
             , s = n(261)
-            , u = n(262)
-            , c = n(215)("socket.io-client:socket")
+            , c = n(262)
+            , u = n(215)("socket.io-client:socket")
             , l = n(263);
         e.exports = t = r;
         var p = {
@@ -13409,7 +13511,7 @@
             r.prototype.subEvents = function() {
                 if (!this.subs) {
                     var e = this.io;
-                    this.subs = [s(e, "open", u(this, "onopen")), s(e, "packet", u(this, "onpacket")), s(e, "close", u(this, "onclose"))]
+                    this.subs = [s(e, "open", c(this, "onopen")), s(e, "packet", c(this, "onpacket")), s(e, "close", c(this, "onclose"))]
                 }
             }
             ,
@@ -13441,7 +13543,7 @@
                 };
                 return r.options = {},
                     r.options.compress = !this.flags || !1 !== this.flags.compress,
-                "function" == typeof t[t.length - 1] && (c("emitting packet with ack id %d", this.ids),
+                "function" == typeof t[t.length - 1] && (u("emitting packet with ack id %d", this.ids),
                     this.acks[this.ids] = t.pop(),
                     r.id = this.ids++),
                     this.connected ? this.packet(r) : this.sendBuffer.push(r),
@@ -13455,7 +13557,7 @@
             }
             ,
             r.prototype.onopen = function() {
-                c("transport is open - connecting"),
+                u("transport is open - connecting"),
                 "/" !== this.nsp && (this.query ? this.packet({
                         type: o.CONNECT,
                         query: this.query
@@ -13465,7 +13567,7 @@
             }
             ,
             r.prototype.onclose = function(e) {
-                c("close (%s)", e),
+                u("close (%s)", e),
                     this.connected = !1,
                     this.disconnected = !0,
                     delete this.id,
@@ -13500,8 +13602,8 @@
             ,
             r.prototype.onevent = function(e) {
                 var t = e.data || [];
-                c("emitting event %j", t),
-                null != e.id && (c("attaching ack callback to event"),
+                u("emitting event %j", t),
+                null != e.id && (u("attaching ack callback to event"),
                     t.push(this.ack(e.id))),
                     this.connected ? h.apply(this, t) : this.receiveBuffer.push(t)
             }
@@ -13513,7 +13615,7 @@
                     if (!n) {
                         n = !0;
                         var r = a(arguments);
-                        c("sending ack %j", r);
+                        u("sending ack %j", r);
                         var i = l(r) ? o.BINARY_ACK : o.ACK;
                         t.packet({
                             type: i,
@@ -13526,9 +13628,9 @@
             ,
             r.prototype.onack = function(e) {
                 var t = this.acks[e.id];
-                "function" == typeof t ? (c("calling ack %s with %j", e.id, e.data),
+                "function" == typeof t ? (u("calling ack %s with %j", e.id, e.data),
                         t.apply(this, e.data),
-                        delete this.acks[e.id]) : c("bad ack %s", e.id)
+                        delete this.acks[e.id]) : u("bad ack %s", e.id)
             }
             ,
             r.prototype.onconnect = function() {
@@ -13549,7 +13651,7 @@
             }
             ,
             r.prototype.ondisconnect = function() {
-                c("server disconnect (%s)", this.nsp),
+                u("server disconnect (%s)", this.nsp),
                     this.destroy(),
                     this.onclose("io server disconnect")
             }
@@ -13564,7 +13666,7 @@
             }
             ,
             r.prototype.close = r.prototype.disconnect = function() {
-                return this.connected && (c("performing disconnect (%s)", this.nsp),
+                return this.connected && (u("performing disconnect (%s)", this.nsp),
                     this.packet({
                         type: o.DISCONNECT
                     })),
@@ -13683,16 +13785,16 @@
             , o = n(266)
             , i = n(268)
             , a = n(272)
-            , s = n(275)
-            , u = n(276)
-            , c = r.createStore(r.combineReducers({
+            , s = n(276)
+            , c = n(277)
+            , u = r.createStore(r.combineReducers({
             menu: o,
             page: i,
             game: a,
             queue: s,
-            chat: u
+            chat: c
         }));
-        e.exports = c
+        e.exports = u
     }
     , function(e, t, n) {
         "use strict";
@@ -13729,9 +13831,13 @@
                         replaysFinished: !t.data.length
                     });
                 case i.ACTION_LEADERBOARD:
-                    var u = e.leaderboard || {};
+                    var c = e.leaderboard || {};
                     return Object.assign({}, e, {
-                        leaderboard: Object.assign({}, u, r({}, t.data.ladder, t.data))
+                        leaderboard: Object.assign({}, c, r({}, t.data.ladder, t.data))
+                    });
+                case i.ACTION_SET_2V2_TEAMMATES:
+                    return Object.assign({}, e, {
+                        data2v2Teammates: t.data
                     });
                 case a.ACTION_REMOVE_FROM_2V2:
                     return Object.assign({}, e, {
@@ -13740,6 +13846,10 @@
                 case i.ACTION_CLOSE_REMOVED_FROM_2V2:
                     return Object.assign({}, e, {
                         showRemovedFrom2v2: !1
+                    });
+                case i.ACTION_NOTIFY_SERVER_RESTART:
+                    return Object.assign({}, e, {
+                        showNotifyServerRestart: !0
                     })
             }
             return e
@@ -13790,7 +13900,11 @@
                 case i.ACTION_CANCEL:
                 case i.ACTION_REMOVE_FROM_2V2:
                 case a.ACTION_EXIT:
-                    return u.changeURL("/"),
+                case o.ACTION_NOTIFY_SERVER_RESTART:
+                    return c.changeURL("/"),
+                        s.PAGE_MAIN_MENU;
+                case a.ACTION_PLAY_AGAIN:
+                    return c.changeURL(t.playAgainUrl),
                         s.PAGE_MAIN_MENU;
                 case a.ACTION_INVALID_REPLAY:
                     return s.PAGE_INVALID_REPLAY
@@ -13801,20 +13915,20 @@
             , i = n(267)
             , a = n(269)
             , s = n(176)
-            , u = n(271);
+            , c = n(271);
         e.exports = r
     }
     , function(e, t, n) {
         "use strict";
         function r(e) {
-            return e || d.playSound("gong.mp3"),
+            return e || y.playSound("gong.mp3"),
                 {
-                    type: f
+                    type: g
                 }
         }
         function o(e, t, n, r) {
             return Object.assign({
-                type: m,
+                type: T,
                 isLocalGame: t,
                 isTutorial: n,
                 isReplay: r
@@ -13822,89 +13936,127 @@
         }
         function i(e) {
             return Object.assign({
-                type: v
+                type: b
             }, e)
         }
         function a(e) {
             return {
-                type: y,
+                type: S,
                 data: e
             }
         }
         function s(e) {
             return {
-                type: g,
+                type: E,
                 data: e
             }
         }
-        function u() {
+        function c() {
             return {
-                type: T
+                type: A
             }
         }
-        function c(e) {
+        function u(e) {
             return {
-                type: b,
+                type: C,
                 state: e
             }
         }
         function l() {
             return {
-                type: S
+                type: P
             }
         }
         function p() {
             return {
-                type: E
+                type: _
             }
         }
         function h(e) {
             return {
-                type: A,
+                type: M,
                 speed: e
             }
         }
-        var d = n(270)
-            , f = "Game_prestart"
-            , m = "Game_start"
-            , v = "Game_update"
-            , y = "Game_lose"
-            , g = "Game_win"
-            , T = "Game_exit"
-            , b = "Game_update_tutorialState"
-            , S = "Game_toggle_autoPlay"
-            , E = "Game_invalid_replay"
-            , A = "Game_set_autoPlay_speed";
+        function d(e) {
+            return y.playSound("ping.mp3"),
+                {
+                    type: w,
+                    index: e
+                }
+        }
+        function f() {
+            return {
+                type: k
+            }
+        }
+        function m() {
+            return {
+                type: x
+            }
+        }
+        function v(e) {
+            return {
+                type: I,
+                playAgainUrl: e
+            }
+        }
+        var y = n(270)
+            , g = "Game_prestart"
+            , T = "Game_start"
+            , b = "Game_update"
+            , S = "Game_lose"
+            , E = "Game_win"
+            , A = "Game_exit"
+            , C = "Game_update_tutorialState"
+            , P = "Game_toggle_autoPlay"
+            , _ = "Game_invalid_replay"
+            , M = "Game_set_autoPlay_speed"
+            , w = "Game_ping"
+            , k = "Game_clean_pings"
+            , x = "Game_end"
+            , I = "Game_play_again";
         e.exports = {
-            ACTION_PRESTART: f,
-            ACTION_START: m,
-            ACTION_UPDATE: v,
-            ACTION_LOSE: y,
-            ACTION_WIN: g,
-            ACTION_EXIT: T,
-            ACTION_UPDATE_TUTORIAL_STATE: b,
-            ACTION_TOGGLE_AUTOPLAY: S,
-            ACTION_INVALID_REPLAY: E,
-            ACTION_SET_AUTOPLAY_SPEED: A,
+            ACTION_PRESTART: g,
+            ACTION_START: T,
+            ACTION_UPDATE: b,
+            ACTION_LOSE: S,
+            ACTION_WIN: E,
+            ACTION_EXIT: A,
+            ACTION_UPDATE_TUTORIAL_STATE: C,
+            ACTION_TOGGLE_AUTOPLAY: P,
+            ACTION_INVALID_REPLAY: _,
+            ACTION_SET_AUTOPLAY_SPEED: M,
+            ACTION_PING_TILE: w,
+            ACTION_CLEAN_PINGS: k,
+            ACTION_END: x,
+            ACTION_PLAY_AGAIN: I,
             prestart: r,
             start: o,
             update: i,
             lose: a,
             win: s,
-            exit: u,
-            updateTutorialState: c,
+            exit: c,
+            updateTutorialState: u,
             toggleAutoPlay: l,
             invalidReplay: p,
-            setAutoPlaySpeed: h
+            setAutoPlaySpeed: h,
+            pingTile: d,
+            cleanPings: f,
+            end: m,
+            playAgain: v
         }
     }
     , function(e, t) {
         "use strict";
         function n(e) {
-            r[e] && r[e].play()
+            r[e] && (r[e].currentTime = 0,
+                r[e].play())
         }
         var r = {};
-        "undefined" != typeof Audio && (r["gong.mp3"] = new Audio("/gong.mp3")),
+        "undefined" != typeof Audio && (r["gong.mp3"] = new Audio("/gong.mp3"),
+            r["ping.mp3"] = new Audio("/ping.mp3"),
+            r["ping.mp3"].volume = .5),
             e.exports = {
                 playSound: n
             }
@@ -13930,21 +14082,34 @@
                 },
                 t.type) {
                 case i.ACTION_PLAY:
+                    return c.isCustomGame(t.queue_id) ? Object.assign({}, e, {
+                            canSpectate: !0,
+                            playAgainUrl: l.relativeUrlForPrivate(t.queue_id)
+                        }) : "2v2" === t.queue_id ? Object.assign({}, e, {
+                                canSpectate: !1
+                            }) : Object.assign({}, e, {
+                                canSpectate: !1,
+                                playAgainUrl: void 0
+                            });
+                case i.ACTION_JOIN_TEAM:
                     return Object.assign({}, e, {
-                        canSpectate: u.isCustomGame(t.queue_id)
+                        playAgainUrl: l.relativeUrlForTeam(t.team_id)
                     });
                 case o.ACTION_START:
                     return delete t.type,
                         Object.assign({}, e, Object.assign({
                             lost: void 0,
                             won: void 0,
+                            ended: void 0,
                             generals: void 0,
                             cities: void 0,
                             teams: void 0,
                             tutorialState: s.STATE_WELCOME,
                             autoPlay: !1,
                             autoPlaySpeed: 1,
-                            last_map: void 0
+                            last_map: void 0,
+                            chat_room: void 0,
+                            team_chat_room: void 0
                         }, t));
                 case o.ACTION_UPDATE:
                     var n;
@@ -13983,6 +14148,31 @@
                 case o.ACTION_SET_AUTOPLAY_SPEED:
                     return Object.assign({}, e, {
                         autoPlaySpeed: t.speed
+                    });
+                case o.ACTION_PING_TILE:
+                    var r = e.pings ? e.pings.slice() : [];
+                    return r.push({
+                        timestamp: Date.now(),
+                        tileIndex: t.index
+                    }),
+                        Object.assign({}, e, {
+                            pings: r
+                        });
+                case o.ACTION_CLEAN_PINGS:
+                    if (e.pings && e.pings.length) {
+                        var r = e.pings.slice();
+                        if (r = r.filter(function(e) {
+                                return Date.now() - e.timestamp <= u.PING_DURATION
+                            }),
+                            r.length < e.pings.length)
+                            return Object.assign({}, e, {
+                                pings: r
+                            })
+                    }
+                    return e;
+                case o.ACTION_END:
+                    return Object.assign({}, e, {
+                        ended: !0
                     })
             }
             return e
@@ -13991,13 +14181,14 @@
             , i = n(210)
             , a = n(273)
             , s = n(274)
-            , u = n(177);
+            , c = n(177)
+            , u = n(1)
+            , l = n(275);
         e.exports = r
     }
     , function(e, t) {
         "use strict";
         function n(e, t, r) {
-            window.game = this;
             this.width = e,
                 this.height = t,
             r && (this.teams = r),
@@ -14101,13 +14292,13 @@
                     , s = e < 0;
                 o[0] = this.width,
                     o[1] = this.height;
-                for (var u = 0; u < this._map.length; u++)
-                    s || r[u] & 1 << e ? (o[u + a] = this._map[u],
-                            o[u + i] = this._armies[u]) : (o[u + a] = this.tileAt(u) === n.TILE_MOUNTAIN ? n.TILE_FOG_OBSTACLE : n.TILE_FOG,
-                            o[u + i] = 0);
-                for (var u = 0; u < t.length; u++) {
-                    var c = t[u];
-                    o[c + a] === n.TILE_FOG && (o[c + a] = n.TILE_FOG_OBSTACLE)
+                for (var c = 0; c < this._map.length; c++)
+                    s || r[c] & 1 << e ? (o[c + a] = this._map[c],
+                            o[c + i] = this._armies[c]) : (o[c + a] = this.tileAt(c) === n.TILE_MOUNTAIN ? n.TILE_FOG_OBSTACLE : n.TILE_FOG,
+                            o[c + i] = 0);
+                for (var c = 0; c < t.length; c++) {
+                    var u = t[c];
+                    o[u + a] === n.TILE_FOG && (o[u + a] = n.TILE_FOG_OBSTACLE)
                 }
                 return o
             }
@@ -14194,7 +14385,7 @@
             , i = 2
             , a = 3
             , s = 4
-            , u = 5;
+            , c = 5;
         e.exports = {
             STATE_WELCOME: n,
             STATE_MOVE: r,
@@ -14202,7 +14393,48 @@
             STATE_DRAG: o,
             STATE_CITY: a,
             STATE_WIN: s,
-            STATE_WON: u
+            STATE_WON: c
+        }
+    }
+    , function(e, t) {
+        "use strict";
+        function n(e) {
+            return window.location.pathname.substring(0, e.length) === e
+        }
+        function r(e) {
+            return decodeURIComponent(window.location.pathname.substring(e.length))
+        }
+        var o = "/games/"
+            , i = "/replays/"
+            , a = "/teams/";
+        e.exports = {
+            isReplayURL: function() {
+                return n(i)
+            },
+            isPrivateURL: function() {
+                return n(o)
+            },
+            isTeamURL: function() {
+                return n(a)
+            },
+            getReplayID: function() {
+                return r(i)
+            },
+            getPrivateID: function() {
+                return r(o)
+            },
+            getTeamID: function() {
+                return r(a)
+            },
+            relativeUrlForPrivate: function(e) {
+                return o + e
+            },
+            relativeUrlForReplay: function(e) {
+                return i + e
+            },
+            relativeUrlForTeam: function(e) {
+                return a + e
+            }
         }
     }
     , function(e, t, n) {
@@ -14248,15 +14480,19 @@
             switch (e = e || {},
                 t.type) {
                 case o.ACTION_MESSAGE:
-                    var n;
-                    n = e[t.chat_room] ? e[t.chat_room] : [];
-                    var r = {};
-                    return r[t.chat_room] = n.concat(t.data),
-                        Object.assign({}, e, r)
+                    var n = t.chat_room
+                        , r = i.originalFromTeamChatRoom(n);
+                    r && (n = r);
+                    var a;
+                    a = e[n] ? e[n] : [];
+                    var s = {};
+                    return s[n] = a.concat(t.data),
+                        Object.assign({}, e, s)
             }
             return e
         }
-        var o = n(277);
+        var o = n(278)
+            , i = n(177);
         e.exports = r
     }
     , function(e, t) {
@@ -14276,22 +14512,22 @@
     }
     , function(e, t, n) {
         "use strict";
-        e.exports = n(279)
+        e.exports = n(280)
     }
     , function(e, t, n) {
         "use strict";
         function r() {
             var e = ""
                 , t = Math.floor(.001 * (Date.now() - d));
-            return t === u ? s++ : (s = 0,
-                    u = t),
-                e += l(c.lookup, f),
-                e += l(c.lookup, m),
-            s > 0 && (e += l(c.lookup, s)),
-                e += l(c.lookup, t)
+            return t === c ? s++ : (s = 0,
+                    c = t),
+                e += l(u.lookup, f),
+                e += l(u.lookup, m),
+            s > 0 && (e += l(u.lookup, s)),
+                e += l(u.lookup, t)
         }
         function o(t) {
-            return c.seed(t),
+            return u.seed(t),
                 e.exports
         }
         function i(t) {
@@ -14299,10 +14535,10 @@
                 e.exports
         }
         function a(e) {
-            return void 0 !== e && c.characters(e),
-                c.shuffled()
+            return void 0 !== e && u.characters(e),
+                u.shuffled()
         }
-        var s, u, c = n(280), l = n(282), p = n(284), h = n(285), d = 1459707606518, f = 6, m = n(286) || 0;
+        var s, c, u = n(281), l = n(283), p = n(285), h = n(286), d = 1459707606518, f = 6, m = n(287) || 0;
         e.exports = r,
             e.exports.generate = r,
             e.exports.seed = o,
@@ -14349,19 +14585,19 @@
                     n.push(t.splice(e, 1)[0]);
             return n.join("")
         }
-        function u() {
+        function c() {
             return h ? h : h = s()
         }
-        function c(e) {
-            var t = u();
+        function u(e) {
+            var t = c();
             return t[e]
         }
-        var l, p, h, d = n(281), f = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-";
+        var l, p, h, d = n(282), f = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-";
         e.exports = {
             characters: i,
             seed: a,
-            lookup: c,
-            shuffled: u
+            lookup: u,
+            shuffled: c
         }
     }
     , function(e, t) {
@@ -14388,7 +14624,7 @@
                     r++;
             return i
         }
-        var o = n(283);
+        var o = n(284);
         e.exports = r
     }
     , function(e, t) {
@@ -14412,7 +14648,7 @@
                 worker: 15 & t.indexOf(e.substr(1, 1))
             }
         }
-        var o = n(280);
+        var o = n(281);
         e.exports = r
     }
     , function(e, t, n) {
@@ -14425,7 +14661,7 @@
                     return !1;
             return !0
         }
-        var o = n(280);
+        var o = n(281);
         e.exports = r
     }
     , function(e, t) {
@@ -14466,7 +14702,7 @@
                     b = null,
                         ga("send", "event", "Tutorial", "completed"),
                     w && (w.completed_tutorial = !0)
-                })
+                }, !0)
         }
         function i(e) {
             var t = P.deserialize(e);
@@ -14500,13 +14736,13 @@
         }
         function s() {
             k || (k = !0,
-                u())
-        }
-        function u() {
-            _.getState().game.autoPlay && l(),
-            k && setTimeout(u, 500 / _.getState().game.autoPlaySpeed)
+                c())
         }
         function c() {
+            _.getState().game.autoPlay && l(),
+            k && setTimeout(c, 500 / _.getState().game.autoPlaySpeed)
+        }
+        function u() {
             k = !1
         }
         function l(e) {
@@ -14556,7 +14792,7 @@
             p()
         }
         function m() {
-            c(),
+            u(),
                 b = null,
                 S = null
         }
@@ -14584,7 +14820,7 @@
         function T() {
             b.clearMoves(b.sockets[0].id)
         }
-        var b, S, E, A, C = n(289), P = n(290), _ = n(265), M = n(269), w = n(287), k = (n(271),
+        var b, S, E, A, C = n(290), P = n(291), _ = n(265), M = n(269), w = n(288), k = (n(271),
             !1), x = Date.now(), I = Date.now();
         e.exports = {
             startLocalTutorial: o,
@@ -14616,17 +14852,18 @@
                     this.chat_room = "game_" + this.startTime + e[0].id,
                     this.attackIndices = [],
                     this.deaths = [];
-                for (var u = 0; u < e.length; u++)
+                for (var l = 0; l < e.length; l++)
                     this.inputBuffer.push([]),
                         this.scores.push({
                             total: 1,
                             tiles: 1
                         }),
-                    c || e[u].join(this.chat_room),
+                    u || (e[l].join(this.chat_room),
+                    c.hasDuplicate(this.teams) && e[l].join(c.chatRoomForTeam(this, this.teams[l]))),
                         this.attackIndices.push(0);
                 if (!o) {
-                    for (var l = !1; !l || !this.validateGame(); )
-                        l = this.tryInitializeGame(e);
+                    for (var p = !1; !p || !this.validateGame(); )
+                        p = this.tryInitializeGame(e);
                     this.replay = new a(this)
                 }
             }
@@ -14635,10 +14872,10 @@
             return e - t
         }
         var i = n(273)
-            , a = n(290)
+            , a = n(291)
             , s = n(1)
-            , u = n(177)
-            , c = n(296)
+            , c = n(177)
+            , u = n(297)
             , l = -1;
         r.prototype.addMountain = function(e) {
             this.map.setTile(e, i.TILE_MOUNTAIN)
@@ -14693,11 +14930,11 @@
                     , n = Math.round(t + Math.random() * e.length * (Math.random() - .5))
                     , o = Math.round(t + Math.random() * e.length * (Math.random() - .5))
                     , a = Math.round(5 + e.length * (2 + Math.random()))
-                    , c = s.MIN_GENERAL_SPACING * (1.8 - .1 * e.length);
+                    , u = s.MIN_GENERAL_SPACING * (1.8 - .1 * e.length);
                 this.map = new i(n,o,this.teams);
                 var l = this.map.size();
                 if (this.generals = [],
-                    this.teams && u.hasDuplicate(this.teams)) {
+                    this.teams && c.hasDuplicate(this.teams)) {
                     for (var p, h = 0; ; ) {
                         h++,
                             p = [];
@@ -14738,7 +14975,7 @@
                             g = Math.floor(Math.random() * l),
                                 T = !0;
                             for (var v = 0; v < this.generals.length; v++)
-                                if (this.map.distance(this.generals[v], g) <= c) {
+                                if (this.map.distance(this.generals[v], g) <= u) {
                                     T = !1;
                                     break
                                 }
@@ -14822,43 +15059,50 @@
                     , o = [e];
                 r[e] = !0;
                 for (var a = this, s = function(e, s) {
-                    var u = n.indexFrom(e, s);
-                    e >= 0 && e < n.height && s >= 0 && s < n.width && (n.tileAt(u) === i.TILE_EMPTY || u === t) && a.cities.indexOf(u) < 0 && !r[u] && (r[u] = !0,
-                        o.push(u))
+                    var c = n.indexFrom(e, s);
+                    e >= 0 && e < n.height && s >= 0 && s < n.width && (n.tileAt(c) === i.TILE_EMPTY || c === t) && a.cities.indexOf(c) < 0 && !r[c] && (r[c] = !0,
+                        o.push(c))
                 }; o.length; ) {
-                    var u = o.shift();
-                    if (u === t)
+                    var c = o.shift();
+                    if (c === t)
                         return !0;
-                    var c = Math.floor(u / n.width)
-                        , l = Math.floor(u % n.width);
-                    s(c - 1, l),
-                        s(c + 1, l),
-                        s(c, l - 1),
-                        s(c, l + 1)
+                    var u = Math.floor(c / n.width)
+                        , l = Math.floor(c % n.width);
+                    s(u - 1, l),
+                        s(u + 1, l),
+                        s(u, l - 1),
+                        s(u, l + 1)
                 }
                 return !1
             }
             ,
-            r.prototype.start = function(e) {
-                var t = this
-                    , n = this.sockets.map(function(e) {
-                    return e.gio_username
-                });
-                this.sockets.forEach(function(e, r) {
-                    e.emit("game_start", {
-                        playerIndex: r,
-                        replay_id: t.replay.id,
-                        chat_room: t.chat_room,
-                        usernames: n,
-                        teams: t.teams
-                    })
-                }),
-                    setTimeout(function() {
-                        return t.update() ? void e() : void (t.setIntervalReturn = setInterval(function() {
-                                t.update() && (clearInterval(t.setIntervalReturn),
-                                    e())
+            r.prototype.start = function(e, t) {
+                var n = this;
+                setTimeout(function() {
+                    var t = n.sockets.map(function(e) {
+                        return e.gio_username
+                    });
+                    return n.sockets.forEach(function(e, r) {
+                        e.emit("game_start", {
+                            playerIndex: r,
+                            replay_id: n.replay.id,
+                            chat_room: n.chat_room,
+                            team_chat_room: c.hasDuplicate(n.teams) ? c.chatRoomForTeam(n, n.teams[r]) : void 0,
+                            usernames: t,
+                            teams: n.teams
+                        })
+                    }),
+                        n.update() ? void e() : void (n.setIntervalReturn = setInterval(function() {
+                                if (n.update()) {
+                                    clearInterval(n.setIntervalReturn),
+                                        e();
+                                    for (var t = n.sockets.filter(function(e) {
+                                        return n.leftSockets.indexOf(e) < 0
+                                    }), r = 0; r < t.length; r++)
+                                        t[r].emit("game_over")
+                                }
                             }, 500))
-                    }, 0)
+                }, t ? 0 : s.PRE_GAME_START_DELAY)
             }
             ,
             r.prototype.update = function(e) {
@@ -14866,16 +15110,16 @@
                     if (this.options.old_priority)
                         if (this.options.priority_cycle)
                             var n = (t + this.turn) % this.sockets.length;
+                        else if (this.options.priority_reversed)
+                            var n = this.sockets.length - 1 - t;
                         else
                             var n = t;
-                    else if (this.turns % 2 === 0)
-                        var n = t;
                     else
-                        var n = this.sockets.length - 1 - t;
+                        var n = this.turn % 2 === 0 ? t : this.sockets.length - 1 - t;
                     for (; this.inputBuffer[n].length; ) {
                         var r = this.inputBuffer[n].splice(0, 1)[0];
                         if (this.handleAttack(n, r[0], r[1], r[2], r[3]) !== !1) {
-                            c || this.replay.addMove(n, r[0], r[1], r[2], this.turn);
+                            u || this.replay.addMove(n, r[0], r[1], r[2], this.turn);
                             break
                         }
                     }
@@ -14907,16 +15151,16 @@
                     }
                     var a = this.map.computeVisibility();
                     this.sockets.forEach(this.sendGameUpdate.bind(this, i, a));
-                    var u = this.isOver();
-                    if (u) {
-                        for (var n = 0; n < u.length; n++) {
-                            var l = u[n];
+                    var c = this.isOver();
+                    if (c) {
+                        for (var n = 0; n < c.length; n++) {
+                            var l = c[n];
                             this.deaths.indexOf(l) >= 0 || (this.deaths.push(l),
                                 l.emit("game_won"))
                         }
-                        if (!c) {
-                            var p = u.reduce(function(e, t, n) {
-                                return n === u.length - 1 ? e + t.gio_username : e + t.gio_username + ", "
+                        if (!u) {
+                            var p = c.reduce(function(e, t, n) {
+                                return n === c.length - 1 ? e + t.gio_username : e + t.gio_username + ", "
                             }, "");
                             io.to(this.chat_room).emit("chat_message", this.chat_room, {
                                 text: this.teams ? "The team with [" + p + "] wins!" : p + " wins!"
@@ -14938,15 +15182,17 @@
                                     return;
                         if (void 0 !== e) {
                             var n = this;
-                            return this.sockets.filter(function(t, r) {
+                            return this.winners = this.sockets.filter(function(t, r) {
                                 return n.teams[r] === e
-                            })
+                            }),
+                                this.winners
                         }
                     }
                 } else
                     for (var t = 0; t < this.generals.length; t++)
                         if (this.deaths.indexOf(this.sockets[t]) < 0)
-                            return [this.sockets[t]]
+                            return this.winners = [this.sockets[t]],
+                                this.winners
             }
             ,
             r.prototype.sendGameUpdate = function(e, t, n, o) {
@@ -14957,11 +15203,11 @@
                     var s = function(e) {
                         return a || t[e] & 1 << o
                     }
-                        , u = function(e) {
+                        , c = function(e) {
                         return a || t[e] & 1 << o ? e : -1
                     };
                     e.cities = this.cities.filter(s),
-                        e.generals = this.generals.map(u),
+                        e.generals = this.generals.map(c),
                         e.map_diff = i.delta(n.last_map, e.map),
                         n.last_map = e.map,
                         delete e.map,
@@ -15018,16 +15264,32 @@
                     , s = this.generals.indexOf(n);
                 if (a !== i && s >= 0) {
                     this.map.replaceAll(i, a, .5);
-                    var u = this.sockets[i];
-                    this.deaths.indexOf(u) < 0 && (this.deaths.push(u),
+                    var c = this.sockets[i];
+                    this.deaths.indexOf(c) < 0 && (this.deaths.push(c),
                         this.alivePlayers--,
-                        u.emit("game_lost", {
+                        c.emit("game_lost", {
                             killer: a
                         })),
                         this.cities.push(n),
                         this.generals[s] = l,
-                    c || io.to(this.chat_room).emit("chat_message", this.chat_room, {
+                    u || io.to(this.chat_room).emit("chat_message", this.chat_room, {
                         text: this.sockets[a].gio_username + " captured " + this.sockets[s].gio_username + "."
+                    })
+                }
+            }
+            ,
+            r.prototype.handlePingTile = function(e, t) {
+                if (this.teams) {
+                    var n = this.indexOfSocketID(e);
+                    if (n < 0)
+                        return void console.error("Ping for socket_id not in game: " + e);
+                    var r = this.leftSockets
+                        , o = this.teams
+                        , i = this.sockets.filter(function(e, t) {
+                        return r.indexOf(e) < 0 && n !== t && o[n] === o[t]
+                    });
+                    i.forEach(function(e) {
+                        e.emit("ping_tile", t)
                     })
                 }
             }
@@ -15046,7 +15308,7 @@
                 var t = this.indexOfSocketID(e);
                 if (t < 0)
                     return void console.error("Trying to handleQuit() for socket not in game.");
-                if (c || io.to(this.chat_room).emit("chat_message", this.chat_room, {
+                if (u || io.to(this.chat_room).emit("chat_message", this.chat_room, {
                         text: this.sockets[t].gio_username + " quit."
                     }),
                     this.generals[t] !== l) {
@@ -15074,7 +15336,7 @@
                     , r = Number.isInteger(n) ? n : i.TILE_EMPTY;
                 this.map.tileAt(t) === e && (this.map.replaceAll(e, r),
                     this.cities.push(t),
-                c || this.replay.addAFK(e, this.turn))
+                u || this.replay.addAFK(e, this.turn))
             }
             ,
             r.prototype.handleLeave = function(e) {
@@ -15082,7 +15344,7 @@
                 delete t.gio_stars,
                     t.leave(this.chat_room),
                     this.leftSockets.push(t),
-                c || io.to(this.chat_room).emit("chat_message", this.chat_room, {
+                u || io.to(this.chat_room).emit("chat_message", this.chat_room, {
                     text: t.gio_username + " left."
                 })
             }
@@ -15125,7 +15387,7 @@
                             this.generals = e.generals.slice(),
                             this.mountains = [];
                         for (var t = 0; t < e.map.size(); t++)
-                            e.map.tileAt(t) === u.TILE_MOUNTAIN && this.mountains.push(t);
+                            e.map.tileAt(t) === c.TILE_MOUNTAIN && this.mountains.push(t);
                         this.teams = e.teams || null,
                             this.moves = [],
                             this.afks = []
@@ -15152,10 +15414,10 @@
                         turn: e[1]
                     }
                 }
-                var u = n(273)
-                    , c = n(295)
-                    , l = n(278)
-                    , p = 4
+                var c = n(273)
+                    , u = n(296)
+                    , l = n(279)
+                    , p = 5
                     , h = {
                     REPLAY_VERSION_1: {
                         old_priority: !0
@@ -15170,7 +15432,11 @@
                         old_priority: !0,
                         priority_cycle: !0
                     },
-                    REPLAY_VERSION_5: {}
+                    REPLAY_VERSION_5: {
+                        old_priority: !0,
+                        priority_reversed: !0
+                    },
+                    REPLAY_VERSION_6: {}
                 };
                 r.prototype.addMove = function(e, t, n, r, o) {
                     this.moves.push({
@@ -15192,12 +15458,12 @@
                     r.prototype.serialize = function() {
                         var e = this.moves.map(o)
                             , n = this.afks.map(a);
-                        return new t(c.compressToUint8Array(JSON.stringify([p, this.id, this.mapWidth, this.mapHeight, this.usernames, this.stars, this.cities, this.cityArmies, this.generals, this.mountains, e, n, this.teams])))
+                        return new t(u.compressToUint8Array(JSON.stringify([p, this.id, this.mapWidth, this.mapHeight, this.usernames, this.stars, this.cities, this.cityArmies, this.generals, this.mountains, e, n, this.teams])))
                     }
                     ,
                     r.deserialize = function(e) {
                         try {
-                            var t = JSON.parse(c.decompressFromUint8Array(new Uint8Array(e)))
+                            var t = JSON.parse(u.decompressFromUint8Array(new Uint8Array(e)))
                         } catch (e) {
                             return
                         }
@@ -15227,7 +15493,7 @@
                     ,
                     e.exports = r
             }
-        ).call(t, n(291).Buffer)
+        ).call(t, n(292).Buffer)
     }
     , function(e, t, n) {
         (function(e, r) {
@@ -15272,18 +15538,18 @@
                         throw new TypeError('"value" argument must not be a number');
                     return "undefined" != typeof ArrayBuffer && t instanceof ArrayBuffer ? d(e, t, n, r) : "string" == typeof t ? p(e, t, n) : f(e, t)
                 }
-                function u(e) {
+                function c(e) {
                     if ("number" != typeof e)
                         throw new TypeError('"size" argument must be a number');
                     if (e < 0)
                         throw new RangeError('"size" argument must not be negative')
                 }
-                function c(e, t, n, r) {
-                    return u(t),
+                function u(e, t, n, r) {
+                    return c(t),
                         t <= 0 ? a(e, t) : void 0 !== n ? "string" == typeof r ? a(e, t).fill(n, r) : a(e, t).fill(n) : a(e, t)
                 }
                 function l(t, n) {
-                    if (u(n),
+                    if (c(n),
                             t = a(t, n < 0 ? 0 : 0 | m(n)),
                             !e.TYPED_ARRAY_SUPPORT)
                         for (var r = 0; r < n; ++r)
@@ -15360,7 +15626,7 @@
                             case "utf8":
                             case "utf-8":
                             case void 0:
-                                return K(t).length;
+                                return q(t).length;
                             case "ucs2":
                             case "ucs-2":
                             case "utf16le":
@@ -15372,7 +15638,7 @@
                                 return Y(t).length;
                             default:
                                 if (o)
-                                    return K(t).length;
+                                    return q(t).length;
                                 n = ("" + n).toLowerCase(),
                                     o = !0
                         }
@@ -15451,37 +15717,37 @@
                     }
                     var a = 1
                         , s = e.length
-                        , u = t.length;
+                        , c = t.length;
                     if (void 0 !== r && (r = String(r).toLowerCase(),
                         "ucs2" === r || "ucs-2" === r || "utf16le" === r || "utf-16le" === r)) {
                         if (e.length < 2 || t.length < 2)
                             return -1;
                         a = 2,
                             s /= 2,
-                            u /= 2,
+                            c /= 2,
                             n /= 2
                     }
-                    var c;
+                    var u;
                     if (o) {
                         var l = -1;
-                        for (c = n; c < s; c++)
-                            if (i(e, c) === i(t, l === -1 ? 0 : c - l)) {
-                                if (l === -1 && (l = c),
-                                    c - l + 1 === u)
+                        for (u = n; u < s; u++)
+                            if (i(e, u) === i(t, l === -1 ? 0 : u - l)) {
+                                if (l === -1 && (l = u),
+                                    u - l + 1 === c)
                                     return l * a
                             } else
-                                l !== -1 && (c -= c - l),
+                                l !== -1 && (u -= u - l),
                                     l = -1
                     } else
-                        for (n + u > s && (n = s - u),
-                                 c = n; c >= 0; c--) {
-                            for (var p = !0, h = 0; h < u; h++)
-                                if (i(e, c + h) !== i(t, h)) {
+                        for (n + c > s && (n = s - c),
+                                 u = n; u >= 0; u--) {
+                            for (var p = !0, h = 0; h < c; h++)
+                                if (i(e, u + h) !== i(t, h)) {
                                     p = !1;
                                     break
                                 }
                             if (p)
-                                return c
+                                return u
                         }
                     return -1
                 }
@@ -15503,10 +15769,10 @@
                     return a
                 }
                 function A(e, t, n, r) {
-                    return z(K(t, e.length - n), e, n, r)
+                    return z(q(t, e.length - n), e, n, r)
                 }
                 function C(e, t, n, r) {
-                    return z(q(t), e, n, r)
+                    return z(K(t), e, n, r)
                 }
                 function P(e, t, n, r) {
                     return C(e, t, n, r)
@@ -15527,27 +15793,27 @@
                             , a = null
                             , s = i > 239 ? 4 : i > 223 ? 3 : i > 191 ? 2 : 1;
                         if (o + s <= n) {
-                            var u, c, l, p;
+                            var c, u, l, p;
                             switch (s) {
                                 case 1:
                                     i < 128 && (a = i);
                                     break;
                                 case 2:
-                                    u = e[o + 1],
-                                    128 === (192 & u) && (p = (31 & i) << 6 | 63 & u,
+                                    c = e[o + 1],
+                                    128 === (192 & c) && (p = (31 & i) << 6 | 63 & c,
                                     p > 127 && (a = p));
                                     break;
                                 case 3:
-                                    u = e[o + 1],
-                                        c = e[o + 2],
-                                    128 === (192 & u) && 128 === (192 & c) && (p = (15 & i) << 12 | (63 & u) << 6 | 63 & c,
+                                    c = e[o + 1],
+                                        u = e[o + 2],
+                                    128 === (192 & c) && 128 === (192 & u) && (p = (15 & i) << 12 | (63 & c) << 6 | 63 & u,
                                     p > 2047 && (p < 55296 || p > 57343) && (a = p));
                                     break;
                                 case 4:
-                                    u = e[o + 1],
-                                        c = e[o + 2],
+                                    c = e[o + 1],
+                                        u = e[o + 2],
                                         l = e[o + 3],
-                                    128 === (192 & u) && 128 === (192 & c) && 128 === (192 & l) && (p = (15 & i) << 18 | (63 & u) << 12 | (63 & c) << 6 | 63 & l,
+                                    128 === (192 & c) && 128 === (192 & u) && 128 === (192 & l) && (p = (15 & i) << 18 | (63 & c) << 12 | (63 & u) << 6 | 63 & l,
                                     p > 65535 && p < 1114112 && (a = p))
                             }
                         }
@@ -15649,7 +15915,7 @@
                 function W(e) {
                     return e < 16 ? "0" + e.toString(16) : e.toString(16)
                 }
-                function K(e, t) {
+                function q(e, t) {
                     t = t || 1 / 0;
                     for (var n, r = e.length, o = null, i = [], a = 0; a < r; ++a) {
                         if (n = e.charCodeAt(a),
@@ -15697,7 +15963,7 @@
                     }
                     return i
                 }
-                function q(e) {
+                function K(e) {
                     for (var t = [], n = 0; n < e.length; ++n)
                         t.push(255 & e.charCodeAt(n));
                     return t
@@ -15722,9 +15988,9 @@
                 function Q(e) {
                     return e !== e
                 }
-                var J = n(292)
-                    , Z = n(293)
-                    , $ = n(294);
+                var J = n(293)
+                    , Z = n(294)
+                    , $ = n(295);
                 t.Buffer = e,
                     t.SlowBuffer = v,
                     t.INSPECT_MAX_BYTES = 50,
@@ -15747,7 +16013,7 @@
                     configurable: !0
                 })),
                     e.alloc = function(e, t, n) {
-                        return c(null, e, t, n)
+                        return u(null, e, t, n)
                     }
                     ,
                     e.allocUnsafe = function(e) {
@@ -15890,9 +16156,9 @@
                                 i >>>= 0,
                             this === t)
                             return 0;
-                        for (var a = i - o, s = r - n, u = Math.min(a, s), c = this.slice(o, i), l = t.slice(n, r), p = 0; p < u; ++p)
-                            if (c[p] !== l[p]) {
-                                a = c[p],
+                        for (var a = i - o, s = r - n, c = Math.min(a, s), u = this.slice(o, i), l = t.slice(n, r), p = 0; p < c; ++p)
+                            if (u[p] !== l[p]) {
+                                a = u[p],
                                     s = l[p];
                                 break
                             }
@@ -16338,17 +16604,17 @@
                             for (a = n; a < r; ++a)
                                 this[a] = t;
                         else {
-                            var s = e.isBuffer(t) ? t : K(new e(t,o).toString())
-                                , u = s.length;
+                            var s = e.isBuffer(t) ? t : q(new e(t,o).toString())
+                                , c = s.length;
                             for (a = 0; a < r - n; ++a)
-                                this[a + n] = s[a % u]
+                                this[a + n] = s[a % c]
                         }
                         return this
                     }
                 ;
                 var te = /[^+\/0-9A-Za-z-_]/g
             }
-        ).call(t, n(291).Buffer, function() {
+        ).call(t, n(292).Buffer, function() {
             return this
         }())
     }
@@ -16364,26 +16630,26 @@
             return 3 * e.length / 4 - n(e)
         }
         function o(e) {
-            var t, r, o, i, a, s, u = e.length;
+            var t, r, o, i, a, s, c = e.length;
             a = n(e),
-                s = new l(3 * u / 4 - a),
-                o = a > 0 ? u - 4 : u;
+                s = new l(3 * c / 4 - a),
+                o = a > 0 ? c - 4 : c;
             var p = 0;
             for (t = 0,
                      r = 0; t < o; t += 4,
                      r += 3)
-                i = c[e.charCodeAt(t)] << 18 | c[e.charCodeAt(t + 1)] << 12 | c[e.charCodeAt(t + 2)] << 6 | c[e.charCodeAt(t + 3)],
+                i = u[e.charCodeAt(t)] << 18 | u[e.charCodeAt(t + 1)] << 12 | u[e.charCodeAt(t + 2)] << 6 | u[e.charCodeAt(t + 3)],
                     s[p++] = i >> 16 & 255,
                     s[p++] = i >> 8 & 255,
                     s[p++] = 255 & i;
-            return 2 === a ? (i = c[e.charCodeAt(t)] << 2 | c[e.charCodeAt(t + 1)] >> 4,
-                    s[p++] = 255 & i) : 1 === a && (i = c[e.charCodeAt(t)] << 10 | c[e.charCodeAt(t + 1)] << 4 | c[e.charCodeAt(t + 2)] >> 2,
+            return 2 === a ? (i = u[e.charCodeAt(t)] << 2 | u[e.charCodeAt(t + 1)] >> 4,
+                    s[p++] = 255 & i) : 1 === a && (i = u[e.charCodeAt(t)] << 10 | u[e.charCodeAt(t + 1)] << 4 | u[e.charCodeAt(t + 2)] >> 2,
                     s[p++] = i >> 8 & 255,
                     s[p++] = 255 & i),
                 s
         }
         function i(e) {
-            return u[e >> 18 & 63] + u[e >> 12 & 63] + u[e >> 6 & 63] + u[63 & e]
+            return c[e >> 18 & 63] + c[e >> 12 & 63] + c[e >> 6 & 63] + c[63 & e]
         }
         function a(e, t, n) {
             for (var r, o = [], a = t; a < n; a += 3)
@@ -16392,15 +16658,15 @@
             return o.join("")
         }
         function s(e) {
-            for (var t, n = e.length, r = n % 3, o = "", i = [], s = 16383, c = 0, l = n - r; c < l; c += s)
-                i.push(a(e, c, c + s > l ? l : c + s));
+            for (var t, n = e.length, r = n % 3, o = "", i = [], s = 16383, u = 0, l = n - r; u < l; u += s)
+                i.push(a(e, u, u + s > l ? l : u + s));
             return 1 === r ? (t = e[n - 1],
-                    o += u[t >> 2],
-                    o += u[t << 4 & 63],
+                    o += c[t >> 2],
+                    o += c[t << 4 & 63],
                     o += "==") : 2 === r && (t = (e[n - 2] << 8) + e[n - 1],
-                    o += u[t >> 10],
-                    o += u[t >> 4 & 63],
-                    o += u[t << 2 & 63],
+                    o += c[t >> 10],
+                    o += c[t >> 4 & 63],
+                    o += c[t << 2 & 63],
                     o += "="),
                 i.push(o),
                 i.join("")
@@ -16408,15 +16674,15 @@
         t.byteLength = r,
             t.toByteArray = o,
             t.fromByteArray = s;
-        for (var u = [], c = [], l = "undefined" != typeof Uint8Array ? Uint8Array : Array, p = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/", h = 0, d = p.length; h < d; ++h)
-            u[h] = p[h],
-                c[p.charCodeAt(h)] = h;
-        c["-".charCodeAt(0)] = 62,
-            c["_".charCodeAt(0)] = 63
+        for (var c = [], u = [], l = "undefined" != typeof Uint8Array ? Uint8Array : Array, p = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/", h = 0, d = p.length; h < d; ++h)
+            c[h] = p[h],
+                u[p.charCodeAt(h)] = h;
+        u["-".charCodeAt(0)] = 62,
+            u["_".charCodeAt(0)] = 63
     }
     , function(e, t) {
         t.read = function(e, t, n, r, o) {
-            var i, a, s = 8 * o - r - 1, u = (1 << s) - 1, c = u >> 1, l = -7, p = n ? o - 1 : 0, h = n ? -1 : 1, d = e[t + p];
+            var i, a, s = 8 * o - r - 1, c = (1 << s) - 1, u = c >> 1, l = -7, p = n ? o - 1 : 0, h = n ? -1 : 1, d = e[t + p];
             for (p += h,
                      i = d & (1 << -l) - 1,
                      d >>= -l,
@@ -16431,28 +16697,28 @@
                      l -= 8)
                 ;
             if (0 === i)
-                i = 1 - c;
+                i = 1 - u;
             else {
-                if (i === u)
+                if (i === c)
                     return a ? NaN : (d ? -1 : 1) * (1 / 0);
                 a += Math.pow(2, r),
-                    i -= c
+                    i -= u
             }
             return (d ? -1 : 1) * a * Math.pow(2, i - r)
         }
             ,
             t.write = function(e, t, n, r, o, i) {
-                var a, s, u, c = 8 * i - o - 1, l = (1 << c) - 1, p = l >> 1, h = 23 === o ? Math.pow(2, -24) - Math.pow(2, -77) : 0, d = r ? 0 : i - 1, f = r ? 1 : -1, m = t < 0 || 0 === t && 1 / t < 0 ? 1 : 0;
+                var a, s, c, u = 8 * i - o - 1, l = (1 << u) - 1, p = l >> 1, h = 23 === o ? Math.pow(2, -24) - Math.pow(2, -77) : 0, d = r ? 0 : i - 1, f = r ? 1 : -1, m = t < 0 || 0 === t && 1 / t < 0 ? 1 : 0;
                 for (t = Math.abs(t),
                          isNaN(t) || t === 1 / 0 ? (s = isNaN(t) ? 1 : 0,
                                  a = l) : (a = Math.floor(Math.log(t) / Math.LN2),
-                             t * (u = Math.pow(2, -a)) < 1 && (a--,
-                                 u *= 2),
-                                 t += a + p >= 1 ? h / u : h * Math.pow(2, 1 - p),
-                             t * u >= 2 && (a++,
-                                 u /= 2),
+                             t * (c = Math.pow(2, -a)) < 1 && (a--,
+                                 c *= 2),
+                                 t += a + p >= 1 ? h / c : h * Math.pow(2, 1 - p),
+                             t * c >= 2 && (a++,
+                                 c /= 2),
                                  a + p >= l ? (s = 0,
-                                         a = l) : a + p >= 1 ? (s = (t * u - 1) * Math.pow(2, o),
+                                         a = l) : a + p >= 1 ? (s = (t * c - 1) * Math.pow(2, o),
                                              a += p) : (s = t * Math.pow(2, p - 1) * Math.pow(2, o),
                                              a = 0)); o >= 8; e[n + d] = 255 & s,
                          d += f,
@@ -16460,10 +16726,10 @@
                          o -= 8)
                     ;
                 for (a = a << o | s,
-                         c += o; c > 0; e[n + d] = 255 & a,
+                         u += o; u > 0; e[n + d] = 255 & a,
                          d += f,
                          a /= 256,
-                         c -= 8)
+                         u -= 8)
                     ;
                 e[n + d - f] |= 128 * m
             }
@@ -16560,14 +16826,14 @@
                 _compress: function(e, t, n) {
                     if (null == e)
                         return "";
-                    var r, o, i, a = {}, s = {}, u = "", c = "", l = "", p = 2, h = 3, d = 2, f = [], m = 0, v = 0;
+                    var r, o, i, a = {}, s = {}, c = "", u = "", l = "", p = 2, h = 3, d = 2, f = [], m = 0, v = 0;
                     for (i = 0; i < e.length; i += 1)
-                        if (u = e.charAt(i),
-                            Object.prototype.hasOwnProperty.call(a, u) || (a[u] = h++,
-                                s[u] = !0),
-                                c = l + u,
-                                Object.prototype.hasOwnProperty.call(a, c))
-                            l = c;
+                        if (c = e.charAt(i),
+                            Object.prototype.hasOwnProperty.call(a, c) || (a[c] = h++,
+                                s[c] = !0),
+                                u = l + c,
+                                Object.prototype.hasOwnProperty.call(a, u))
+                            l = u;
                         else {
                             if (Object.prototype.hasOwnProperty.call(s, l)) {
                                 if (l.charCodeAt(0) < 256) {
@@ -16614,8 +16880,8 @@
                             p--,
                             0 == p && (p = Math.pow(2, d),
                                 d++),
-                                a[c] = h++,
-                                l = String(u)
+                                a[u] = h++,
+                                l = String(c)
                         }
                     if ("" !== l) {
                         if (Object.prototype.hasOwnProperty.call(s, l)) {
@@ -16687,7 +16953,7 @@
                             })
                 },
                 _decompress: function(e, n, r) {
-                    var o, i, a, s, u, c, l, p, h = [], d = 4, f = 4, m = 3, v = "", y = [], g = {
+                    var o, i, a, s, c, u, l, p, h = [], d = 4, f = 4, m = 3, v = "", y = [], g = {
                         val: r(0),
                         position: n,
                         index: 1
@@ -16695,36 +16961,36 @@
                     for (i = 0; i < 3; i += 1)
                         h[i] = i;
                     for (s = 0,
-                             c = Math.pow(2, 2),
-                             l = 1; l != c; )
-                        u = g.val & g.position,
+                             u = Math.pow(2, 2),
+                             l = 1; l != u; )
+                        c = g.val & g.position,
                             g.position >>= 1,
                         0 == g.position && (g.position = n,
                             g.val = r(g.index++)),
-                            s |= (u > 0 ? 1 : 0) * l,
+                            s |= (c > 0 ? 1 : 0) * l,
                             l <<= 1;
                     switch (o = s) {
                         case 0:
                             for (s = 0,
-                                     c = Math.pow(2, 8),
-                                     l = 1; l != c; )
-                                u = g.val & g.position,
+                                     u = Math.pow(2, 8),
+                                     l = 1; l != u; )
+                                c = g.val & g.position,
                                     g.position >>= 1,
                                 0 == g.position && (g.position = n,
                                     g.val = r(g.index++)),
-                                    s |= (u > 0 ? 1 : 0) * l,
+                                    s |= (c > 0 ? 1 : 0) * l,
                                     l <<= 1;
                             p = t(s);
                             break;
                         case 1:
                             for (s = 0,
-                                     c = Math.pow(2, 16),
-                                     l = 1; l != c; )
-                                u = g.val & g.position,
+                                     u = Math.pow(2, 16),
+                                     l = 1; l != u; )
+                                c = g.val & g.position,
                                     g.position >>= 1,
                                 0 == g.position && (g.position = n,
                                     g.val = r(g.index++)),
-                                    s |= (u > 0 ? 1 : 0) * l,
+                                    s |= (c > 0 ? 1 : 0) * l,
                                     l <<= 1;
                             p = t(s);
                             break;
@@ -16737,24 +17003,24 @@
                         if (g.index > e)
                             return "";
                         for (s = 0,
-                                 c = Math.pow(2, m),
-                                 l = 1; l != c; )
-                            u = g.val & g.position,
+                                 u = Math.pow(2, m),
+                                 l = 1; l != u; )
+                            c = g.val & g.position,
                                 g.position >>= 1,
                             0 == g.position && (g.position = n,
                                 g.val = r(g.index++)),
-                                s |= (u > 0 ? 1 : 0) * l,
+                                s |= (c > 0 ? 1 : 0) * l,
                                 l <<= 1;
                         switch (p = s) {
                             case 0:
                                 for (s = 0,
-                                         c = Math.pow(2, 8),
-                                         l = 1; l != c; )
-                                    u = g.val & g.position,
+                                         u = Math.pow(2, 8),
+                                         l = 1; l != u; )
+                                    c = g.val & g.position,
                                         g.position >>= 1,
                                     0 == g.position && (g.position = n,
                                         g.val = r(g.index++)),
-                                        s |= (u > 0 ? 1 : 0) * l,
+                                        s |= (c > 0 ? 1 : 0) * l,
                                         l <<= 1;
                                 h[f++] = t(s),
                                     p = f - 1,
@@ -16762,13 +17028,13 @@
                                 break;
                             case 1:
                                 for (s = 0,
-                                         c = Math.pow(2, 16),
-                                         l = 1; l != c; )
-                                    u = g.val & g.position,
+                                         u = Math.pow(2, 16),
+                                         l = 1; l != u; )
+                                    c = g.val & g.position,
                                         g.position >>= 1,
                                     0 == g.position && (g.position = n,
                                         g.val = r(g.index++)),
-                                        s |= (u > 0 ? 1 : 0) * l,
+                                        s |= (c > 0 ? 1 : 0) * l,
                                         l <<= 1;
                                 h[f++] = t(s),
                                     p = f - 1,
@@ -16854,6 +17120,7 @@
             },
             render: function() {
                 return r.createElement("button", {
+                    id: this.props.id,
                     className: "small",
                     onClick: this.onClick,
                     style: {
@@ -16881,37 +17148,23 @@
         });
         e.exports = o
     }
-    , function(e, t) {
+    , function(e, t, n) {
         "use strict";
-        function n(e) {
-            return window.location.pathname.substring(0, e.length) === e
-        }
-        function r(e) {
-            return decodeURIComponent(window.location.pathname.substring(e.length))
-        }
-        var o = "/games/"
-            , i = "/replays/"
-            , a = "/teams/";
-        e.exports = {
-            isReplayURL: function() {
-                return n(i)
+        var r = n(3)
+            , o = r.createClass({
+            displayName: "DiscordButton",
+            onClick: function() {
+                window.open("https://discord.gg/a97CQZb")
             },
-            isPrivateURL: function() {
-                return n(o)
-            },
-            isTeamURL: function() {
-                return n(a)
-            },
-            getReplayID: function() {
-                return r(i)
-            },
-            getPrivateID: function() {
-                return r(o)
-            },
-            getTeamID: function() {
-                return r(a)
+            render: function() {
+                return r.createElement("div", {
+                    id: this.props.id,
+                    className: "discord-button",
+                    onClick: this.onClick
+                })
             }
-        }
+        });
+        e.exports = o
     }
     , function(e, t, n) {
         "use strict";
@@ -16923,7 +17176,7 @@
                 i = !0
         }
         var i = !1;
-        n(302);
+        n(303);
         "undefined" == typeof fuckAdBlock ? o() : (fuckAdBlock.onDetected(o),
                 fuckAdBlock.onNotDetected(r)),
             e.exports = {
@@ -17093,7 +17346,7 @@
     }
     , function(e, t, n) {
         "use strict";
-        var r = n(304)
+        var r = n(305)
             , o = new r(window.navigator.userAgent);
         e.exports = o.mobile()
     }
@@ -17380,16 +17633,16 @@
                         }
                     ,
                     function() {
-                        var e, t, n, o, u, c, l = i.mobileDetectRules;
+                        var e, t, n, o, c, u, l = i.mobileDetectRules;
                         for (e in l.props)
                             if (s.call(l.props, e)) {
                                 for (t = l.props[e],
                                      a(t) || (t = [t]),
-                                         u = t.length,
-                                         o = 0; o < u; ++o)
+                                         c = t.length,
+                                         o = 0; o < c; ++o)
                                     n = t[o],
-                                        c = n.indexOf("[VER]"),
-                                    c >= 0 && (n = n.substring(0, c) + "([\\w._\\+]+)" + n.substring(c + 5)),
+                                        u = n.indexOf("[VER]"),
+                                    u >= 0 && (n = n.substring(0, u) + "([\\w._\\+]+)" + n.substring(u + 5)),
                                         t[o] = new RegExp(n,"i");
                                 l.props[e] = t
                             }
@@ -17418,9 +17671,9 @@
                     }
                     ,
                     i.getVersionStr = function(e, t) {
-                        var n, r, o, a, u = i.mobileDetectRules.props;
-                        if (s.call(u, e))
-                            for (n = u[e],
+                        var n, r, o, a, c = i.mobileDetectRules.props;
+                        if (s.call(c, e))
+                            for (n = c[e],
                                      o = n.length,
                                      r = 0; r < o; ++r)
                                 if (a = n[r].exec(t),
@@ -17454,12 +17707,12 @@
                     ,
                     i.prepareDetectionCache = function(e, n, r) {
                         if (e.mobile === t) {
-                            var a, s, u;
+                            var a, s, c;
                             return (s = i.findMatch(i.mobileDetectRules.tablets, n)) ? (e.mobile = e.tablet = s,
                                     void (e.phone = null)) : (a = i.findMatch(i.mobileDetectRules.phones, n)) ? (e.mobile = e.phone = a,
-                                        void (e.tablet = null)) : void (i.isMobileFallback(n) ? (u = o.isPhoneSized(r),
-                                            u === t ? (e.mobile = i.FALLBACK_MOBILE,
-                                                    e.tablet = e.phone = null) : u ? (e.mobile = e.phone = i.FALLBACK_PHONE,
+                                        void (e.tablet = null)) : void (i.isMobileFallback(n) ? (c = o.isPhoneSized(r),
+                                            c === t ? (e.mobile = i.FALLBACK_MOBILE,
+                                                    e.tablet = e.phone = null) : c ? (e.mobile = e.phone = i.FALLBACK_PHONE,
                                                         e.tablet = null) : (e.mobile = e.tablet = i.FALLBACK_TABLET,
                                                         e.phone = null)) : i.isTabletFallback(n) ? (e.mobile = e.tablet = i.FALLBACK_TABLET,
                                                 e.phone = null) : e.mobile = e.tablet = e.phone = null)
@@ -17540,7 +17793,7 @@
             return "undefined" != typeof e && e.exports ? function(t) {
                     e.exports = t()
                 }
-                : n(305)
+                : n(306)
         }())
     }
     , function(e, t) {
@@ -17568,23 +17821,30 @@
                         textAlign: "center",
                         color: "black"
                     }
-                }, this.props.body), this.props.button2 ? r.createElement("button", {
+                }, this.props.body), this.props.button3 ? r.createElement("button", {
+                        className: "small inverted",
+                        onClick: this.props.onClick3
+                    }, this.props.button3) : null, r.createElement("br", null), this.props.button2 ? r.createElement("button", {
                         className: "small inverted",
                         onClick: this.props.onClick2
-                    }, this.props.button2) : null, r.createElement("br", null), r.createElement("button", {
-                    className: "inverted",
-                    onClick: this.props.onClick
-                }, this.props.button)))
+                    }, this.props.button2) : null, r.createElement("br", null), this.props.button ? r.createElement("button", {
+                        className: "inverted",
+                        onClick: this.props.onClick
+                    }, this.props.button) : null))
             }
         });
         e.exports = o
     }
     , function(e, t, n) {
         "use strict";
-        var r = n(3)
-            , o = n(308)
-            , i = n(297)
-            , a = r.createClass({
+        function r(e, t) {
+            return (e || "Anonymous") === (t || "Anonymous")
+        }
+        var o = n(3)
+            , i = n(309)
+            , a = n(298)
+            , s = "2v2-teammates"
+            , c = o.createClass({
             displayName: "Leaderboards",
             getInitialState: function() {
                 return {
@@ -17603,56 +17863,104 @@
                 }),
                     this.props.getLeaderboard("ffa")
             },
+            show2v2Leaderboard: function() {
+                this.setState({
+                    ladder: "2v2"
+                }),
+                    this.props.getLeaderboard("2v2")
+            },
+            show2v2TeammatesLeaderboard: function() {
+                this.setState({
+                    ladder: s
+                }),
+                    this.props.get2v2Teammates()
+            },
             leaderboardRows: function(e) {
                 var t = this
                     , n = this.props.allLeaderboards
-                    , o = n ? n[e] : null;
-                if (!o && localStorage) {
-                    var i = localStorage["leaderboard:" + e];
-                    if (i)
+                    , i = n ? n[e] : null;
+                if (!i && localStorage) {
+                    var a = localStorage["leaderboard:" + e];
+                    if (a)
                         try {
-                            o = JSON.parse(i)
+                            i = JSON.parse(a)
                         } catch (e) {}
                 }
-                if (!o)
+                if (!i)
                     return null;
-                var a = o.users
-                    , s = o.stars;
-                return (s || []).map(function(n, o) {
-                    var i = t.props.playerRanks && t.props.playerRanks[e] === o + 1 && t.props.playerUsername === a[o];
-                    return r.createElement("tr", {
-                        key: "leaderboard-row-" + o,
-                        className: i ? "highlighted" : ""
-                    }, r.createElement("td", null, o + 1), r.createElement("td", null, a[o] || "Anonymous"), r.createElement("td", null, Math.max(0, Math.round(n || 0))))
+                var s = i.users
+                    , c = i.stars
+                    , u = 0
+                    , l = this.props.playerUsername
+                    , p = "2v2" === e;
+                return (c || []).map(function(n, i) {
+                    var a = t.props.playerRanks && t.props.playerRanks[e] === i + 1
+                        , c = p ? r(l, s[2 * i]) || r(l, s[2 * i + 1]) : r(l, s[i])
+                        , h = a && c;
+                    return o.createElement("tr", {
+                        key: "leaderboard-row-" + i,
+                        className: h ? "highlighted" : ""
+                    }, o.createElement("td", null, i + 1), o.createElement("td", null, s[u++] || "Anonymous"), p ? o.createElement("td", null, s[u++] || "Anonymous") : null, o.createElement("td", null, Math.max(0, Math.round(n || 0))))
                 })
             },
+            leaderboard2v2TeammateRows: function() {
+                var e = this.props.data2v2Teammates;
+                if (!e && localStorage) {
+                    var t = localStorage["2v2_teammates"];
+                    if (t)
+                        try {
+                            e = JSON.parse(t)
+                        } catch (e) {}
+                }
+                return e ? e.map(function(e, t) {
+                        return o.createElement("tr", {
+                            key: "leaderboard-row-" + t
+                        }, o.createElement("td", null, t + 1), o.createElement("td", null, e.username || "Anonymous"), o.createElement("td", null, Math.max(0, Math.round(e.stars || 0))), o.createElement("td", null, e.rank))
+                    }) : null
+            },
             render: function() {
-                return r.createElement("div", {
+                var e = 0;
+                switch (this.state.ladder) {
+                    case "ffa":
+                        e = 1;
+                        break;
+                    case "2v2":
+                        e = 2;
+                        break;
+                    case s:
+                        e = 3
+                }
+                return o.createElement("div", {
                     className: "popup-background"
-                }, r.createElement("div", {
+                }, o.createElement("div", {
                     id: "leaderboard",
                     className: "alert center"
-                }, r.createElement("h1", {
+                }, o.createElement("h1", {
                     className: "center-horizontal",
                     style: {
                         textShadow: "1px 1px black"
                     }
-                }, "Leaderboards"), r.createElement("div", {
+                }, "Leaderboards"), o.createElement("div", {
                     id: "leaderboard-table-container"
-                }, r.createElement(o, {
+                }, o.createElement(i, {
                     tab_id: "main-menu-leaderboard",
-                    selectedTab: "duel" === this.state.ladder ? 0 : 1,
-                    onClicks: [this.show1v1Leaderboard, this.showFFALeaderboard],
-                    titles: ["1v1", "FFA"]
-                }), r.createElement("table", {
+                    selectedTab: e,
+                    onClicks: [this.show1v1Leaderboard, this.showFFALeaderboard, this.show2v2Leaderboard, this.show2v2TeammatesLeaderboard],
+                    titles: ["1v1", "FFA", "2v2", "2v2 Partners"]
+                }), this.state.ladder === s ? o.createElement("p", {
+                        style: {
+                            color: "black",
+                            margin: "5px"
+                        }
+                    }, "This leaderboard lists the partners you've played ranked 2v2 with.") : null, o.createElement("table", {
                     id: "leaderboard-table"
-                }, r.createElement("tbody", null, r.createElement("tr", null, r.createElement("th", null, "#"), r.createElement("th", null, "Username"), r.createElement("th", null, " ", r.createElement(i, null), " ")), this.leaderboardRows(this.state.ladder)))), r.createElement("button", {
+                }, o.createElement("tbody", null, this.state.ladder === s ? o.createElement("tr", null, o.createElement("th", null, "#"), o.createElement("th", null, "Teammate"), o.createElement("th", null, " ", o.createElement(a, null), " "), o.createElement("th", null, "Rank")) : o.createElement("tr", null, o.createElement("th", null, "#"), o.createElement("th", null, "Username"), "2v2" === this.state.ladder ? o.createElement("th", null, "Username") : null, o.createElement("th", null, " ", o.createElement(a, null), " ")), this.state.ladder === s ? this.leaderboard2v2TeammateRows() : this.leaderboardRows(this.state.ladder)))), o.createElement("button", {
                     className: "small inverted center-horizontal",
                     onClick: this.props.hideLeaderboards
                 }, "Exit")))
             }
         });
-        e.exports = a
+        e.exports = c
     }
     , function(e, t, n) {
         "use strict";
@@ -17680,20 +17988,380 @@
     , function(e, t, n) {
         "use strict";
         var r = n(3)
+            , o = n(311)
+            , i = r.createClass({
+            displayName: "Options",
+            handleKeyPress: function(e) {
+                e = e || window.event;
+                var t = this.state.currentButton;
+                if (t) {
+                    e.preventDefault(),
+                        e.stopPropagation();
+                    var n = o(t.key);
+                    n[t.num] = e.keyCode,
+                        o(t.key, n),
+                        console.log("Saving", t.key, "as", n),
+                        localStorage[t.key] = n,
+                        this.setState({
+                            currentButton: void 0
+                        })
+                }
+            },
+            handleButtonPress: function(e, t, n) {
+                n.preventDefault(),
+                    this.setState({
+                        currentButton: {
+                            key: e,
+                            num: t
+                        }
+                    })
+            },
+            generateBindings: function() {
+                var e = o()
+                    , t = []
+                    , n = this.state ? this.state.currentButton : void 0;
+                for (var i in e) {
+                    var a = [e[i].current[0], e[i].current.length - 1 ? e[i].current[1] : 0]
+                        , s = n && n.key === i && 0 === n.num
+                        , c = n && n.key === i && 1 === n.num;
+                    t.push(r.createElement("div", {
+                        className: "options-controls-row",
+                        key: i
+                    }, r.createElement("p", {
+                        className: "center-vertical"
+                    }, e[i].desc + ": "), r.createElement("div", {
+                        className: "center-vertical"
+                    }, r.createElement("button", {
+                        type: "button",
+                        className: s ? "small inverted" : "small",
+                        onClick: this.handleButtonPress.bind(null, i, 0)
+                    }, s ? "Press a key..." : o(a[0])), "UP" === i || "LEFT" === i || "DOWN" === i || "RIGHT" === i ? r.createElement("button", {
+                            type: "button",
+                            className: c ? "small inverted" : "small",
+                            onClick: this.handleButtonPress.bind(null, i, 1)
+                        }, c ? "Press a key..." : o(a[1])) : null)))
+                }
+                return r.createElement("div", null, t)
+            },
+            render: function() {
+                return document.querySelector("body").onkeydown = this.handleKeyPress,
+                    r.createElement("div", {
+                        className: "popup-background"
+                    }, r.createElement("div", {
+                        className: "popup-replays"
+                    }, r.createElement("div", {
+                        id: "options",
+                        className: "alert center"
+                    }, r.createElement("h1", {
+                        className: "center-horizontal",
+                        style: {
+                            textShadow: "1px 1px black"
+                        }
+                    }, "Options"), r.createElement("div", {
+                        id: "options-table-container"
+                    }, r.createElement("div", {
+                        id: "options-body"
+                    }, this.generateBindings())), r.createElement("button", {
+                        className: "small inverted center-horizontal",
+                        onClick: this.props.hideOptions
+                    }, "Exit"))))
+            }
+        });
+        e.exports = i
+    }
+    , function(e, t, n) {
+        "use strict";
+        function r(e) {
+            return o && o[e] ? o[e].split(",").map(function(e) {
+                    return +e
+                }) : void 0
+        }
+        var o = n(288)
+            , i = function(e, t) {
+            return Array.isArray(t) && (a[e].current = t),
+                "number" != typeof e && isNaN(e) ? t ? a[e][t] : e ? a[e].current : a : (e = parseInt(e),
+                        s[e])
+        }
+            , a = {
+            UP: {
+                desc: "Move Up",
+                default: [87, 38]
+            },
+            DOWN: {
+                desc: "Move Down",
+                default: [83, 40]
+            },
+            LEFT: {
+                desc: "Move Left",
+                default: [65, 37]
+            },
+            RIGHT: {
+                desc: "Move Right",
+                default: [68, 39]
+            },
+            CHAT: {
+                desc: "Open Chat",
+                default: [13]
+            },
+            TEAMCHAT: {
+                desc: "Open Teamchat",
+                default: [84]
+            },
+            DESELECT: {
+                desc: "Deselect Square",
+                default: [32]
+            },
+            AUTOPLAY: {
+                desc: "Autoplay Replay",
+                default: [32]
+            },
+            UNDO: {
+                desc: "Undo Move",
+                default: [69]
+            },
+            CLEAR: {
+                desc: "Clear Queued Moves",
+                default: [81]
+            },
+            ZOOMIN: {
+                desc: "Zoom In",
+                default: [48]
+            },
+            ZOOMOUT: {
+                desc: "Zoom Out",
+                default: [57]
+            },
+            PING: {
+                desc: "Ping",
+                default: [70]
+            }
+        }
+            , s = {
+            3: "break",
+            8: "backspace / delete",
+            9: "tab",
+            12: "clear",
+            13: "enter",
+            16: "shift",
+            17: "ctrl",
+            18: "alt",
+            19: "pause/break",
+            20: "caps lock",
+            27: "escape",
+            32: "spacebar",
+            33: "page up",
+            34: "page down",
+            35: "end",
+            36: "home",
+            37: "←",
+            38: "↑",
+            39: "→",
+            40: "↓",
+            41: "select",
+            42: "print",
+            43: "execute",
+            44: "print screen",
+            45: "insert",
+            46: "delete",
+            48: "0",
+            49: "1",
+            50: "2",
+            51: "3",
+            52: "4",
+            53: "5",
+            54: "6",
+            55: "7",
+            56: "8",
+            57: "9",
+            58: ":",
+            59: "semicolon (firefox), equals",
+            60: "<",
+            61: "equals (firefox)",
+            63: "ß",
+            64: "@ (firefox)",
+            65: "a",
+            66: "b",
+            67: "c",
+            68: "d",
+            69: "e",
+            70: "f",
+            71: "g",
+            72: "h",
+            73: "i",
+            74: "j",
+            75: "k",
+            76: "l",
+            77: "m",
+            78: "n",
+            79: "o",
+            80: "p",
+            81: "q",
+            82: "r",
+            83: "s",
+            84: "t",
+            85: "u",
+            86: "v",
+            87: "w",
+            88: "x",
+            89: "y",
+            90: "z",
+            91: "Windows Key / Left ⌘",
+            92: "right window key",
+            93: "Windows Menu / Right ⌘",
+            96: "numpad 0",
+            97: "numpad 1",
+            98: "numpad 2",
+            99: "numpad 3",
+            100: "numpad 4",
+            101: "numpad 5",
+            102: "numpad 6",
+            103: "numpad 7",
+            104: "numpad 8",
+            105: "numpad 9",
+            106: "multiply",
+            107: "add",
+            108: "numpad period (firefox)",
+            109: "subtract",
+            110: "decimal point",
+            111: "divide",
+            112: "f1",
+            113: "f2",
+            114: "f3",
+            115: "f4",
+            116: "f5",
+            117: "f6",
+            118: "f7",
+            119: "f8",
+            120: "f9",
+            121: "f10",
+            122: "f11",
+            123: "f12",
+            124: "f13",
+            125: "f14",
+            126: "f15",
+            127: "f16",
+            128: "f17",
+            129: "f18",
+            130: "f19",
+            131: "f20",
+            132: "f21",
+            133: "f22",
+            134: "f23",
+            135: "f24",
+            144: "num lock ",
+            145: "scroll lock",
+            160: "^",
+            161: "!",
+            163: "#",
+            164: "$",
+            165: "ù",
+            166: "page backward",
+            167: "page forward",
+            169: "closing paren (AZERTY)",
+            170: "*",
+            171: "~ + * key",
+            173: "minus (firefox), mute/unmute",
+            174: "decrease volume level",
+            175: "increase volume level",
+            176: "next",
+            177: "previous",
+            178: "stop",
+            179: "play/pause",
+            180: "e-mail",
+            181: "mute/unmute (firefox)",
+            182: "decrease volume level (firefox)",
+            183: "increase volume level (firefox)",
+            186: "semi-colon / ñ",
+            187: "equal sign ",
+            188: "comma",
+            189: "dash ",
+            190: "period ",
+            191: "forward slash / ç",
+            192: "grave accent / ñ",
+            193: "?, / or °",
+            194: "numpad period (chrome)",
+            219: "open bracket ",
+            220: "back slash ",
+            221: "close bracket ",
+            222: "single quote ",
+            223: "`",
+            224: "left or right ⌘ key (firefox)",
+            225: "altgr",
+            226: "< /git >",
+            230: "GNOME Compose Key",
+            233: "XF86Forward",
+            234: "XF86Back",
+            255: "toggle touchpad"
+        };
+        for (var c in a)
+            a[c].current = r(c) || a[c].default;
+        e.exports = i
+    }
+    , function(e, t, n) {
+        "use strict";
+        var r = n(3)
+            , o = r.createClass({
+            displayName: "Ad",
+            componentDidMount: function() {
+                var e = this.props.id;
+                googletag.cmd.push(function() {
+                    googletag.display(e)
+                })
+            },
+            render: function() {
+                var e = Object.assign({}, this.props.style, {
+                    width: this.props.width + "px",
+                    height: this.props.height + "px"
+                });
+                return r.createElement("div", {
+                    className: "relative",
+                    style: e
+                }, r.createElement("div", {
+                    className: "absolute-fill",
+                    style: {
+                        backgroundColor: "#333"
+                    }
+                }, r.createElement("div", {
+                    className: "center",
+                    style: {
+                        textAlign: "center",
+                        minWidth: "90%"
+                    }
+                }, r.createElement("p", {
+                    className: "bold",
+                    style: {
+                        whiteSpace: "nowrap",
+                        margin: "1px",
+                        fontSize: "14px"
+                    }
+                }, "Advertisement"), r.createElement("p", {
+                    style: {
+                        margin: "1px",
+                        fontSize: "11px"
+                    }
+                }, "Ads help keep updates coming and generals.io servers running!"))), r.createElement("div", {
+                    id: this.props.id,
+                    className: "absolute-fill"
+                }))
+            }
+        });
+        e.exports = o
+    }
+    , function(e, t, n) {
+        "use strict";
+        var r = n(3)
             , o = n(179)
             , i = n(267)
             , a = n(211)
             , s = n(1)
-            , u = n(271)
-            , c = n(310)
-            , l = n(311)
-            , p = r.createClass({
+            , c = n(271)
+            , u = n(314)
+            , l = n(315)
+            , p = n(312)
+            , h = r.createClass({
             displayName: "Queue",
             componentDidMount: function() {
-                this.props.isTeamQueue && u.changeURL("/teams/" + encodeURIComponent(this.props.team_id)),
-                    googletag.cmd.push(function() {
-                        googletag.display("div-gpt-ad-1479698638527-1")
-                    })
+                this.props.isTeamQueue && c.changeURL("/teams/" + encodeURIComponent(this.props.team_id))
             },
             render: function() {
                 var e = Math.floor(this.props.queueTimeLeft / 60)
@@ -17714,7 +18382,7 @@
                             className: "share-link"
                         }, "http://" + window.location.hostname + "/teams/" + encodeURIComponent(this.props.team_id))) : r.createElement("h1", {
                             className: "queue-title"
-                        }, "Waiting for ", o ? "teams" : "players", "..."), r.createElement("h2", null, o ? Math.ceil(this.props.numPlayers / 2) : this.props.numPlayers, " of ", n || this.props.isTeamQueue || o ? 2 : s.PLAYER_CAP, " ", o ? " teams" : ""), !this.props.isTeamQueue && !this.props.prestart && !this.props.queue_id && this.props.numPlayers >= 2 ? r.createElement("p", null, "Game automatically starting in ", e, ":", t) : null, r.createElement("div", null, this.props.isTeamQueue ? null : r.createElement("p", {
+                        }, n ? "Finding a match..." : "Waiting for " + (o ? "teams" : "players") + "..."), n ? null : r.createElement("h2", null, o ? Math.ceil(this.props.numPlayers / 2) : this.props.numPlayers, " of ", this.props.isTeamQueue || o ? 2 : s.PLAYER_CAP, " ", o ? " teams" : ""), !this.props.isTeamQueue && !this.props.prestart && !this.props.queue_id && this.props.numPlayers >= 2 ? r.createElement("p", null, "Game automatically starting in ", e, ":", t) : null, r.createElement("div", null, n && !this.props.prestart ? r.createElement("p", null, "We're searching for an opponent around your skill level.") : null, this.props.isTeamQueue || n ? null : r.createElement("p", {
                         style: {
                             marginRight: "3px",
                             display: "inline"
@@ -17723,14 +18391,14 @@
                         playerIndex: this.props.playerIndex
                     }), this.props.prestart ? null : r.createElement("p", {
                         className: "queue-gong-message"
-                    }, "We'll play a gong sound when the game starts. Turn your volume up!")), this.props.prestart || n || this.props.isTeamQueue || o || !(this.props.numPlayers > 1) ? null : r.createElement(c, null), r.createElement("br", null), this.props.prestart ? null : r.createElement("button", {
+                    }, "We'll play a gong sound when the game starts. Turn your volume up!")), this.props.prestart || n || this.props.isTeamQueue || o || !(this.props.numPlayers > 1) ? null : r.createElement(u, null), r.createElement("br", null), this.props.prestart ? null : r.createElement("button", {
                         className: "small",
                         onClick: this.props.onCancelClicked.bind(this)
-                    }, "Cancel"), r.createElement("div", {
-                    id: "div-gpt-ad-1479698638527-1",
+                    }, "Cancel"), r.createElement(p, {
+                    id: "div-gpt-ad-1484365524244-1",
+                    width: 336,
+                    height: 280,
                     style: {
-                        height: "280px",
-                        width: "336px",
                         marginTop: "10px"
                     }
                 })))
@@ -17745,7 +18413,7 @@
                         e(i.cancel())
                 }
             }
-        })(p)
+        })(h)
     }
     , function(e, t, n) {
         "use strict";
@@ -17791,7 +18459,7 @@
     }
     , function(e, t, n) {
         "use strict";
-        for (var r = n(3), o = n(179), i = n(267), a = n(310), s = n(211), u = n(1), c = n(177), l = n(271), p = n(313), h = n(315), d = n(308), f = n(311), m = [], v = 0; v < u.PLAYER_CAP; v++)
+        for (var r = n(3), o = n(179), i = n(267), a = n(314), s = n(211), c = n(1), u = n(177), l = n(271), p = n(317), h = n(309), d = n(315), f = n(311), m = [], v = 0; v < c.PLAYER_CAP; v++)
             m.push(v + 1);
         var y = r.createClass({
             displayName: "CustomQueue",
@@ -17807,7 +18475,7 @@
                 window.removeEventListener("keydown", this.onKeyDown)
             },
             onKeyDown: function(e) {
-                h.CHAT.indexOf(e.keyCode) !== -1 && (document.getElementById("chatroom-input").focus(),
+                f("CHAT").indexOf(e.keyCode) !== -1 && (document.getElementById("chatroom-input").focus(),
                     e.preventDefault(),
                     e.stopPropagation())
             },
@@ -17817,7 +18485,7 @@
             renderTeams: function() {
                 if (!this.props.teams || !this.props.usernames)
                     return null;
-                for (var e = [], t = 0; t < u.PLAYER_CAP; t++)
+                for (var e = [], t = 0; t < c.PLAYER_CAP; t++)
                     e.push([]);
                 for (var t = 0; t < this.props.teams.length; t++)
                     e[this.props.teams[t] - 1].push({
@@ -17831,14 +18499,14 @@
                     }, r.createElement("h4", null, "Team " + (t + 1)), e[t].map(function(e, n) {
                         return r.createElement("div", {
                             key: "custom-team" + t + "-" + n
-                        }, r.createElement(f, {
+                        }, r.createElement(d, {
                             playerIndex: e.playerIndex
                         }), r.createElement("p", null, e.username || "Anonymous"))
                     })));
                 return n
             },
             render: function() {
-                var e = c.chatRoomForCustomGame(this.props.queue_id);
+                var e = u.chatRoomForCustomGame(this.props.queue_id);
                 return r.createElement("div", {
                     onKeyDown: this.onKeyDown
                 }, r.createElement("div", {
@@ -17858,7 +18526,7 @@
                         style: {
                             margin: 0
                         }
-                    }, "Select your team:"), r.createElement(d, {
+                    }, "Select your team:"), r.createElement(h, {
                         tab_id: "custom-team",
                         selectedTab: this.props.teams && this.props.teams[this.props.playerIndex] - 1 || 0,
                         onClicks: this.teamOnClicks,
@@ -17868,7 +18536,7 @@
                         marginRight: "3px",
                         display: "inline"
                     }
-                }, "You are:"), r.createElement(f, {
+                }, "You are:"), r.createElement(d, {
                     playerIndex: this.props.playerIndex
                 }), this.props.prestart ? null : r.createElement("p", {
                         className: "queue-gong-message"
@@ -17900,9 +18568,10 @@
     , function(e, t, n) {
         "use strict";
         var r = n(3)
-            , o = n(314)
+            , o = n(318)
             , i = n(211)
-            , a = r.createClass({
+            , a = "[team] "
+            , s = r.createClass({
             displayName: "ChatRoom",
             getInitialState: function() {
                 return {
@@ -17910,9 +18579,11 @@
                 }
             },
             handleMessageChange: function(e) {
-                this.setState({
-                    currentMessage: e.target.value
-                })
+                this.props.useTeamChat ? this.setState({
+                        currentMessage: e.target.value.substring(a.length)
+                    }) : this.setState({
+                        currentMessage: e.target.value
+                    })
             },
             handleKeyDown: function(e) {
                 e.stopPropagation()
@@ -17920,10 +18591,26 @@
             handleKeyPress: function(e) {
                 e.stopPropagation();
                 var t = e.which || e.keyCode;
-                13 === t && (this.state.currentMessage ? (i.sendChatMessage(this.props.chat_room, this.state.currentMessage, this.props.playerIndex),
-                        this.setState({
-                            currentMessage: ""
-                        })) : this.refs.input.blur())
+                if (13 === t)
+                    if (this.state.currentMessage) {
+                        var n = this.props.team_chat_room
+                            , r = this.props.chat_room;
+                        i.sendChatMessage(this.props.useTeamChat ? n || r : r, this.state.currentMessage, this.props.playerIndex, this.props.useTeamChat && n ? a : ""),
+                            this.setState({
+                                currentMessage: ""
+                            })
+                    } else
+                        this.refs.input.blur()
+            },
+            handleFocus: function() {
+                this.setState({
+                    focused: !0
+                })
+            },
+            handleBlur: function() {
+                this.setState({
+                    focused: !1
+                })
             },
             componentWillUpdate: function() {
                 var e = this.refs.list;
@@ -17958,21 +18645,23 @@
                     id: "chatroom-input",
                     type: "text",
                     ref: "input",
-                    placeholder: "Press [Enter] to send a message",
-                    value: this.state.currentMessage,
+                    placeholder: this.props.team_chat_room ? "[Enter] to chat, [t] to teamchat" : "Press [Enter] to chat.",
+                    value: (this.state.focused && this.props.useTeamChat ? a : "") + this.state.currentMessage,
                     onChange: this.handleMessageChange,
                     onKeyPress: this.handleKeyPress,
-                    onKeyDown: this.handleKeyDown
+                    onKeyDown: this.handleKeyDown,
+                    onFocus: this.handleFocus,
+                    onBlur: this.handleBlur
                 }))
             }
         });
-        e.exports = a
+        e.exports = s
     }
     , function(e, t, n) {
         "use strict";
         var r = n(3)
             , o = n(1)
-            , i = n(311)
+            , i = n(315)
             , a = r.createClass({
             displayName: "ChatMessage",
             render: function() {
@@ -17980,7 +18669,9 @@
                     , t = e.hasOwnProperty("playerIndex") ? o.PLAYER_COLORS[e.playerIndex] : null;
                 return e.hasOwnProperty("username") ? r.createElement("p", {
                         className: "chat-message"
-                    }, t ? r.createElement(i, {
+                    }, e.prefix ? r.createElement("span", {
+                            className: "bold"
+                        }, e.prefix) : null, t ? r.createElement(i, {
                             playerIndex: e.playerIndex
                         }) : null, r.createElement("span", {
                         className: "username"
@@ -17993,45 +18684,24 @@
     }
     , function(e, t, n) {
         "use strict";
-        function r(e) {
-            return o && o[e] ? o[e].split(",").map(function(e) {
-                    return +e
-                }) : void 0
-        }
-        var o = n(287);
-        e.exports = {
-            UP: r("UP") || [87, 38],
-            DOWN: r("DOWN") || [83, 40],
-            LEFT: r("LEFT") || [65, 37],
-            RIGHT: r("RIGHT") || [68, 39],
-            CHAT: r("CHAT") || [13, 84],
-            DESELECT: r("DESELECT") || [32],
-            AUTOPLAY: r("AUTOPLAY") || [32],
-            UNDO: r("UNDO") || [69],
-            CLEAR: r("CLEAR") || [81],
-            ZOOMIN: r("ZOOMIN") || [48],
-            ZOOMOUT: r("ZOOMOUT") || [57]
-        }
-    }
-    , function(e, t, n) {
-        "use strict";
         var r = n(3)
             , o = n(179)
             , i = n(269)
-            , a = n(317)
-            , s = n(313)
-            , u = n(265)
-            , c = (n(1),
-            n(306))
-            , l = n(319).Tutorial
-            , p = n(211)
-            , h = n(288)
-            , d = n(303)
-            , f = (n(271),
-            n(320))
-            , m = n(308)
-            , v = n(321)
-            , y = r.createClass({
+            , a = n(320)
+            , s = n(317)
+            , c = n(265)
+            , u = (n(1),
+            n(177))
+            , l = n(307)
+            , p = n(322).Tutorial
+            , h = n(211)
+            , d = n(289)
+            , f = n(304)
+            , m = (n(271),
+            n(309))
+            , v = n(323)
+            , y = n(312)
+            , g = r.createClass({
             displayName: "GamePage",
             getInitialState: function() {
                 return {
@@ -18040,22 +18710,25 @@
                 }
             },
             exit: function() {
-                this.props.isReplay ? h.exitReplay() : p.leaveGame(),
-                    u.dispatch(i.exit())
+                this.props.isReplay ? d.exitReplay() : h.leaveGame(),
+                    c.dispatch(i.exit())
             },
             exitOrSpectate: function() {
-                this.props.canSpectate ? this.setState({
+                this.props.canSpectate && !this.props.ended ? this.setState({
                         isSpectating: !0
                     }) : this.exit()
             },
-            focusChat: function() {
-                this.props.isLocalGame || document.getElementById("chatroom-input").focus()
+            focusChat: function(e) {
+                this.props.isLocalGame || (document.getElementById("chatroom-input").focus(),
+                    this.setState({
+                        isTeamChat: e
+                    }))
             },
             toggleAutoPlay: function() {
-                u.dispatch(i.toggleAutoPlay())
+                c.dispatch(i.toggleAutoPlay())
             },
             setAutoPlaySpeed: function(e) {
-                u.dispatch(i.setAutoPlaySpeed(e))
+                c.dispatch(i.setAutoPlaySpeed(e))
             },
             shareReplay: function() {
                 this.setState({
@@ -18089,7 +18762,7 @@
             onReplayTurnJump: function() {
                 var e = document.getElementById("replay-turn-jump-input")
                     , t = parseInt(e.value);
-                Number.isInteger(t) && (h.jumpToTurn(t),
+                Number.isInteger(t) && (d.jumpToTurn(t),
                     e.value = "",
                     e.blur())
             },
@@ -18100,9 +18773,15 @@
             watchReplay: function() {
                 "undefined" != typeof ga && ga("send", "event", "Replay", "watch");
                 var e = this.props.replay_id;
-                f.playAd(function() {
-                    window.open("/replays/" + e)
+                window.open("/replays/" + e)
+            },
+            closeAd: function() {
+                this.setState({
+                    hideReplayAd: !0
                 })
+            },
+            playAgain: function() {
+                c.dispatch(i.playAgain(this.props.playAgainUrl))
             },
             render: function() {
                 var e = Number.isInteger(this.props.turn) ? Math.floor(this.props.turn / 2) : 0;
@@ -18113,32 +18792,38 @@
                     isReplay: this.props.isReplay,
                     toggleAutoPlay: this.toggleAutoPlay,
                     focusChat: this.focusChat
-                }), !this.state.isSpectating && this.props.lost ? r.createElement(c, {
+                }), !this.state.isSpectating && this.props.lost ? r.createElement(l, {
                         title: "Game Over",
                         body: r.createElement("span", null, "You were defeated by ", r.createElement("span", {
                             style: {
                                 fontFamily: "Quicksand-Bold"
                             }
                         }, this.props.usernames[this.props.gameOverData.killer]), "."),
-                        button: this.props.canSpectate ? "Spectate" : "Exit",
+                        button: this.props.canSpectate && !this.props.ended ? "Spectate" : "Exit",
                         button2: "Watch Replay",
+                        button3: this.props.playAgainUrl ? "Play Again" : null,
                         onClick: this.exitOrSpectate,
-                        onClick2: this.watchReplay
-                    }) : null, !this.state.isSpectating && this.props.won ? this.props.isTutorial ? r.createElement(c, {
+                        onClick2: this.watchReplay,
+                        onClick3: this.playAgain
+                    }) : null, !this.state.isSpectating && this.props.won ? this.props.isTutorial ? r.createElement(l, {
                             title: "You won!",
                             button: "Exit",
                             onClick: this.exit
-                        }) : r.createElement(c, {
+                        }) : r.createElement(l, {
                             title: "You won!",
                             button: "Exit",
                             button2: "Watch Replay",
+                            button3: this.props.playAgainUrl ? "Play Again" : null,
                             onClick: this.exit,
-                            onClick2: this.watchReplay
+                            onClick2: this.watchReplay,
+                            onClick3: this.playAgain
                         }) : null, this.props.isLocalGame ? null : r.createElement("div", {
                         id: "in-game-chat"
                     }, r.createElement(s, {
                         chat_room: this.props.chat_room,
-                        messages: this.props.chat_messages
+                        team_chat_room: this.props.team_chat_room,
+                        messages: this.props.chat_messages,
+                        useTeamChat: u.hasDuplicate(this.props.teams) && this.state.isTeamChat
                     })), r.createElement(v, {
                     stars: this.props.stars,
                     scores: this.props.scores,
@@ -18239,13 +18924,14 @@
                         },
                         onClick: this.exitShareReplay
                     }, "Exit")))) : null, this.props.isReplay ? r.createElement("div", {
-                        id: "replay-bottom"
-                    }, this.props.autoPlay ? r.createElement("center", null, r.createElement(m, {
+                        id: "replay-bottom",
+                        className: "fixed-center-horizontal"
+                    }, r.createElement("center", null, this.props.autoPlay ? r.createElement(m, {
                             tab_id: "replay-autoplay",
                             selectedTab: .5 === this.props.autoPlaySpeed ? 0 : 1 === this.props.autoPlaySpeed ? 1 : 2 === this.props.autoPlaySpeed ? 2 : 5 === this.props.autoPlaySpeed ? 3 : 4,
                             onClicks: [this.setAutoPlaySpeed.bind(null, .5), this.setAutoPlaySpeed.bind(null, 1), this.setAutoPlaySpeed.bind(null, 2), this.setAutoPlaySpeed.bind(null, 5), this.setAutoPlaySpeed.bind(null, 10)],
                             titles: ["0.5x", "1x", "2x", "5x", "10x"]
-                        })) : null, d ? null : r.createElement("div", {
+                        }) : null, this.props.autoPlay && !f ? r.createElement("br", null) : null, f ? null : r.createElement("div", {
                             id: "replay-bottom-bar",
                             className: "background"
                         }, r.createElement("div", null, r.createElement("span", {
@@ -18254,7 +18940,22 @@
                             className: "bold"
                         }, "[Spacebar]"), r.createElement("br", null), "Toggle Auto Play"), r.createElement("div", null, r.createElement("span", {
                             className: "bold"
-                        }, "[→]"), r.createElement("br", null), "Next Move"))) : null, this.props.isTutorial ? r.createElement(l, {
+                        }, "[→]"), r.createElement("br", null), "Next Move")), this.state && this.state.hideReplayAd ? null : r.createElement("div", {
+                            id: "replay-ad-container"
+                        }, r.createElement("button", {
+                            onClick: this.closeAd,
+                            className: "small",
+                            style: {
+                                boxShadow: "none",
+                                margin: 0,
+                                padding: "3px 15px",
+                                fontSize: "12px"
+                            }
+                        }, "Hide ad"), r.createElement(y, {
+                            id: "div-gpt-ad-1484365524244-2",
+                            width: 728,
+                            height: 90
+                        })))) : null, this.props.isTutorial ? r.createElement(p, {
                         state: this.props.tutorialState,
                         scores: this.props.scores,
                         playerIndex: this.props.playerIndex,
@@ -18271,35 +18972,39 @@
             return Object.assign({
                 chat_messages: e.chat[t] || []
             }, e.game)
-        })(y)
+        })(g)
     }
     , function(e, t, n) {
         "use strict";
         function r(e) {
             switch (e) {
-                case d:
+                case y:
                     return "large";
-                case m:
+                case T:
                     return "small";
-                case v:
+                case b:
                     return "tiny"
             }
         }
         var o = n(3)
             , i = n(179)
-            , a = n(318)
+            , a = n(321)
             , s = n(211)
-            , u = n(273)
-            , c = n(319)
-            , l = n(288)
-            , p = n(303)
-            , h = n(315)
-            , d = -1
-            , f = 0
-            , m = 1
-            , v = 2
-            , y = 50
-            , g = o.createClass({
+            , c = n(273)
+            , u = n(322)
+            , l = n(289)
+            , p = n(304)
+            , h = n(1)
+            , d = n(177)
+            , f = n(288)
+            , m = n(311)
+            , v = 3
+            , y = -1
+            , g = 0
+            , T = 1
+            , b = 2
+            , S = 50
+            , E = o.createClass({
             displayName: "GameMap",
             getInitialState: function() {
                 return {
@@ -18310,16 +19015,20 @@
                     },
                     attackIndex: 1,
                     queuedAttacks: [],
-                    zoom: p ? m : f,
+                    zoom: p ? this.props.isReplay ? b : T : g,
                     wheel: 0
                 }
             },
             undoQueuedAttack: function() {
                 if (this.state.queuedAttacks.length > 0) {
-                    var e = this.state.queuedAttacks.slice(0, -1);
-                    this.setState({
-                        queuedAttacks: e
-                    })
+                    var e = this.state.queuedAttacks[this.state.queuedAttacks.length - 1]
+                        , t = this.state.queuedAttacks.slice(0, -1);
+                    this.state.selectedIndex === e.end ? this.setState({
+                            queuedAttacks: t,
+                            selectedIndex: e.begin
+                        }) : this.setState({
+                            queuedAttacks: t
+                        })
                 }
                 s.undoMove()
             },
@@ -18329,6 +19038,21 @@
                 }),
                     s.clearMoves()
             },
+            enablePingMode: function() {
+                this.setState({
+                    inPingMode: !0
+                })
+            },
+            disablePingMode: function() {
+                this.setState({
+                    inPingMode: !1
+                })
+            },
+            pingTile: function(e) {
+                s.pingTile(e),
+                f && (f.has_pinged = !0),
+                    this.forceUpdate()
+            },
             componentDidMount: function() {
                 window.addEventListener("keydown", this.onKeyDown)
             },
@@ -18336,7 +19060,7 @@
                 window.removeEventListener("keydown", this.onKeyDown)
             },
             shouldComponentUpdate: function(e, t) {
-                return this.props !== e || this.state.selectedIndex !== t.selectedIndex || this.state.selectedIs50 !== t.selectedIs50 || this.state.offset !== t.offset || this.state.queuedAttacks !== t.queuedAttacks || this.state.zoom !== t.zoom
+                return this.props !== e || this.state.selectedIndex !== t.selectedIndex || this.state.selectedIs50 !== t.selectedIs50 || this.state.offset !== t.offset || this.state.queuedAttacks !== t.queuedAttacks || this.state.zoom !== t.zoom || this.state.inPingMode !== t.inPingMode
             },
             componentWillReceiveProps: function(e) {
                 if (e.attackIndex > this.props.attackIndex) {
@@ -18364,50 +19088,59 @@
                 }
             },
             onKeyDown: function(e) {
-                if (h.ZOOMIN.indexOf(e.keyCode) !== -1)
-                    return void (this.state.zoom > d && this.setState({
+                if (this.state.inPingMode)
+                    return void this.disablePingMode();
+                if (m("ZOOMIN").indexOf(e.keyCode) !== -1)
+                    return void (this.state.zoom > y && this.setState({
                         zoom: this.state.zoom - 1
                     }));
-                if (h.ZOOMOUT.indexOf(e.keyCode) !== -1)
-                    return void (this.state.zoom < v && this.setState({
+                if (m("ZOOMOUT").indexOf(e.keyCode) !== -1)
+                    return void (this.state.zoom < b && this.setState({
                         zoom: this.state.zoom + 1
                     }));
                 if (this.props.isReplay)
-                    return void (h.AUTOPLAY.indexOf(e.keyCode) !== -1 ? this.props.toggleAutoPlay() : h.RIGHT.indexOf(e.keyCode) !== -1 ? l.nextReplayTurn() : h.LEFT.indexOf(e.keyCode) !== -1 && l.backReplay());
+                    return void (m("AUTOPLAY").indexOf(e.keyCode) !== -1 ? this.props.toggleAutoPlay() : m("RIGHT").indexOf(e.keyCode) !== -1 ? l.nextReplayTurn() : m("LEFT").indexOf(e.keyCode) !== -1 && l.backReplay());
                 if (e.preventDefault(),
                         e.stopPropagation(),
-                    h.UNDO.indexOf(e.keyCode) !== -1)
+                    m("PING").indexOf(e.keyCode) !== -1) {
+                    if (!d.hasDuplicate(this.props.teams))
+                        return;
+                    return void this.enablePingMode()
+                }
+                if (m("UNDO").indexOf(e.keyCode) !== -1)
                     return void this.undoQueuedAttack();
-                if (h.CLEAR.indexOf(e.keyCode) !== -1)
+                if (m("CLEAR").indexOf(e.keyCode) !== -1)
                     return void this.clearQueuedAttacks();
-                if (h.DESELECT.indexOf(e.keyCode) !== -1)
+                if (m("DESELECT").indexOf(e.keyCode) !== -1)
                     return void this.setState({
                         selectedIndex: -1
                     });
-                if (h.CHAT.indexOf(e.keyCode) !== -1)
-                    return void this.props.focusChat();
+                if (m("CHAT").indexOf(e.keyCode) !== -1)
+                    return void this.props.focusChat(!1);
+                if (m("TEAMCHAT").indexOf(e.keyCode) !== -1)
+                    return void this.props.focusChat(!0);
                 if (!(this.state.selectedIndex < 0)) {
                     var t = Math.floor(this.state.selectedIndex / this.props.map.width)
                         , n = this.state.selectedIndex % this.props.map.width
                         , r = 0
                         , o = 0;
-                    if (h.LEFT.indexOf(e.keyCode) !== -1)
+                    if (m("LEFT").indexOf(e.keyCode) !== -1)
                         o = -1;
-                    else if (h.UP.indexOf(e.keyCode) !== -1)
+                    else if (m("UP").indexOf(e.keyCode) !== -1)
                         r = -1;
-                    else if (h.RIGHT.indexOf(e.keyCode) !== -1)
+                    else if (m("RIGHT").indexOf(e.keyCode) !== -1)
                         o = 1;
                     else {
-                        if (h.DOWN.indexOf(e.keyCode) === -1)
+                        if (m("DOWN").indexOf(e.keyCode) === -1)
                             return;
                         r = 1
                     }
                     var i = t + r
                         , a = n + o
                         , s = this.props.map.tileAt(this.props.map.indexFrom(i, a));
-                    s !== u.TILE_MOUNTAIN ? (this.onTileClick(i, a),
+                    s !== c.TILE_MOUNTAIN ? (this.onTileClick(i, a),
                         (s === this.props.playerIndex || this.props.teams && this.props.teams[s] === this.props.teams[this.props.playerIndex]) && this.onTileClick(i, a),
-                        c.onWASD && c.onWASD()) : this.setState({
+                        u.onWASD && u.onWASD()) : this.setState({
                             selectedIndex: -1
                         })
                 }
@@ -18416,7 +19149,10 @@
                 var n = this.props.map;
                 if (!(e < 0 || t < 0 || e >= n.height || t >= n.width)) {
                     var r = n.indexFrom(e, t);
-                    if (this.state.selectedIndex < 0)
+                    if (this.state.inPingMode)
+                        this.pingTile(r),
+                            this.disablePingMode();
+                    else if (this.state.selectedIndex < 0)
                         this.setState({
                             selectedIndex: n.indexFrom(e, t),
                             selectedIs50: !1
@@ -18447,14 +19183,19 @@
                     }
                 }
             },
-            onTileMouseDown: function(e, t, n) {
-                this.setState({
-                    tileCoordinates: {
-                        row: e,
-                        col: t
-                    }
-                }),
-                    this.onMouseDown(n, !0)
+            onTileMouseDown: function(e, t, n, r) {
+                r.nativeEvent.which === v ? this.setState({
+                        pingCoordinates: {
+                            row: e,
+                            col: t
+                        }
+                    }) : n && this.setState({
+                        tileCoordinates: {
+                            row: e,
+                            col: t
+                        }
+                    }),
+                    this.onMouseDown(r, n)
             },
             onMouseDown: function(e, t) {
                 document.activeElement.blur(),
@@ -18472,8 +19213,8 @@
             },
             onWheel: function(e) {
                 var t = this.state.wheel + e.deltaY;
-                Math.abs(t) > y && (this.onKeyDown({
-                    keyCode: t < 0 ? h.ZOOMIN[0] : h.ZOOMOUT[0]
+                Math.abs(t) > S && (this.onKeyDown({
+                    keyCode: t < 0 ? m("ZOOMIN")[0] : m("ZOOMOUT")[0]
                 }),
                     t = 0),
                     this.setState({
@@ -18483,13 +19224,14 @@
             onMouseMove: function(e) {
                 if (e = this.convertTouchIfMobile(e),
                     this.state.prevMouseLocation && this.state.mouseDownLocation)
-                    if (this.state.tileCoordinates) {
+                    if (this.state.tileCoordinates || this.state.pingCoordinates) {
                         var t = Math.pow(e.clientX - this.state.mouseDownLocation.x, 2) + Math.pow(e.clientY - this.state.mouseDownLocation.y, 2);
                         t >= 625 && this.setState({
-                            tileCoordinates: null
+                            tileCoordinates: null,
+                            pingCoordinates: null
                         })
                     } else
-                        c.onDrag && c.onDrag(),
+                        u.onDrag && u.onDrag(),
                             this.setState({
                                 offset: {
                                     x: this.state.offset.x + e.clientX - this.state.prevMouseLocation.x,
@@ -18498,11 +19240,12 @@
                             }),
                             this.setPrevMouseLocation(e)
             },
-            onMouseUp: function() {
-                this.state.tileCoordinates && this.onTileClick(this.state.tileCoordinates.row, this.state.tileCoordinates.col),
+            onMouseUp: function(e) {
+                this.state.tileCoordinates ? this.onTileClick(this.state.tileCoordinates.row, this.state.tileCoordinates.col) : this.state.pingCoordinates && d.hasDuplicate(this.props.teams) && this.pingTile(this.props.map.indexFrom(this.state.pingCoordinates.row, this.state.pingCoordinates.col)),
                     this.setState({
                         prevMouseLocation: null,
-                        tileCoordinates: null
+                        tileCoordinates: null,
+                        pingCoordinates: null
                     })
             },
             convertTouchIfMobile: function(e) {
@@ -18524,22 +19267,14 @@
                     !1
             },
             render: function() {
+                var e = f && !f.has_pinged;
                 return o.createElement("div", {
                     className: "relative",
                     style: {
                         top: this.state.offset.y,
                         left: this.state.offset.x
                     }
-                }, o.createElement(T, {
-                    props: this.props,
-                    queuedAttacks: this.state.queuedAttacks,
-                    selectedIndex: this.state.selectedIndex,
-                    selectedIs50: this.state.selectedIs50,
-                    onTileMouseDown: this.onTileMouseDown,
-                    onMouseMove: this.onMouseMove,
-                    onMouseUp: this.onMouseUp,
-                    zoomClass: this.state ? r(this.state.zoom) : null
-                }), this.props.scrollable ? o.createElement("div", {
+                }, this.props.scrollable ? o.createElement("div", {
                         className: "game-scroll",
                         onMouseDown: this.onMouseDown,
                         onTouchStart: this.onMouseDown,
@@ -18549,10 +19284,43 @@
                         onTouchEnd: this.onMouseUp,
                         onWheel: this.onWheel,
                         onContextMenu: this.onContextMenu
-                    }) : null)
+                    }) : null, o.createElement(A, {
+                    props: this.props,
+                    queuedAttacks: this.state.queuedAttacks,
+                    selectedIndex: this.state.selectedIndex,
+                    selectedIs50: this.state.selectedIs50,
+                    onTileMouseDown: this.onTileMouseDown,
+                    onMouseMove: this.onMouseMove,
+                    onMouseUp: this.onMouseUp,
+                    onWheel: this.onWheel,
+                    zoomClass: this.state ? r(this.state.zoom) : null,
+                    inPingMode: this.state && this.state.inPingMode
+                }), this.state && this.state.inPingMode ? o.createElement("div", {
+                        className: "background center",
+                        style: {
+                            zIndex: "30",
+                            whiteSpace: "nowrap",
+                            position: "fixed",
+                            top: "100px",
+                            padding: "5px"
+                        }
+                    }, "Click on a tile to ping it.") : null, d.hasDuplicate(this.props.teams) && e && !p ? o.createElement("div", {
+                        className: "background center",
+                        style: {
+                            zIndex: "30",
+                            textAlign: "center",
+                            position: "fixed",
+                            top: "50px",
+                            padding: "5px"
+                        }
+                    }, o.createElement("span", {
+                        className: "bold"
+                    }, "Right click"), " a tile to ping it to your teammate (if any), or ", o.createElement("span", {
+                        className: "bold"
+                    }, "press [F]"), " to enable ping mode.") : null)
             }
         })
-            , T = o.createClass({
+            , A = o.createClass({
             displayName: "Tiles",
             shouldComponentUpdate: function(e) {
                 return this.props.props !== e.props || this.props.queuedAttacks !== e.queuedAttacks || this.props.selectedIndex !== e.selectedIndex || this.props.selectedIs50 !== e.selectedIs50 || this.props.zoomClass !== e.zoomClass
@@ -18569,47 +19337,57 @@
                     i[t] || (i[t] = {}),
                         n === t + 1 ? i[t].right = !0 : n === t - 1 ? i[t].left = !0 : n > t ? i[t].down = !0 : i[t].up = !0
                 });
-                for (var s = [], c = 0; c < r; c++) {
-                    for (var l = [], p = 0; p < t.width; p++) {
-                        var h = t.indexFrom(c, p)
-                            , d = t.tileAt(h)
-                            , f = d === n
-                            , m = h === this.props.selectedIndex
-                            , v = this.props.selectedIndex >= 0 && t.isAdjacent(this.props.selectedIndex, h) && d !== u.TILE_MOUNTAIN;
-                        l.push(o.createElement(a, {
-                            row: c,
-                            col: p,
-                            key: c + "tile" + p,
-                            number: t.armyAt(t.indexFrom(c, p)),
-                            tile: d,
-                            isSelectable: f,
-                            isSelected: m,
-                            isSelected50: m && this.props.selectedIs50,
-                            isAttackable: v,
-                            isGeneral: e.generals && e.generals.indexOf(h) >= 0,
-                            isCity: e.cities && e.cities.indexOf(h) >= 0,
-                            onMouseDown: f || v ? this.props.onTileMouseDown.bind(null, c, p) : null,
+                var s = e.pings || [];
+                s = s.filter(function(e) {
+                    return Date.now() - e.timestamp <= h.PING_DURATION
+                }).map(function(e) {
+                    return e.tileIndex
+                });
+                for (var u = [], l = 0; l < r; l++) {
+                    for (var p = [], d = 0; d < t.width; d++) {
+                        var f = t.indexFrom(l, d)
+                            , m = t.tileAt(f)
+                            , v = m === n
+                            , y = f === this.props.selectedIndex
+                            , g = this.props.selectedIndex >= 0 && t.isAdjacent(this.props.selectedIndex, f) && m !== c.TILE_MOUNTAIN
+                            , T = this.props.inPingMode || v;
+                        p.push(o.createElement(a, {
+                            row: l,
+                            col: d,
+                            key: l + "tile" + d,
+                            number: t.armyAt(t.indexFrom(l, d)),
+                            tile: m,
+                            isSelectable: T,
+                            isSelected: y,
+                            isSelected50: y && this.props.selectedIs50,
+                            isAttackable: g,
+                            isGeneral: e.generals && e.generals.indexOf(f) >= 0,
+                            isCity: e.cities && e.cities.indexOf(f) >= 0,
+                            isPinged: s.indexOf(f) >= 0,
+                            onMouseDown: this.props.onTileMouseDown.bind(null, l, d, v || g || T),
                             onMouseMove: this.props.onMouseMove,
                             onMouseUp: this.props.onMouseUp,
-                            arrows: i[h],
+                            onWheel: this.props.onWheel,
+                            arrows: i[f],
                             zoomClass: this.props.zoomClass
                         }))
                     }
-                    s.push(o.createElement("tr", {
-                        key: "row" + c
-                    }, l))
+                    u.push(o.createElement("tr", {
+                        key: "row" + l
+                    }, p))
                 }
                 return o.createElement("table", {
                     id: "map",
+                    className: this.props.inPingMode ? "pingmode" : "",
                     style: {
                         borderSpacing: 0
                     }
-                }, o.createElement("tbody", null, s))
+                }, o.createElement("tbody", null, u))
             }
         });
         e.exports = i.connect(function(e) {
             return e.game
-        }, null)(g)
+        }, null)(E)
     }
     , function(e, t, n) {
         "use strict";
@@ -18627,13 +19405,14 @@
                     , t = this.props.tile === i.TILE_MOUNTAIN
                     , n = this.props.tile === i.TILE_FOG_OBSTACLE
                     , a = o.PLAYER_COLORS[this.props.tile] || "";
-                return this.props.isSelectable && (a += " selectable"),
-                this.props.isSelected && (a += " selected"),
-                this.props.isSelected50 && (a += " selected50"),
+                return this.props.isSelected50 && (a += " selected50"),
                 this.props.isAttackable && (a += " attackable"),
                     this.props.isGeneral ? a += " general" : this.props.isCity ? a += " city" : this.props.number > 0 && (a += " neutral"),
+                !this.props.isPinged && this.props.isSelected && (a += " selected"),
                 e && (a = "fog"),
                     t ? a = e ? "fog mountain" : "mountain" : n && (a = "fog obstacle"),
+                t || (this.props.isSelectable && (a += " selectable"),
+                this.props.isPinged && (a += " selected")),
                 this.props.zoomClass && (a += " " + this.props.zoomClass),
                     r.createElement("td", {
                         className: a,
@@ -18643,6 +19422,7 @@
                         onTouchMove: this.props.onMouseMove,
                         onMouseUp: this.props.onMouseUp,
                         onTouchEnd: this.props.onMouseUp,
+                        onWheel: this.props.onWheel,
                         onContextMenu: this.onContextMenu
                     }, e ? "" : this.props.isSelected50 ? "50%" : this.props.number || "", this.props.arrows && this.props.arrows.right ? r.createElement("div", {
                             className: "center-vertical",
@@ -18664,7 +19444,15 @@
                             style: {
                                 bottom: 0
                             }
-                        }, "↓") : null)
+                        }, "↓") : null, this.props.isPinged ? e || !this.props.number ? r.createElement("div", {
+                                className: "ping center"
+                            }, "⚑") : r.createElement("div", {
+                                className: "ping center",
+                                style: {
+                                    top: "8px",
+                                    left: "8px"
+                                }
+                            }, "⚑") : null)
             }
         });
         e.exports = a
@@ -18676,8 +19464,8 @@
             , i = n(30)
             , a = n(265)
             , s = n(269)
-            , u = n(303)
-            , c = o.createClass({
+            , c = n(304)
+            , u = o.createClass({
             displayName: "Tutorial",
             moveToState: function(e) {
                 a.dispatch(s.updateTutorialState(e))
@@ -18699,7 +19487,7 @@
                     l.onDrag = this.onDrag
             },
             componentWillReceiveProps: function(e) {
-                this.props.state === r.STATE_MOVE && e.scores[e.playerIndex].tiles > 1 ? u ? (this.moveToState(r.STATE_DRAG),
+                this.props.state === r.STATE_MOVE && e.scores[e.playerIndex].tiles > 1 ? c ? (this.moveToState(r.STATE_DRAG),
                             l.onDrag = this.onDrag) : (this.moveToState(r.STATE_WASD),
                             l.onWASD = this.onWASD) : this.props.state === r.STATE_CITY && e.numCities > 0 ? this.moveToState(r.STATE_WIN) : this.props.state === r.STATE_WIN && e.playerDidWin === !0 && this.moveToState(r.STATE_WON)
             },
@@ -18753,65 +19541,18 @@
             }
         })
             , l = {
-            Tutorial: c
+            Tutorial: u
         };
         e.exports = l
-    }
-    , function(e, t) {
-        "use strict";
-        if ("?aip=1" === window.location.search) {
-            var n = function(e, t) {
-                var n = document.head || document.getElementsByTagName("head")[0]
-                    , r = document.createElement("script")
-                    , o = !0;
-                r.async = "async",
-                    r.type = "text/javascript",
-                    r.charset = "UTF-8",
-                    r.src = e,
-                    r.onload = r.onreadystatechange = function() {
-                        !o || r.readyState && !/loaded|complete/.test(r.readyState) || (o = !1,
-                            t(),
-                            r.onload = r.onreadystatechange = null)
-                    }
-                    ,
-                    n.appendChild(r)
-            }
-                , r = function() {
-                "undefined" != typeof aipPlayer && (o = new aipPlayer({
-                    AD_WIDTH: 960,
-                    AD_HEIGHT: 540,
-                    AD_FULLSCREEN: !0,
-                    PREROLL_ELEM: document.getElementById("aip-preroll"),
-                    AIP_COMPLETE: function() {
-                        i && (i(),
-                            i = null)
-                    },
-                    AIP_REMOVE: function() {}
-                }))
-            };
-            n("//api.adinplay.com/player/v2/GNR/generals.io/player.min.js", r);
-            var o, i;
-            e.exports = {
-                playAd: function(e) {
-                    o ? (i = e,
-                            o.startPreRoll()) : e()
-                }
-            }
-        } else
-            e.exports = {
-                playAd: function(e) {
-                    e()
-                }
-            }
     }
     , function(e, t, n) {
         "use strict";
         var r = n(3)
-            , o = n(297)
+            , o = n(298)
             , i = n(1)
             , a = n(177)
-            , s = n(303)
-            , u = r.createClass({
+            , s = n(304)
+            , c = r.createClass({
             displayName: "InGameLeaderboard",
             getInitialState: function() {
                 return {
@@ -18858,7 +19599,7 @@
                 }, r.createElement("tbody", null, r.createElement("tr", null, this.showTeamsInLeaderboard && !this.state.minimized ? r.createElement("td", null, "Team") : null, this.state.minimized ? null : r.createElement("td", null, " ", r.createElement(o, null), " "), this.state.minimized ? r.createElement("td", null, " ") : r.createElement("td", null, "Player"), r.createElement("td", null, "Army"), r.createElement("td", null, "Land")), e))
             }
         });
-        e.exports = u
+        e.exports = c
     }
     , function(e, t, n) {
         "use strict";
@@ -18884,9 +19625,9 @@
                     }
                 }), r.createElement("h1", null, "Waiting for game to end..."), r.createElement("h4", null, "If you were just defeated in a game, your replay is not available yet.", r.createElement("br", null), r.createElement("span", {
                     className: "bold underline"
-                }, "Replays become available when the game ends"), " and a winner has been determined.", r.createElement("br", null), "Leave this tab open and ", r.createElement("span", {
+                }, "Replays become available when the game ends"), ".", r.createElement("br", null), "Leave this tab open and ", r.createElement("span", {
                     className: "bold underline"
-                }, "refresh the page in a few minutes"), "."), r.createElement("h4", null, "If you were not just defeated in a game, the URL you entered is probably incorrect."), r.createElement("button", {
+                }, "refresh the page in a few minutes"), ".", r.createElement("br", null), "You can also access this replay later from the Replay List in the main menu."), r.createElement("h4", null, "If you were not just defeated in a game, the URL you entered is probably incorrect."), r.createElement("button", {
                     className: "small",
                     onClick: this.keepPlaying
                 }, "Keep Playing While Waiting"))
@@ -18935,7 +19676,7 @@
             }
             return new r(e,t,n)
         }
-            , u = function(e, t, n, r) {
+            , c = function(e, t, n, r) {
             var o = this;
             if (o.instancePool.length) {
                 var i = o.instancePool.pop();
@@ -18944,7 +19685,7 @@
             }
             return new o(e,t,n,r)
         }
-            , c = function(e, t, n, r, o) {
+            , u = function(e, t, n, r, o) {
             var i = this;
             if (i.instancePool.length) {
                 var a = i.instancePool.pop();
@@ -18974,8 +19715,8 @@
             oneArgumentPooler: i,
             twoArgumentPooler: a,
             threeArgumentPooler: s,
-            fourArgumentPooler: u,
-            fiveArgumentPooler: c
+            fourArgumentPooler: c,
+            fiveArgumentPooler: u
         };
         e.exports = f
     }
@@ -19004,12 +19745,12 @@
                 function s() {
                     return "object" == typeof console && console.log && Function.prototype.apply.call(console.log, console, arguments)
                 }
-                function u(e) {
+                function c(e) {
                     try {
                         null == e ? t.storage.removeItem("debug") : t.storage.debug = e
                     } catch (e) {}
                 }
-                function c() {
+                function u() {
                     try {
                         return t.storage.debug
                     } catch (e) {}
@@ -19026,8 +19767,8 @@
                 t = e.exports = n(r),
                     t.log = s,
                     t.formatArgs = a,
-                    t.save = u,
-                    t.load = c,
+                    t.save = c,
+                    t.load = u,
                     t.useColors = i,
                     t.storage = "undefined" != typeof chrome && "undefined" != typeof chrome.storage ? chrome.storage.local : l(),
                     t.colors = ["lightseagreen", "forestgreen", "goldenrod", "dodgerblue", "darkorchid", "crimson"],
@@ -19039,7 +19780,7 @@
                         }
                     }
                     ,
-                    t.enable(c())
+                    t.enable(u())
             }
         ).call(t, n(114))
     }
@@ -19063,23 +19804,23 @@
                     a[s] = arguments[s];
                 a[0] = t.coerce(a[0]),
                 "string" != typeof a[0] && (a = ["%o"].concat(a));
-                var u = 0;
+                var c = 0;
                 a[0] = a[0].replace(/%([a-z%])/g, function(n, r) {
                     if ("%%" === n)
                         return n;
-                    u++;
+                    c++;
                     var o = t.formatters[r];
                     if ("function" == typeof o) {
-                        var i = a[u];
+                        var i = a[c];
                         n = o.call(e, i),
-                            a.splice(u, 1),
-                            u--
+                            a.splice(c, 1),
+                            c--
                     }
                     return n
                 }),
                     a = t.formatArgs.apply(e, a);
-                var c = r.log || t.log || console.log.bind(console);
-                c.apply(e, a)
+                var u = r.log || t.log || console.log.bind(console);
+                u.apply(e, a)
             }
             n.enabled = !1,
                 r.enabled = !0;
@@ -19096,7 +19837,7 @@
         function s() {
             t.enable("")
         }
-        function u(e) {
+        function c(e) {
             var n, r;
             for (n = 0,
                      r = t.skips.length; n < r; n++)
@@ -19108,14 +19849,14 @@
                     return !0;
             return !1
         }
-        function c(e) {
+        function u(e) {
             return e instanceof Error ? e.stack || e.message : e
         }
         t = e.exports = i.debug = i,
-            t.coerce = c,
+            t.coerce = u,
             t.disable = s,
             t.enable = a,
-            t.enabled = u,
+            t.enabled = c,
             t.humanize = n(r),
             t.names = [],
             t.skips = [],
