@@ -10,7 +10,7 @@ export class AttackTask extends AbstractTask implements DebugParameters{
     private movesLimit = 20;
     private toursGap = 0;
     private priority = 18;
-    private bigAttackTime = 100;
+    private bigAttackTime = 25;
 
     constructor(board: Board) {
         super(board);
@@ -26,6 +26,8 @@ export class AttackTask extends AbstractTask implements DebugParameters{
         const map = new Map();
 
         map.set('Moves limit', this.movesLimit);
+        map.set('Tours gap', this.toursGap);
+        map.set('Big attack countdown', this.bigAttackTime);
 
         return map;
     }
@@ -63,18 +65,25 @@ export class AttackTask extends AbstractTask implements DebugParameters{
     }
 
     doMove(): boolean {
-        if(this.priority < 20) {
+        if(this.priority > 20) {
             this.bigAttackTime--;
         }
-        if(this.toursGap > 20 || this.bigAttackTime <= 0) {
+        if((this.toursGap > 20 || this.bigAttackTime <= 0) && this.priority < 20) {
             this.movesLimit += 15;
+            if(Math.random() < 0.1) {
+                this.movesLimit += 30;
+            }
+            if(Math.random() < 0.01) {
+                this.movesLimit += 30;
+            }
         }
-        this.priority = 25;
-        this.toursGap = 0;
 
-        if(this.bigAttackTime < 0) {
+        if(this.bigAttackTime < 0 && this.priority < 20) {
             this.bigAttackTime = 50;
         }
+
+        this.priority = 25;
+        this.toursGap = 0;
 
         let bestResult: Result;
 
@@ -124,7 +133,10 @@ export class AttackTask extends AbstractTask implements DebugParameters{
                 r.customData.gapLength++;
             }
 
-            if (r.customData.gapLength > 5 || r.customData.moves > this.movesLimit) {
+
+            const movesAllowed = r.customData.isGeneral ? this.movesLimit*2 : this.movesLimit;
+
+            if (r.customData.gapLength > 5 || r.customData.moves > movesAllowed) {
                 r.terminate();
             }
 
@@ -149,8 +161,8 @@ export class AttackTask extends AbstractTask implements DebugParameters{
                 this.movesLimit -= 1;
             }
 
-            if(bestResult.customData.moves > 1 && bestResult.customData.moves < this.movesLimit) {
-                this.movesLimit = bestResult.customData.moves;
+            if(bestResult.customData.moves > 1 && bestResult.customData.moves < this.movesLimit - 15) {
+                //this.movesLimit = bestResult.customData.moves;
             }
 
             if (bestResult.path.length < 2) {

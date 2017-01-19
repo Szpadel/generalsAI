@@ -20824,7 +20824,7 @@
               this.movesLimit = 20;
               this.toursGap = 0;
               this.priority = 18;
-              this.bigAttackTime = 100;
+              this.bigAttackTime = 25;
               this.mapProcessor = new map_processor_1.MapProcessor(this.board, null, AttackTask.compareResults);
           }
           onNextTurn(boardChanges) {
@@ -20833,6 +20833,8 @@
           getDebugParameters() {
               const map = new Map();
               map.set('Moves limit', this.movesLimit);
+              map.set('Tours gap', this.toursGap);
+              map.set('Big attack countdown', this.bigAttackTime);
               return map;
           }
           static compareResults(a, b) {
@@ -20861,17 +20863,23 @@
               return this.priority;
           }
           doMove() {
-              if (this.priority < 20) {
+              if (this.priority > 20) {
                   this.bigAttackTime--;
               }
-              if (this.toursGap > 20 || this.bigAttackTime <= 0) {
+              if ((this.toursGap > 20 || this.bigAttackTime <= 0) && this.priority < 20) {
                   this.movesLimit += 15;
+                  if (Math.random() < 0.1) {
+                      this.movesLimit += 30;
+                  }
+                  if (Math.random() < 0.01) {
+                      this.movesLimit += 30;
+                  }
+              }
+              if (this.bigAttackTime < 0 && this.priority < 20) {
+                  this.bigAttackTime = 50;
               }
               this.priority = 25;
               this.toursGap = 0;
-              if (this.bigAttackTime < 0) {
-                  this.bigAttackTime = 50;
-              }
               let bestResult;
               let list = this.board.playersArmy.enemyPlayers.slice();
               let enemyList = [];
@@ -20908,7 +20916,8 @@
                   if (r.customData.lastGap > 0) {
                       r.customData.gapLength++;
                   }
-                  if (r.customData.gapLength > 5 || r.customData.moves > this.movesLimit) {
+                  const movesAllowed = r.customData.isGeneral ? this.movesLimit * 2 : this.movesLimit;
+                  if (r.customData.gapLength > 5 || r.customData.moves > movesAllowed) {
                       r.terminate();
                   }
                   r.score = r.customData.army;
@@ -20927,8 +20936,7 @@
                   if (this.movesLimit > 1) {
                       this.movesLimit -= 1;
                   }
-                  if (bestResult.customData.moves > 1 && bestResult.customData.moves < this.movesLimit) {
-                      this.movesLimit = bestResult.customData.moves;
+                  if (bestResult.customData.moves > 1 && bestResult.customData.moves < this.movesLimit - 15) {
                   }
                   if (bestResult.path.length < 2) {
                       return false;
@@ -21442,7 +21450,7 @@
       }
       exports.CollectTask = CollectTask;
   });
-  define("tasks/gather-everything-task", ["require", "exports", "tasks/abstract-task", "decision-makers"], function (require, exports, abstract_task_7, decision_makers_4) {
+  define("tasks/gather-everything-task", ["require", "exports", "tasks/abstract-task", "tile", "decision-makers"], function (require, exports, abstract_task_7, tile_8, decision_makers_4) {
       "use strict";
       class GatherEverythingTask extends abstract_task_7.AbstractTask {
           constructor(board) {
@@ -21457,6 +21465,9 @@
           }
           onNextTurn(boardChanges) {
               this.valid--;
+              if (this.isGeneralWeak() && Math.random() < 0.05) {
+                  this.priority = 1000;
+              }
           }
           getTaskPriority() {
               return this.priority;
@@ -21465,7 +21476,7 @@
               if (this.valid <= 0) {
                   this.init();
               }
-              this.valid = 10;
+              this.valid = 100;
               while (this.level > 0) {
                   console.log('consider level', this.level, this.unitsInLevel);
                   if (this.unitsInLevel.length == 0) {
@@ -21492,7 +21503,14 @@
                       if (!this.board.validatePoint(n)) {
                           return -Infinity;
                       }
-                      return 1000 - this.board.generalDistance.getGeneralDistance(n);
+                      const dist = tile_8.PointHelpers.equals(n, this.board.getMyGeneralLocation())
+                          ? 0
+                          : this.board.generalDistance.getGeneralDistance(n);
+                      const tp = this.board.getTileProperties(n);
+                      if (!tp.isMine && tp.isCity || tp.isEnemy) {
+                          return 0;
+                      }
+                      return 1000 - dist;
                   });
                   if (move.score > 0) {
                       this.board.debug.showPath([move.p, p]);
@@ -21504,8 +21522,17 @@
           }
           init() {
               this.level = this.countMaxLevel();
+              if (this.level > 5) {
+                  this.level = 5;
+              }
               this.unitsInLevel = this.getUnitsFromLevel(this.level);
               console.log('init', this.level, this.unitsInLevel);
+          }
+          isGeneralWeak() {
+              const p = this.board.getMyGeneralLocation();
+              const tp = this.board.getTileProperties(p);
+              const score = this.board.getMyScore();
+              return tp.army < (score.total - score.tiles) / 20;
           }
           nextLevel() {
               this.level--;

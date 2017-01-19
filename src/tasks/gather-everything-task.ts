@@ -1,6 +1,6 @@
 import {AbstractTask} from "./abstract-task";
 import {BoardChanges, Board} from "../board";
-import {Point} from "../tile";
+import {Point, PointHelpers} from "../tile";
 import {getBestPoint} from "../decision-makers";
 
 export class GatherEverythingTask extends AbstractTask{
@@ -19,6 +19,9 @@ export class GatherEverythingTask extends AbstractTask{
 
     onNextTurn(boardChanges: BoardChanges) {
         this.valid--;
+        if(this.isGeneralWeak() && Math.random() < 0.05) {
+            this.priority = 1000;
+        }
     }
 
     getTaskPriority(): number {
@@ -29,7 +32,7 @@ export class GatherEverythingTask extends AbstractTask{
         if(this.valid <= 0) {
             this.init();
         }
-        this.valid = 10;
+        this.valid = 100;
 
         while (this.level > 0) {
             console.log('consider level', this.level, this.unitsInLevel);
@@ -61,7 +64,15 @@ export class GatherEverythingTask extends AbstractTask{
                 if(!this.board.validatePoint(n)) {
                     return -Infinity;
                 }
-                return 1000-this.board.generalDistance.getGeneralDistance(n);
+                const dist = PointHelpers.equals(n, this.board.getMyGeneralLocation())
+                    ? 0
+                    : this.board.generalDistance.getGeneralDistance(n);
+
+                const tp = this.board.getTileProperties(n);
+                if(!tp.isMine && tp.isCity || tp.isEnemy) {
+                    return 0;
+                }
+                return 1000-dist;
             });
 
             if(move.score > 0) {
@@ -77,8 +88,18 @@ export class GatherEverythingTask extends AbstractTask{
 
     init() {
         this.level = this.countMaxLevel();
+        if(this.level > 5) {
+            this.level = 5;
+        }
         this.unitsInLevel = this.getUnitsFromLevel(this.level);
         console.log('init', this.level, this.unitsInLevel);
+    }
+
+    isGeneralWeak() {
+        const p = this.board.getMyGeneralLocation();
+        const tp = this.board.getTileProperties(p);
+        const score = this.board.getMyScore();
+        return tp.army < (score.total - score.tiles)/20;
     }
 
     nextLevel() {
