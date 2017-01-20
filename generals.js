@@ -11865,6 +11865,7 @@ window.gameCtrl = e.exports;
                     var n;
                     var x;
  t.map_diff && (t.map = a.patch(e.last_map, t.map_diff), t.last_map = t.map.concat([]), delete t.map_diff), t.cities_diff && (t.cities = a.patch(e.last_cities, t.cities_diff), t.last_cities = t.cities.concat([]), delete t.cities_diff), t.map instanceof a ? n = t.map : (n = new a, n.setToSerialized(t.map)), t.map = n, delete t.type, x = Object.assign({}, e, t);
+window.ai.applyUpdate(x);
 return x;
                 case o.ACTION_LOSE:
                     return Object.assign({}, e, {
