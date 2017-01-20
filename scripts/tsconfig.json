@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es6",
+    "noImplicitAny": false,
+    "sourceMap": false,
+    "lib": [
+      "es6",
+      "es7"
+    ],
+    "rootDirs": [
+      "../node_modules",
+      "."
+    ]
+  }
+}

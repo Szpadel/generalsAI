@@ -1,6 +1,6 @@
 # generalsAI
 This is work in progress on AI implementation for generals.io
-Compatible with generals.ai 11.0
+Compatible with generals.ai 11.0.1
 
 Currently AI is able to beat most of the players in 1v1 mode.
 It currently plays very defensive slowly taking over the map.
@@ -14,13 +14,30 @@ Install browser extension that allow to replace resources like [Requestly](https
 
 Add redirect rule url matching with regexp
 ```
-/http://(eu\.)?generals\.io/generals-bundle-prod-v11.0\.js/
+/http://(eu\.)?generals\.io/generals-bundle-prod-v11.0.1\.js/
 ```
 With destination:
 ```
 https://goo.gl/asCjxH
 ```
 
+# You don't have newest version of generals.io!
+You can use automatic engine patching script and build it on your own!
+
+Run
+```
+yarn run updateEngine <new version number>
+```
+
+eg.
+```
+yarn run updateEngine 11.0.1
+```
+
+and then 
+```
+yarn run build
+```
 
 # Current iteration
 Current implementation is task based. It measure multiple metrics like enemy threat and then based on those information
