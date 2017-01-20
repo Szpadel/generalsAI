@@ -74,6 +74,11 @@ This approach needed a lot of human integration to win, but was nice to capture 
 - [ ] Move computing to multiple web workers
 - [ ] Neural net to automatically adjust AI priorities
 
+# Known issues
+
+1. AI don't work correctly in second game -> refresh the page after every game
+2. replays don't work -> open replays in incognito, or disable ai replacing 
+
 # Contribution
 Any contributors are welcome.
 How to start:
