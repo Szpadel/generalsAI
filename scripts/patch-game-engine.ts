@@ -24,7 +24,7 @@ const version = args._[0];
     const changeset = [
         [/(case \w+\.ACTION_UPDATE:\n*\s*var \w+;)(\n*\s*)return/m, '$1$2var x;\n'],
         [/(Object\.assign\(.., \w+, \w+\);\n*)(\s*case \w+\.ACTION_LOSE:)/m, 'x = $1window.ai.applyUpdate(x);\nreturn x;\n$2'],
-        [/(\w+)(\.exports = {\n\s*isConnected: (.*\n)*\s+leaveTeam: \w+\n\s+}\n*)/m, '$1$2\nwindow.gameCtrl = $1.exports;\n']
+        [/(\w+)(\.exports = {\n\s*isConnected: (.*\n)*\s+recoverAccount: \w+\n\s+}\n*)/m, '$1$2\nwindow.gameCtrl = $1.exports;\n']
     ];
 
     let n = 0;
