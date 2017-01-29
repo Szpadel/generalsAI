@@ -175,7 +175,7 @@ export class AttackTask extends AbstractTask implements DebugParameters{
             return this.board.attack(bestResult.path[l - 1], bestResult.path[l - 2], false);
 
         }else {
-            this.movesLimit += 5;
+            this.movesLimit += 3;
             if(this.movesLimit > 25) {
                 this.movesLimit = 25;
             }

@@ -13,7 +13,7 @@ if(args._.length != 1) {
 const version = args._[0];
 
 (async () => {
-    let req = await fetch(`http://generals.io/generals-bundle-prod-v${version}.js`);
+    let req = await fetch(`http://generals.io/generals-main-prod-v${version}.js`);
     if(req.status !== 200) {
         console.error('Cannot fetch generals.io engine!');
         process.exit(3);
