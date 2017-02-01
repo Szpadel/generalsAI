@@ -21,6 +21,8 @@ const version = args._[0];
     let jsFile = await req.text();
     let formattedFile = jsb(jsFile);
 
+    console.log('downloaded', jsFile.length);
+
     const changeset = [
         [/(case \w+\.ACTION_UPDATE:\n*\s*var \w+;)(\n*\s*)return/m, '$1$2var x;\n'],
         [/(Object\.assign\(.., \w+, \w+\);\n*)(\s*case \w+\.ACTION_LOSE:)/m, 'x = $1window.ai.applyUpdate(x);\nreturn x;\n$2'],
@@ -37,9 +39,12 @@ const version = args._[0];
         n++;
     }
 
+    console.log('patching completed!');
+
     writeFileSync("../generals.js", formattedFile, (e) => {
-        console.error(e);
-        process.exit(5);
+    console.log('wut');
+        console.error('write failed: ', e);
+        //process.exit(5);
     });
 
     console.log(`engine updated to ${version} successfully :)`);
